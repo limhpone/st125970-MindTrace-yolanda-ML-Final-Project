@@ -136,7 +136,7 @@ def clean_text(text: str) -> dict:
 
     # Step 7: Stopword removal (negations preserved)
     filtered = [w for w in expanded if w not in STOP_WORDS]
-    negations_kept = [w for w in expanded if w in NEGATION_WORDS and w in expanded]
+    negations_kept = [w for w in filtered if w in NEGATION_WORDS]
     steps["stopwords_removed"] = " ".join(filtered)
     steps["negations_preserved"] = negations_kept
 
@@ -150,9 +150,13 @@ def clean_text(text: str) -> dict:
 
 # ── Load model ────────────────────────────────────────────────────────────────
 MODEL_PATH = os.environ.get("MODEL_PATH", "model.pkl")
-print(f"[MindTrace] Loading {MODEL_PATH} …", flush=True)
-pipeline_model = joblib.load(MODEL_PATH)
-print("[MindTrace] Ready ✓", flush=True)
+if os.path.exists(MODEL_PATH):
+    print(f"[MindTrace] Loading {MODEL_PATH} …", flush=True)
+    pipeline_model = joblib.load(MODEL_PATH)
+    print("[MindTrace] Ready ✓", flush=True)
+else:
+    pipeline_model = None
+    print(f"[MindTrace] Warning: {MODEL_PATH} not found — prediction disabled", flush=True)
 
 prediction_history = []
 app = Flask(__name__)
@@ -163,10 +167,14 @@ def index():
 
 @app.route("/predict", methods=["POST"])
 def predict():
+    if pipeline_model is None:
+        return jsonify({"error": "Model not loaded. Run train_pipeline.py first."}), 503
     body = request.get_json(force=True, silent=True) or {}
     text = body.get("text", "").strip()
     if not text:
         return jsonify({"error": "Please provide a non-empty 'text' field."}), 400
+    if len(text) > 1000:
+        return jsonify({"error": "Text must be 1 000 characters or fewer."}), 400
 
     nlp = clean_text(text)
     cleaned = nlp["cleaned"]

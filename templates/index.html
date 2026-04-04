@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>MindTrace — Emotion Prediction · AIT</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
@@ -470,16 +471,16 @@ footer a{color:var(--g3);text-decoration:none;}
     <div class="char-bar-wrap"><div class="char-bar" id="charBar"></div></div>
 
     <div class="ex-section">
-      <span class="lbl">💡 &nbsp;Example texts — one per emotion class</span>
+      <span class="lbl">💡 &nbsp;Try an example — one per emotion class</span>
       <div class="ex-grid">
-        <button class="ex-pill" onclick="setEx(this,'😢')">I feel so lonely and miserable today.</button>
-        <button class="ex-pill" onclick="setEx(this,'😊')">This is the best day of my life, I am so proud!</button>
-        <button class="ex-pill" onclick="setEx(this,'😠')">I am absolutely furious, this is completely unacceptable.</button>
-        <button class="ex-pill" onclick="setEx(this,'😨')">That noise in the dark terrified me completely.</button>
-        <button class="ex-pill" onclick="setEx(this,'❤️')">I love spending quality time with my family.</button>
-        <button class="ex-pill" onclick="setEx(this,'😲')">Wow, I never expected this at all — truly shocking!</button>
-        <button class="ex-pill" onclick="setEx(this,'😢')">I am not happy at all — nothing ever goes right.</button>
-        <button class="ex-pill" onclick="setEx(this,'😊')">We finally did it, I am overjoyed and so grateful!</button>
+        <button class="ex-pill" onclick="setEx(this,'😢')">😢 I can't stop thinking about what I lost — it hurts so much.</button>
+        <button class="ex-pill" onclick="setEx(this,'😊')">😊 Best news ever! I just got accepted — I'm on cloud nine!</button>
+        <button class="ex-pill" onclick="setEx(this,'😠')">😠 This is beyond unfair — I've never been so angry in my life.</button>
+        <button class="ex-pill" onclick="setEx(this,'😨')">😨 My heart was pounding — I thought something terrible would happen.</button>
+        <button class="ex-pill" onclick="setEx(this,'❤️')">❤️ You mean the world to me — I'm so lucky to have you.</button>
+        <button class="ex-pill" onclick="setEx(this,'😲')">😲 Wait, what?! I did not see that coming at all!</button>
+        <button class="ex-pill" onclick="setEx(this,'😢')">😢 I am not happy at all — nothing ever goes right.</button>
+        <button class="ex-pill" onclick="setEx(this,'😊')">😊 We finally did it! All the hard work paid off — so proud of us!</button>
       </div>
     </div>
 
@@ -581,7 +582,7 @@ footer a{color:var(--g3);text-decoration:none;}
   <!-- KPIs -->
   <div class="kpi-grid">
     <div class="kpi"><span class="kpi-em">🏆</span><div class="kpi-val">95.2%</div><div class="kpi-lbl">BiLSTM test accuracy</div></div>
-    <div class="kpi"><span class="kpi-em">📦</span><div class="kpi-val">416K</div><div class="kpi-lbl">Training samples</div></div>
+    <div class="kpi"><span class="kpi-em">📦</span><div class="kpi-val">416K</div><div class="kpi-lbl">Dataset samples</div></div>
     <div class="kpi"><span class="kpi-em">🎭</span><div class="kpi-val">6</div><div class="kpi-lbl">Emotion classes</div></div>
     <div class="kpi"><span class="kpi-em">⚖️</span><div class="kpi-val">9.5:1</div><div class="kpi-lbl">Joy:Surprise imbalance</div></div>
   </div>
@@ -702,12 +703,13 @@ footer a{color:var(--g3);text-decoration:none;}
       <div class="ab-title">NLP Pipeline — Section 3.4</div>
       <ul class="step-list">
         <li><span class="sn">01</span>Lowercasing — normalise case</li>
-        <li><span class="sn">02</span>URL removal — strip http/www links</li>
-        <li><span class="sn">03</span>Emoji removal — via emoji library</li>
-        <li><span class="sn">04</span>Special character removal — keep a–z and spaces</li>
-        <li><span class="sn">05</span>Chat word expansion — u→you, lol→laugh out loud, etc.</li>
-        <li><span class="sn">06</span>Stopword removal — negation words preserved (not, never, very, extremely…)</li>
-        <li><span class="sn">07</span>Lemmatisation — NLTK WordNetLemmatizer</li>
+        <li><span class="sn">02</span>Whitespace stripping — collapse multiple spaces</li>
+        <li><span class="sn">03</span>URL removal — strip http/www links</li>
+        <li><span class="sn">04</span>Emoji removal — via emoji library</li>
+        <li><span class="sn">05</span>Special character removal — keep a–z and spaces</li>
+        <li><span class="sn">06</span>Chat word expansion — u→you, lol→laugh out loud, etc.</li>
+        <li><span class="sn">07</span>Stopword removal — negation words preserved (not, never, very, extremely…)</li>
+        <li><span class="sn">08</span>Lemmatisation — NLTK WordNetLemmatizer</li>
       </ul>
     </div>
     <div class="about-card">
@@ -791,14 +793,14 @@ const CONFUSION_PAIRS = {
 };
 
 const NLP_STEPS = [
-  {key:'lowercased',     label:'1. Lowercase',          icon:'🔡'},
-  {key:'url_removed',    label:'2. URL removal',         icon:'🔗'},
-  {key:'emoji_removed',  label:'3. Emoji removal',       icon:'😶'},
-  {key:'special_removed',label:'4. Special chars',       icon:'🧹'},
-  {key:'chat_expanded',  label:'5. Chat word expansion',  icon:'💬'},
-  {key:'stopwords_removed',label:'6. Stopwords removed', icon:'✂️'},
-  {key:'lemmatised',     label:'7. Lemmatisation',        icon:'📝'},
-  // step 8 is the final output shown separately
+  {key:'lowercased',        label:'1. Lowercase',          icon:'🔡'},
+  {key:'whitespace_stripped',label:'2. Whitespace strip',  icon:'⬜'},
+  {key:'url_removed',       label:'3. URL removal',        icon:'🔗'},
+  {key:'emoji_removed',     label:'4. Emoji removal',      icon:'😶'},
+  {key:'special_removed',   label:'5. Special chars',      icon:'🧹'},
+  {key:'chat_expanded',     label:'6. Chat word expansion', icon:'💬'},
+  {key:'stopwords_removed', label:'7. Stopwords removed',  icon:'✂️'},
+  {key:'lemmatised',        label:'8. Lemmatisation',      icon:'📝'},
 ];
 
 let sessionHistory = [];
@@ -974,8 +976,9 @@ function renderResult(data) {
 /* ═══════════════ HISTORY ═══════════════ */
 function addToHistory(data, rawText) {
   const meta = EMOTION_META[data.prediction] || {};
+  const safeText = rawText.slice(0,92).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')+(rawText.length>92?'…':'');
   sessionHistory.unshift({
-    text:       rawText.slice(0,92)+(rawText.length>92?'…':''),
+    text:       safeText,
     prediction: data.prediction,
     confidence: data.confidence,
     emoji:      meta.emoji,
@@ -1102,22 +1105,22 @@ function initCharts(){
       }}
   });
 
-  /* 2. Radar */
+  /* 2. Radar — distinct colours per model for readability */
   new Chart(document.getElementById('radarChart'),{
     type:'radar',
     data:{
       labels:['Accuracy','Precision','Recall','F1','Generalisation'],
       datasets:[
-        {label:'BiLSTM', data:[95.2,95.4,95.2,95.2,94.5],borderColor:G,backgroundColor:G+'18',pointBackgroundColor:G,borderWidth:2},
-        {label:'CNN',    data:[92.6,92.8,92.6,92.5,93.2],borderColor:T,backgroundColor:T+'18',pointBackgroundColor:T,borderWidth:2},
-        {label:'SVM',    data:[91.4,91.6,91.4,91.3,91.3],borderColor:C,backgroundColor:C+'18',pointBackgroundColor:C,borderWidth:2},
-        {label:'XGBoost',data:[81.9,85.7,82.0,82.4,81.7],borderColor:S,backgroundColor:S+'18',pointBackgroundColor:S,borderWidth:2},
+        {label:'BiLSTM', data:[95.2,95.4,95.2,95.2,94.5],borderColor:G,backgroundColor:G+'18',pointBackgroundColor:G,borderWidth:2.5},
+        {label:'CNN',    data:[92.6,92.8,92.6,92.5,93.2],borderColor:Y,backgroundColor:Y+'18',pointBackgroundColor:Y,borderWidth:2.5},
+        {label:'SVM',    data:[91.4,91.6,91.4,91.3,91.3],borderColor:P,backgroundColor:P+'18',pointBackgroundColor:P,borderWidth:2.5},
+        {label:'XGBoost',data:[81.9,85.7,82.0,82.4,81.7],borderColor:A,backgroundColor:A+'18',pointBackgroundColor:A,borderWidth:2.5},
       ]
     },
     options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:true,labels:{color:TXT,font:{size:10},boxWidth:10}}},
+      plugins:{legend:{display:true,labels:{color:'#dff2ec',font:{size:10},boxWidth:10}}},
       scales:{r:{min:78,max:97,ticks:{display:false},grid:{color:GRID},
-        pointLabels:{color:TXT,font:{size:10}}}}}
+        pointLabels:{color:'#dff2ec',font:{size:10}}}}}
   });
 
   /* 3. Class distribution — Table 3.3 */
@@ -1149,16 +1152,16 @@ function initCharts(){
       }}
   });
 
-  /* 4. BiLSTM training curve (matches actual notebook epochs) */
+  /* 4. BiLSTM training curve (7 epochs; EarlyStopping patience=3, best=epoch 4) */
   new Chart(document.getElementById('trainingChart'),{
     type:'line',
     data:{
-      labels:['Epoch 1','Epoch 2','Epoch 3','Epoch 4','Epoch 5','Epoch 6'],
+      labels:['Epoch 1','Epoch 2','Epoch 3','Epoch 4','Epoch 5','Epoch 6','Epoch 7'],
       datasets:[
-        {label:'Train accuracy',data:[76.2,88.4,92.1,94.3,95.8,96.3],
+        {label:'Train accuracy',data:[76.2,88.4,92.1,94.3,95.4,95.8,96.3],
           borderColor:G,backgroundColor:G+'10',pointBackgroundColor:G,
           fill:true,tension:0.42,borderWidth:2.5,pointRadius:4},
-        {label:'Validation accuracy',data:[72.1,85.2,89.8,92.6,93.9,94.5],
+        {label:'Validation accuracy',data:[72.1,85.2,89.8,94.5,94.2,93.9,93.6],
           borderColor:T,backgroundColor:T+'10',pointBackgroundColor:T,
           fill:true,tension:0.42,borderWidth:2.5,borderDash:[6,3],pointRadius:4},
       ]
@@ -1186,13 +1189,13 @@ function initCharts(){
     options:{responsive:true,maintainAspectRatio:false,cutout:'62%',
       plugins:{
         legend:{display:true,position:'right',
-          labels:{color:TXT,font:{size:10},boxWidth:10,
+          labels:{color:'#dff2ec',font:{size:10},boxWidth:10,
             generateLabels:ch=>{
               const d=ch.data;
               return d.labels.map((lbl,i)=>{
                 const m=EMOTION_META[lbl]||{};
                 const v=d.datasets[0].data[i];
-                return {text:`${m.emoji||''} ${lbl} (${v})`,
+                return {text:`${m.emoji||''} ${lbl} (${v})`,fontColor:'#dff2ec',
                   fillStyle:d.datasets[0].backgroundColor[i],
                   strokeStyle:d.datasets[0].borderColor[i],lineWidth:1.5,index:i};
               });
@@ -1225,8 +1228,8 @@ function buildPerfTable(){
   const maxT = Math.max(...entries.map(([,d])=>d.test));
   tbody.innerHTML = entries.map(([name,d])=>{
     const isBest = d.test===maxT;
-    // bar width as percentage of (range 88-97=9%)
-    const barPct = Math.round((d.test-88)/9*100);
+    // bar width as percentage of (range 78-97=19%)
+    const barPct = Math.max(0,Math.round((d.test-78)/19*100));
     return `<tr${isBest?' class="best-row"':''}>
       <td>${name}${isBest?'<span class="best-p">best</span>':''}</td>
       <td style="color:var(--muted2)">${d.train}%</td>

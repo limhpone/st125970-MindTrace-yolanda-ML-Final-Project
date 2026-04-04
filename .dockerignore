@@ -1,0 +1,34 @@
+# Git
+.git/
+.gitignore
+
+# Virtual environments
+.venv/
+venv/
+
+# Jupyter notebooks — not needed at runtime
+*.ipynb
+.ipynb_checkpoints/
+
+# Dataset — model.pkl already has learned features
+data/
+spare/
+*.xlsx
+*.csv
+
+# LaTeX report
+MindTrace_CVPR/
+
+# Root figures
+figures/
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose*.yml
+
+# Misc
+__pycache__/
+*.py[cod]
+README.md
+train_pipeline.py

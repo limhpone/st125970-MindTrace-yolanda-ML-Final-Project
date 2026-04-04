@@ -17,9 +17,9 @@
 | Model | Training | Validation | **Test Acc.** | Precision | Recall | F1-Score |
 |---|---|---|---|---|---|---|
 | **BiLSTM** ✓ best | 96.3% | 94.5% | **95.2%** | 95.4% | 95.2% | 95.2% |
-| CNN | 94.2% | 93.2% | 92.6% | 92.8% | 92.6% | 92.5% |
-| SVM | 93.5% | 91.3% | 91.3% | 91.5% | 91.4% | 91.3% |
-| XGBoost | 92.9% | 90.5% | 90.6% | 90.8% | 90.7% | 90.6% |
+| CNN | 94.3% | 93.2% | 92.6% | 92.8% | 92.6% | 92.5% |
+| SVM | 91.3% | 91.3% | 91.4% | 91.6% | 91.4% | 91.3% |
+| XGBoost | 81.7% | 81.7% | 81.9% | 85.7% | 82.0% | 82.4% |
 
 > **Deployed model:** SVM + TF-IDF sklearn Pipeline — CPU inference, no GPU required, instant startup
 
@@ -72,7 +72,7 @@ Applied identically in `train_pipeline.py` during training and in `app.py` at in
 | 3 | URL removal | `re.sub(r'http\S+\|www\S+', '', t)` |
 | 4 | Emoji removal | `emoji.replace_emoji(t, replace='')` |
 | 5 | Special character removal | Keep only `[a-z\s]` |
-| 6 | Chat word expansion | `u→you`, `lol→laugh out loud`, 28 rules |
+| 6 | Chat word expansion | `u→you`, `lol→laugh out loud`, 31 rules |
 | 7 | Stopword removal | NLTK English stopwords — **negation words preserved** |
 | 8 | Lemmatisation | `nltk.WordNetLemmatizer` |
 
@@ -155,6 +155,7 @@ Accepts raw text, returns emotion label with probabilities and NLP step trace.
   "tokens":       ["feel", "happy", "today"],
   "nlp_steps": {
     "lowercased":         "i feel so happy today!",
+    "whitespace_stripped":"i feel so happy today!",
     "url_removed":        "i feel so happy today!",
     "emoji_removed":      "i feel so happy today!",
     "special_removed":    "i feel so happy today",
@@ -175,9 +176,9 @@ Returns all model performance metrics and class distribution for the dashboard.
 {
   "model_stats": {
     "BiLSTM":  { "train": 96.3, "val": 94.5, "test": 95.2, "precision": 95.4, "recall": 95.2, "f1": 95.2 },
-    "CNN":     { "train": 94.2, "val": 93.2, "test": 92.6, ... },
-    "SVM":     { "train": 93.5, "val": 91.3, "test": 91.3, ... },
-    "XGBoost": { "train": 92.9, "val": 90.5, "test": 90.6, ... }
+    "CNN":     { "train": 94.3, "val": 93.2, "test": 92.6, ... },
+    "SVM":     { "train": 91.3, "val": 91.3, "test": 91.4, ... },
+    "XGBoost": { "train": 81.7, "val": 81.7, "test": 81.9, ... }
   },
   "class_distribution": { ... },
   "dataset_size": 416809,
@@ -199,7 +200,7 @@ Returns all model performance metrics and class distribution for the dashboard.
 
 | Tab | Content |
 |---|---|
-| **🔮 Predict** | Text input with 8 example pills (one per emotion class + 2 negation examples). After prediction: animated emoji + confidence ring + intensity bar + word count, probability bars for all 6 emotions, 7-step NLP pipeline output with negation tokens highlighted in red |
+| **🔮 Predict** | Text input with 8 example pills (one per emotion class + 2 negation examples). After prediction: animated emoji + confidence ring + intensity bar + word count, probability bars for all 6 emotions, 8-step NLP pipeline output with negation tokens highlighted in red |
 | **📊 Dashboard** | 4 KPI cards · Grouped bar chart (all 4 metrics) · Performance table with mini bars · Radar chart · Class distribution (Table 3.3) with animated inline bars + horizontal chart · BiLSTM training curve · Live session doughnut chart (updates as you predict) |
 | **🕓 History** | Session prediction log with emotion summary chips (×count per label) and clear-all button. Badge counter on the tab itself |
 | **📄 About** | Research question (Section 1.3) · Research gap (Section 1.2) · Dataset justification (Section 3.1) · NLP pipeline steps (Section 3.4) · All 4 model descriptions (Section 4) · 5 key EDA findings (Section 3.2) · 4 contribution points (Section 6.1) |
@@ -238,7 +239,7 @@ xgboost==2.0.3        # XGBoost baseline (training only)
 
 The `train_pipeline.py` script trains the **SVM** model deployed in this app. To reproduce the BiLSTM (95.2%) or CNN (92.6%) results, use the full `Emotion_prediction_source_code.ipynb` notebook in a TensorFlow 3.11 environment (Google Colab with NVIDIA T4 GPU recommended).
 
-The sklearn pipeline produced by `train_pipeline.py` should achieve approximately **91.3% test accuracy** on the balanced dataset, matching the SVM row in Table 4.1.
+The sklearn pipeline produced by `train_pipeline.py` should achieve approximately **91.4% test accuracy** on the balanced dataset, matching the SVM row in Table 4.1.
 
 ---
 
