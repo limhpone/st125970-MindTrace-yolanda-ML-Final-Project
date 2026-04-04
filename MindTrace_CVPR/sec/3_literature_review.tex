@@ -11,7 +11,7 @@ More recently, transformer-based models such as BERT have achieved state-of-the-
 
 \subsection{Related Work on Base Models}
 
-This study considers four representative model families frequently applied in text classification:
+This study considered four representative model families frequently applied in text classification:
 
 \noindent\textbf{Support Vector Machine (SVM)} is a margin-based classifier that performs well in sparse, high-dimensional feature spaces such as TF-IDF representations but cannot capture sequential word relationships~\citep{dzikovska2012using}.
 
@@ -25,7 +25,7 @@ This study considers four representative model families frequently applied in te
 
 Table~\ref{tab:prior_work} summarises representative studies on text-based emotion classification, highlighting the dataset, model type, best reported macro-F1, and key experimental limitations.
 
-\begin{table*}[t]
+\begin{table*}[!htbp]
 \centering
 \caption{Summary of representative prior studies --- dataset, models, performance, and experimental gaps.}
 \label{tab:prior_work}
@@ -41,9 +41,9 @@ Table~\ref{tab:prior_work} summarises representative studies on text-based emoti
 \citet{sun2023bidirectional} & Twitter sentiment & BiLSTM & $\sim$0.85 acc. & Accuracy-only; inconsistent preproc. \\
 \citet{acheampong2021transformer} & Multiple benchmarks & BERT (survey) & N/A & Survey only; no unified comparison \\
 \midrule
-\textbf{This Study} & \textbf{Kaggle Twitter (6 cls, 416K)} & \textbf{SVM, XGBoost, CNN, BiLSTM} & \textbf{0.95} & \textbf{Unified pipeline; macro-F1 eval.} \\
+\textbf{This Study} & \textbf{Kaggle Twitter (6 cls, 416K)} & \textbf{SVM, XGBoost, CNN, BiLSTM} & \textbf{0.94} & \textbf{Unified pipeline; macro-F1 eval.} \\
 \bottomrule
 \end{tabular}
 \end{table*}
 
-Existing studies vary widely in dataset selection, preprocessing methods, evaluation metrics, and model choices, making direct performance comparisons difficult. Among the studies surveyed, no prior work has evaluated SVM, XGBoost, CNN, and BiLSTM on the same 416,809-sample Twitter corpus under identical preprocessing, stratified splits, and macro-F1 evaluation. Although transformer models such as BERT represent the current state of the art~\citep{acheampong2021transformer, devlin2019bert}, they are excluded due to computational constraints. This study focuses on a controlled comparison of classical and sequence-based architectures, with transformer-based extensions proposed as future work.
+Existing studies vary widely in dataset selection, preprocessing methods, evaluation metrics, and model choices, making direct performance comparisons difficult. Among the studies surveyed, no prior work has evaluated SVM, XGBoost, CNN, and BiLSTM on the same 416,809-sample Twitter corpus under identical preprocessing, stratified splits, and macro-F1 evaluation. Although transformer models such as BERT represent the current state of the art~\citep{acheampong2021transformer, devlin2019bert}, they are excluded due to computational constraints. This study focuses on a controlled comparison of classical and sequence-based architectures, with transformer-based extensions identified as future work.

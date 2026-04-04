@@ -3,13 +3,13 @@
 
 \subsection{Data Source}
 
-This study utilises the publicly available Emotion Dataset from Kaggle~\citep{emotions_kaggle}, a large-scale collection of Twitter posts annotated into six discrete emotion categories: anger, joy, sadness, fear, surprise, and love. The dataset comprises 416,809 labelled text samples, making it statistically robust for supervised multi-class classification modelling.
+This study utilised the publicly available Emotion Dataset from Kaggle~\citep{emotions_kaggle}, a large-scale collection of Twitter posts annotated into six discrete emotion categories: anger, joy, sadness, fear, surprise, and love. The dataset comprises 416,809 labelled text samples, making it statistically robust for supervised multi-class classification modelling.
 
-The dataset is methodologically justified on three grounds. First, its large sample size enhances statistical reliability and reduces variance in model estimation. Second, it reflects informal, real-world social media language --- including abbreviations, emotive expressions, and conversational tone --- thereby increasing ecological validity. Third, its six-class taxonomy enables fine-grained emotional analysis beyond binary sentiment polarity, directly aligning with the research objective of multi-class emotion prediction.
+The dataset was methodologically justified on three grounds. First, its large sample size enhances statistical reliability and reduces variance in model estimation. Second, it reflects informal, real-world social media language --- including abbreviations, emotive expressions, and conversational tone --- thereby increasing ecological validity. Third, its six-class taxonomy enables fine-grained emotional analysis beyond binary sentiment polarity, directly aligning with the research objective of multi-class emotion prediction.
 
-Each instance consists of a raw textual input (\texttt{text}) and a corresponding encoded emotion label (\texttt{label}). Table~\ref{tab:data_dict} presents the complete data dictionary.
+Each instance consists of a raw textual input (\texttt{text}) and a corresponding encoded emotion label (\texttt{label}). Table~\ref{tab:data_dict} presents the data dictionary.
 
-\begin{table}[t]
+\begin{table}[!htb]
 \centering
 \caption{Data dictionary --- Kaggle Emotions Dataset.}
 \label{tab:data_dict}
@@ -27,7 +27,7 @@ Each instance consists of a raw textual input (\texttt{text}) and a correspondin
 
 The label encoding follows: 0\,=\,Sadness, 1\,=\,Joy, 2\,=\,Love, 3\,=\,Anger, 4\,=\,Fear, 5\,=\,Surprise. Table~\ref{tab:sample_records} presents five representative records drawn from the dataset.
 
-\begin{table}[t]
+\begin{table}[!htb]
 \centering
 \caption{Sample records from the Kaggle Emotions Dataset.}
 \label{tab:sample_records}
@@ -48,20 +48,20 @@ The label encoding follows: 0\,=\,Sadness, 1\,=\,Joy, 2\,=\,Love, 3\,=\,Anger, 4
 
 \subsection{Exploratory Data Analysis}
 
-The objective of EDA is fourfold: (1)~characterise class distribution and quantify imbalance to inform balancing strategies; (2)~examine text length and word count distributions to guide feature engineering and sequence padding decisions; (3)~investigate correlations among numerical features to assess redundancy; and (4)~identify preprocessing requirements arising directly from observed data characteristics.
+The objective of EDA was fourfold: (1)~characterise class distribution and quantify imbalance to inform balancing strategies; (2)~examine text length and word count distributions to guide feature engineering and sequence padding decisions; (3)~investigate correlations among numerical features to assess redundancy; and (4)~identify preprocessing requirements arising directly from observed data characteristics.
 
 \subsubsection{Class Distribution Analysis}
 
-Figure~\ref{fig:class_dist} shows the absolute counts per class alongside the proportional breakdown. The distribution reveals a significant imbalance: Joy and Sadness together account for nearly 63\% of all samples, while Surprise represents fewer than 4\%. Table~\ref{tab:class_dist} presents the full class distribution with modelling implications.
+Figure~\ref{fig:class_dist} shows the absolute counts per class alongside the proportional breakdown. The distribution revealed a significant imbalance: Joy and Sadness together accounted for nearly 63\% of all samples, while Surprise represented fewer than 4\%. Table~\ref{tab:class_dist} presents the full class distribution with modelling implications.
 
-\begin{figure}[t]
+\begin{figure}[!htb]
 \centering
 \includegraphics[width=\linewidth]{figures/class_distribution.png}
 \caption{Class distribution by emotion label. Joy dominates at 33.8\%, while Surprise is the smallest class at 3.6\%.}
 \label{fig:class_dist}
 \end{figure}
 
-\begin{table}[t]
+\begin{table}[!htb]
 \centering
 \caption{Target variable distribution --- emotion class frequencies and modelling implications.}
 \label{tab:class_dist}
@@ -84,9 +84,9 @@ Figure~\ref{fig:class_dist} shows the absolute counts per class alongside the pr
 
 \subsubsection{Text Length and Word Count Distribution}
 
-Figure~\ref{fig:text_length} presents the text length histogram and Figure~\ref{fig:wordcount} shows the word count boxplot by emotion class. The overall median text length is 86 characters (mean 97.0, std 56.2), with Love having the longest posts (median 94) and Anger the shortest (median 84). The histogram confirms a right-skewed distribution with posts concentrated between 20 and 150 characters. The boxplot reveals that Love has the highest median text length (median $\approx 94$ chars), while Anger is the most concise (median $\approx 69$ chars). These findings inform the maximum sequence length (512) and padding strategies for neural network architectures.
+Figure~\ref{fig:text_length} presents the text length histogram and Figure~\ref{fig:wordcount} shows the word count boxplot by emotion class. The overall median text length was 86 characters (mean 97.0, std 56.2), with Love having the longest posts (median 94 characters) and Anger the shortest (median 84 characters). The histogram confirmed a right-skewed distribution with posts concentrated between 20 and 150 characters. The word count boxplot revealed similar per-class trends, with Love producing the most verbose posts and Anger the most concise. These findings informed the maximum sequence length (512) and padding strategies for neural network architectures.
 
-\begin{figure*}[t]
+\begin{figure*}[!htbp]
 \centering
 \begin{minipage}{0.48\textwidth}
   \centering
@@ -104,48 +104,47 @@ Figure~\ref{fig:text_length} presents the text length histogram and Figure~\ref{
 
 \subsubsection{Correlation Analysis}
 
-A Pearson correlation analysis revealed a strong positive correlation ($r = 0.984$) between \texttt{text\_length} and \texttt{word\_count}, confirming structural redundancy. The correlation between the numeric label encoding and length-based features is near-zero ($r < 0.03$), confirming that emotional classification depends on semantic content rather than message length, reinforcing TF-IDF and embedding-based representations as the essential feature extraction strategy.
+A Pearson correlation analysis revealed a strong positive correlation ($r = 0.984$) between \texttt{text\_length} and \texttt{word\_count}, confirming structural redundancy. The correlation between the numeric label encoding and length-based features was near-zero ($r < 0.03$), confirming that emotional classification depends on semantic content rather than message length, reinforcing TF-IDF and embedding-based representations as the essential feature extraction strategy.
 
-\subsection{Proposed Architecture}
+\subsection{System Architecture}
 
-The proposed methodology follows a structured NLP workflow: preprocessing $\rightarrow$ feature extraction $\rightarrow$ model development $\rightarrow$ evaluation $\rightarrow$ deployment. The full pipeline is illustrated in Figures~\ref{fig:process_flow} and~\ref{fig:pipeline}.
+The methodology followed a structured NLP workflow: preprocessing $\rightarrow$ feature extraction $\rightarrow$ model development $\rightarrow$ evaluation $\rightarrow$ deployment. The full pipeline is illustrated in Figures~\ref{fig:process_flow} and~\ref{fig:pipeline}.
 
-\textbf{Preprocessing.} An eight-step NLP pipeline normalises raw text: (1)~lowercasing, (2)~whitespace stripping, (3)~URL removal, (4)~emoji removal, (5)~special character removal (retaining only \texttt{[a-z\textbackslash s]}), (6)~chat-word expansion (31 common abbreviations), (7)~stopword removal, and (8)~lemmatisation. Stopword removal uses the NLTK English stopword list; however, negation words and intensifiers (\eg, ``not'', ``never'', ``very'', ``extremely'') are retained via a custom exception list, as these tokens carry direct emotional polarity and their removal would cause loss of discriminative signal. Class imbalance is addressed through random downsampling to the minority-class size ($\approx$14,972 per class, 89,832 total).
+\textbf{Preprocessing.} An eight-step NLP pipeline normalised raw text: (1)~lowercasing, (2)~whitespace stripping, (3)~URL removal, (4)~emoji removal, (5)~special character removal (retaining only \texttt{[a-z\textbackslash s]}), (6)~chat-word expansion (31 common abbreviations), (7)~stopword removal, and (8)~lemmatisation. Stopword removal used the NLTK English stopword list; however, negation words and intensifiers (\eg, ``not'', ``never'', ``very'', ``extremely'') were retained via a custom exception list, as these tokens carry direct emotional polarity and their removal would cause loss of discriminative signal. Class imbalance was addressed through random downsampling to the minority-class size ($\approx$14,972 per class, 89,832 total).
 
-\textbf{Feature Representation.} For machine learning models, TF-IDF vectorisation (\texttt{max\_features=5000}, \texttt{ngram\_range=(1,2)}) transforms text into numerical feature representations capturing both unigrams and bigrams:
+\textbf{Feature Representation.} For machine learning models, TF-IDF vectorisation (\texttt{max\_features=5000}, \texttt{ngram\_range=(1,2)}) transformed text into numerical feature representations capturing both unigrams and bigrams:
 \begin{equation}
 \text{TF-IDF}(t, d) = \text{TF}(t, d) \times \log\!\left(\frac{N}{\text{DF}(t)}\right)
 \label{eq:tfidf}
 \end{equation}
-where $\text{TF}(t,d)$ is the term frequency, $\text{DF}(t)$ is the document frequency, and $N$ is the total number of documents. For deep learning models, an embedding layer converts tokens into dense vector representations.
+where $\text{TF}(t,d)$ is the term frequency, $\text{DF}(t)$ is the document frequency, and $N$ is the total number of documents. For deep learning models, an embedding layer converted tokens into dense vector representations.
 
-\textbf{Data Splitting.} The dataset is split 80\% training / 20\% testing with a 20\% validation holdout from training data, using stratified sampling to preserve class proportions.
+\textbf{Data Splitting.} The dataset was split 80\% training / 20\% testing with a 20\% validation holdout from training data, using stratified sampling to preserve class proportions.
 
-\textbf{Evaluation Metrics.} Model performance is evaluated using:
-\begin{equation}
-\text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
-\label{eq:accuracy}
-\end{equation}
-\begin{equation}
-F_1 = \frac{2 \times \text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}
-\label{eq:f1}
-\end{equation}
+\textbf{Evaluation Metrics.} Model performance was evaluated using precision, recall, per-class F1, macro-averaged F1 ($K=6$ classes), and accuracy:
+\begin{align}
+\text{Precision} &= \frac{TP}{TP + FP} \label{eq:precision}\\
+\text{Recall} &= \frac{TP}{TP + FN} \label{eq:recall}\\
+F_1 &= \frac{2 \times \text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}} \label{eq:f1}\\
+\text{Macro-}F_1 &= \frac{1}{K}\sum_{k=1}^{K} F_{1,k} \label{eq:macro_f1}\\
+\text{Accuracy} &= \frac{\text{Number of correct predictions}}{\text{Total predictions}} \label{eq:accuracy}
+\end{align}
 
-\begin{figure}[t]
+\begin{figure}[!htb]
 \centering
 \includegraphics[width=\linewidth]{figures/process_flow.png}
 \caption{MindTrace process flow --- from raw dataset through preprocessing, feature extraction, model training, evaluation, and deployment.}
 \label{fig:process_flow}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[!htb]
 \centering
 \begin{tikzpicture}[
     node distance=0.4cm and 0.3cm,
     >={Stealth[length=2.5pt]},
     mainbox/.style={rectangle, draw=gray!60, rounded corners=2pt, align=center,
-                font=\sffamily\tiny, minimum width=2.4cm,
-                minimum height=0.45cm, fill=#1, text width=2.4cm,
+                font=\sffamily\tiny, minimum width=3.4cm,
+                minimum height=0.45cm, fill=#1, text width=3.4cm,
                 line width=0.4pt},
     mainbox/.default={blue!8},
     featbox/.style={rectangle, draw=gray!60, rounded corners=2pt, align=center,
@@ -169,7 +168,7 @@ F_1 = \frac{2 \times \text{Precision} \times \text{Recall}}{\text{Precision} + \
 % ── Row 2: Preprocessing ──
 \node[mainbox=blue!8, below=0.4cm of data] (preproc) {
     \textbf{Data Preprocessing}\\[-1pt]
-    {\tiny Downsample \,$\cdot$\, Standardise \,$\cdot$\, Lemmatise}
+    {\tiny Downsample\,$\cdot$\,Standardise\,$\cdot$\,Lemmatise}
 };
 
 % ── Row 3: Feature branches (side by side) ──

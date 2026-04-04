@@ -1,13 +1,13 @@
 \section{Experimental Results and Discussion}
 \label{sec:results}
 
-All four models were trained and evaluated on the preprocessed, class-balanced dataset (89,832 samples; $\approx$14,972 per class after downsampling) using an 80/20 stratified train-test split with a 20\% validation holdout from training data. The test set comprised 17,967 samples.
+All four models were trained and evaluated on the class-balanced dataset (89,832 samples; $\approx$14,972 per class) using an 80/20 stratified train-test split with a 20\% validation holdout. The test set comprised 17,967 samples.
 
 \subsection{Overall Performance Comparison}
 
-Table~\ref{tab:results} summarises the test-set performance of all four models.
+Table~\ref{tab:results} summarises the test-set performance. BiLSTM outperformed all models ($+1.39$\,pp over CNN, $+2.13$\,pp over SVM, $+3.14$\,pp over XGBoost in accuracy). The ranking BiLSTM $>$ CNN $>$ SVM $>$ XGBoost confirmed that sequential context modelling provided a measurable advantage over local feature extraction and bag-of-words approaches.
 
-\begin{table}[t]
+\begin{table}[!htb]
 \centering
 \caption{Test-set performance comparison. All metrics are macro-averaged.}
 \label{tab:results}
@@ -24,32 +24,39 @@ XGBoost  & 90.79 & 90.98 & 90.79 & 90.73 \\
 \end{tabular}
 \end{table}
 
-BiLSTM outperformed all other models by a clear margin ($+1.39$\,pp over CNN, $+2.13$\,pp over SVM, $+3.14$\,pp over XGBoost in accuracy). The ranking BiLSTM $>$ CNN $>$ SVM $>$ XGBoost is consistent with the hypothesis that sequential context modelling provides a measurable advantage over local feature extraction and bag-of-words approaches.
+\subsection{Hyperparameter Tuning}
 
-\subsection{Hyperparameter Tuning Strategy}
+Table~\ref{tab:hyperparams} summarises the tuning strategy and best configuration for each model. ML models used grid search with 3-fold cross-validation; DL models used EarlyStopping (patience\,=\,3, restoring best weights).
 
-To ensure a fair comparison, all models were tuned using systematic and reproducible strategies appropriate to each architecture family.
-
-\textbf{SVM.} Grid search with 3-fold cross-validation was conducted over the regularisation parameter $C \in \{0.1, 1\}$ and kernel type $\in$ \{linear, rbf, poly\}. The best configuration was $C = 1$ with a linear kernel, achieving 91.97\% cross-validated accuracy. The linear kernel's superiority over RBF and polynomial kernels is consistent with the high-dimensional, sparse nature of TF-IDF representations, where linear separability often holds~\citep{dzikovska2012using}.
-
-\textbf{XGBoost.} Grid search with 3-fold cross-validation explored learning rate $\in \{0.01, 0.1\}$, maximum tree depth $\in \{5, 10\}$, and number of estimators $\in \{50, 100\}$. The optimal configuration was learning\_rate $= 0.1$, max\_depth $= 10$, and $n\_$estimators $= 100$, achieving 90.98\% cross-validated accuracy. The preference for deeper trees and higher learning rate suggests that the emotion classification task requires substantial non-linear modelling capacity.
-
-\textbf{BiLSTM.} Architecture hyperparameters were set based on established practices for text classification~\citep{sun2023bidirectional}: embedding dimension $= 100$, two stacked BiLSTM layers ($256 \rightarrow 128$ units), dropout rate $= 0.5$ between dense layers, batch size $= 64$ (configurable; 128 when GPU memory permits), and Adam optimiser with default learning rate ($10^{-3}$). EarlyStopping with patience $= 3$ (monitoring validation loss, restoring best weights) served as the primary regularisation mechanism, halting training at epoch~6 with best weights from epoch~3.
-
-\textbf{CNN.} Two convolutional layers ($256 \rightarrow 128$ filters, kernel size $= 5$) were used, each followed by max-pooling, with a dense layer and dropout ($= 0.5$). The same EarlyStopping configuration was applied with a fresh callback instance, terminating training at epoch~6 with best weights from epoch~3. The embedding dimension was set to 100, consistent with BiLSTM, to ensure comparable feature representations.
+\begin{table}[!htb]
+\centering
+\caption{Best hyperparameter configurations per model.}
+\label{tab:hyperparams}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Model} & \textbf{Search Space} & \textbf{Best Config} \\
+\midrule
+SVM & $C \!\in\! \{0.1, 1\}$, kernel $\!\in\!$ \{lin, rbf, poly\} & $C\!=\!1$, linear~\citep{dzikovska2012using} \\
+XGBoost & lr $\!\in\! \{0.01, 0.1\}$, depth $\!\in\! \{5, 10\}$, est $\!\in\! \{50, 100\}$ & lr$\!=\!0.1$, depth$\!=\!10$, est$\!=\!100$ \\
+BiLSTM & emb$\!=\!100$, 2$\times$BiLSTM (256$\!\rightarrow\!$128), drop$\!=\!0.5$ & Best ep.~3/6~\citep{sun2023bidirectional} \\
+CNN & 2$\times$Conv (256$\!\rightarrow\!$128, $k\!=\!5$), drop$\!=\!0.5$ & Best ep.~3/6 \\
+\bottomrule
+\end{tabular}}
+\end{table}
 
 \subsection{Confusion Matrix Analysis}
 
-Figures~\ref{fig:cm_bilstm}--\ref{fig:cm_xgboost} present the confusion matrices for all four models. Two dominant misclassification patterns emerged consistently:
+Figures~\ref{fig:cm_bilstm}--\ref{fig:cm_xgboost} present confusion matrices for all four models. Two dominant misclassification patterns emerged:
 
 \begin{enumerate}[nosep]
-    \item \textbf{Joy $\leftrightarrow$ Love confusion.} All models misclassified Joy samples as Love (BiLSTM: 236, CNN: 255, SVM: 258, XGBoost: 246), reflecting semantic proximity between happiness and affection.
-    \item \textbf{Fear $\rightarrow$ Surprise confusion.} Fear samples were frequently predicted as Surprise (BiLSTM: 269, CNN: 278, SVM: 275, XGBoost: 303), consistent with shared vocabulary of unexpected or alarming events.
+    \item \textbf{Joy $\leftrightarrow$ Love confusion.} All models misclassified Joy as Love (BiLSTM: 236, CNN: 255, SVM: 258, XGBoost: 246), reflecting shared positively-valenced vocabulary.
+    \item \textbf{Fear $\rightarrow$ Surprise confusion.} Fear was frequently predicted as Surprise (BiLSTM: 269, CNN: 278, SVM: 275, XGBoost: 303), due to shared high-arousal lexicon (``shocked'', ``suddenly'').
 \end{enumerate}
 
-Love and Surprise were the most accurately classified categories, with BiLSTM achieving 99.8\% per-class recall on both. XGBoost exhibited a distinctive failure mode: Sadness$\rightarrow$Joy (852), Anger$\rightarrow$Joy (650), and Fear$\rightarrow$Joy (531) misclassifications, indicating susceptibility to majority-class bias.
+XGBoost also exhibited majority-class bias: Sadness$\rightarrow$Joy (852), Anger$\rightarrow$Joy (650), and Fear$\rightarrow$Joy (531) misclassifications.
 
-\begin{figure*}[t]
+\begin{figure*}[!htbp]
 \centering
 \begin{minipage}{0.48\textwidth}
   \centering
@@ -77,11 +84,11 @@ Love and Surprise were the most accurately classified categories, with BiLSTM ac
 \end{minipage}
 \end{figure*}
 
-\subsection{Training Dynamics}
+\subsection{Training Dynamics and Computational Cost}
 
-Figure~\ref{fig:train_bilstm} shows BiLSTM training curves over 6 epochs. The model converged rapidly, reaching 94.17\% validation accuracy by epoch~3. The gap between training accuracy (${\approx}94.7\%$) and validation accuracy (${\approx}94.2\%$) remained small, confirming good generalisation. Figure~\ref{fig:train_cnn} shows CNN convergence over 6 epochs, reaching 92.77\% validation accuracy at epoch~3 with early signs of overfitting as training accuracy continued to rise while validation accuracy plateaued.
+Figure~\ref{fig:train_bilstm} shows BiLSTM training curves: the model converged by epoch~3 (94.17\% validation accuracy) with a small train-val gap (${\approx}0.5$\,pp), confirming good generalisation. Figure~\ref{fig:train_cnn} shows CNN reaching 92.77\% validation accuracy at epoch~3 with early signs of overfitting.
 
-\begin{figure*}[t]
+\begin{figure*}[!htbp]
 \centering
 \begin{minipage}{0.48\textwidth}
   \centering
@@ -97,11 +104,9 @@ Figure~\ref{fig:train_bilstm} shows BiLSTM training curves over 6 epochs. The mo
 \end{minipage}
 \end{figure*}
 
-\subsection{Computational Cost Analysis}
+Table~\ref{tab:compute} reports computational cost. SVM required the least training time while delivering the second-highest accuracy, making it the most efficient on a performance-per-compute basis. BiLSTM demanded $12\times$ the training time of SVM for a 2.13\,pp accuracy gain and ${\sim}23\times$ higher inference latency, motivating SVM's selection for deployment.
 
-Table~\ref{tab:compute} reports the approximate computational cost for each model, measured on a single NVIDIA GPU (for DL) and CPU (for ML) during training.
-
-\begin{table}[t]
+\begin{table}[!htb]
 \centering
 \caption{Computational cost comparison across models.}
 \label{tab:compute}
@@ -118,31 +123,17 @@ BiLSTM   & $\sim$24\,min (6 ep.) & $\sim$23\,ms/sample & 5.6\,MB \\
 \end{tabular}
 \end{table}
 
-SVM required the least training time while delivering the second-highest accuracy, making it the most efficient model on a performance-per-compute basis. BiLSTM demanded $12\times$ the training time of SVM for a 2.13\,pp accuracy improvement. This trade-off is critical for deployment: the marginal accuracy gain of BiLSTM may not justify its ${\sim}23\times$ higher inference latency in latency-sensitive production environments, which motivated the selection of SVM for deployment.
+\subsection{Error Analysis and Biases}
 
-\subsection{Error Analysis and Potential Biases}
+Three systematic error patterns persisted across all architectures: (1)~\textbf{valence conflation} --- Joy$\leftrightarrow$Love confusion from shared positive vocabulary (``happy'', ``amazing''); (2)~\textbf{arousal ambiguity} --- Fear$\rightarrow$Surprise errors from shared high-arousal tokens, where the two emotions differ primarily in valence; and (3)~\textbf{residual majority-class bias} in XGBoost, which still tended to misclassify negatively-valenced samples as Joy despite class-balanced training.
 
-\subsubsection{Systematic Error Patterns}
+At the dataset level, four biases should be acknowledged: \textbf{platform bias} (Twitter-only corpus may not generalise to longer-form text); \textbf{annotation bias} from crowd-sourced labels~\citep{demszky2020goemotions}; \textbf{temporal bias} from evolving language patterns; and a \textbf{label granularity constraint} (single-label taxonomy cannot capture mixed emotions).
 
-The confusion matrices reveal three systematic biases that persist across all architectures:
+\subsection{Interpretability and Deployment Feasibility}
 
-\begin{enumerate}[nosep]
-    \item \textbf{Valence conflation.} Joy$\leftrightarrow$Love confusion arises because both categories share positively-valenced vocabulary (``happy'', ``wonderful'', ``amazing''). Models trained on bag-of-words or local n-gram features cannot reliably distinguish hedonic pleasure (Joy) from relational attachment (Love) without deeper pragmatic reasoning.
-    \item \textbf{Arousal ambiguity.} Fear$\rightarrow$Surprise errors stem from shared high-arousal lexicon (``shocked'', ``suddenly'', ``unexpected''). The two emotions differ primarily in valence (negative vs.\ neutral/positive), a distinction that requires contextual inference beyond surface-level token co-occurrence.
-    \item \textbf{Residual majority-class bias (XGBoost).} Although hyperparameter tuning substantially improved XGBoost's performance (90.79\%), the confusion matrix still shows a residual tendency to misclassify negatively-valenced samples as Joy, suggesting that the tree-based ensemble partially inherits majority-class decision paths from early splits despite class-balanced training.
-\end{enumerate}
+SVM offered high interpretability through its linear weight vector $w$, enabling direct feature importance analysis --- essential for clinical applications. XGBoost provided moderate interpretability via feature importance scores, while CNN and BiLSTM remained black-box classifiers. Table~\ref{tab:feasibility} summarises the deployment assessment: SVM achieved the best balance of latency, interpretability, and accuracy.
 
-\subsubsection{Dataset Bias}
-
-Several dataset-level biases should be acknowledged. First, the corpus is drawn exclusively from Twitter, introducing \textbf{platform bias}: the informal, character-limited style of tweets may not generalise to longer-form text in domains such as product reviews, clinical notes, or news articles. Second, \textbf{annotation bias} is inherent in crowd-sourced emotion labels, as annotator agreement on ambiguous texts (e.g., sarcastic posts) is typically moderate~\citep{demszky2020goemotions}. Third, \textbf{temporal bias} arises because the dataset captures language patterns from a specific time period; evolving slang, emoji usage, and cultural expression may reduce model performance on future data without periodic retraining. Fourth, the six-class emotion taxonomy imposes a \textbf{label granularity constraint}: real-world emotional expression is continuous and often multi-label (e.g., bittersweet posts combining Joy and Sadness), which the current single-label framework cannot capture.
-
-\subsection{Interpretability and Feasibility}
-
-The interpretability of each model varies substantially. SVM offers \textbf{high interpretability}: the linear decision function $f(x) = w \cdot x + b$ provides direct feature importance through the weight vector $w$, enabling verification that predictions rely on semantically meaningful tokens --- essential for clinical and mental health applications where decision auditability is required. XGBoost offers \textbf{moderate interpretability} through built-in feature importance scores (gain, cover, frequency), though interaction effects across hundreds of trees are difficult to trace. CNN and BiLSTM are \textbf{low interpretability} black-box classifiers; future work will integrate SHAP and LIME for model-agnostic explanations.
-
-Table~\ref{tab:feasibility} summarises the deployment feasibility assessment. SVM achieves the best balance: sub-millisecond inference, interpretable weights, and strong accuracy (91.80\%), making it the most feasible production choice.
-
-\begin{table}[t]
+\begin{table}[!htb]
 \centering
 \caption{Deployment feasibility assessment across models.}
 \label{tab:feasibility}
@@ -160,11 +151,13 @@ Accuracy           & $\sim$ & $\sim$ & $\sim$ & \cmark \\
 \end{tabular}
 \end{table}
 
+SVM was deployed as a Flask REST API containerised with Docker (\texttt{python:3.11-slim}) and served via Gunicorn. The web interface provided emotion prediction with probability scores, a preprocessing trace panel, and a model performance dashboard. The Docker image (\texttt{yolandalim/125970-mindtrace:v2}) is publicly available.
+
 \subsection{Word Cloud Visualisation}
 
-Figure~\ref{fig:wordclouds} presents per-class word clouds. Each emotion carries distinctive vocabulary (``happy''/``good'' for Joy; ``lost''/``alone'' for Sadness; ``angry''/``hate'' for Anger), while Fear and Surprise share tokens such as ``suddenly'' and ``shocked'', corroborating the confusion matrix findings.
+Figure~\ref{fig:wordclouds} presents per-class word clouds. Each emotion carried distinctive vocabulary, while Fear and Surprise shared tokens such as ``suddenly'' and ``shocked'', corroborating the confusion matrix findings.
 
-\begin{figure*}[t]
+\begin{figure*}[!htbp]
 \centering
 \begin{minipage}{0.32\textwidth}
   \centering
@@ -199,21 +192,3 @@ Figure~\ref{fig:wordclouds} presents per-class word clouds. Each emotion carries
 \caption{Per-class word clouds from the preprocessed corpus. Distinctive vocabulary per emotion; Fear and Surprise share high-arousal tokens.}
 \label{fig:wordclouds}
 \end{figure*}
-
-\subsection{Deployment and User Interface}
-
-SVM was selected as the production model due to its strong accuracy (91.80\%), sub-millisecond inference, and interpretable decision function. The trained SVM classifier and TF-IDF vectoriser were serialised using \texttt{joblib} and integrated into a Flask-based REST API, containerised with Docker (\texttt{python:3.11-slim}), and served via Gunicorn.
-
-The web interface provides: (1)~a text input field returning the predicted emotion with class-wise probability scores as an interactive bar chart; (2)~a preprocessing trace panel displaying each NLP transformation applied to the input; and (3)~a model performance dashboard with accuracy, precision, recall, and F1-score from training evaluation. The Docker image (\texttt{yolandalim/125970-mindtrace:v2}) is publicly available, ensuring full reproducibility.
-
-\subsection{Summary of Key Findings}
-
-The experimental evaluation yielded five principal findings:
-
-\begin{enumerate}[nosep]
-    \item \textbf{BiLSTM dominates.} Bidirectional contextual encoding achieved the highest performance (93.93\% accuracy, 0.9391 macro-F1), confirming the advantage of sequential modelling for emotion classification.
-    \item \textbf{SVM is the most efficient.} SVM delivered 91.80\% accuracy at a fraction of BiLSTM's computational cost, making it the optimal choice for latency-sensitive deployment.
-    \item \textbf{XGBoost competitive after tuning.} With optimised hyperparameters (learning\_rate $= 0.1$, max\_depth $= 10$, $n\_$estimators $= 100$), XGBoost achieved 90.79\% accuracy, narrowing the gap to SVM to just 1.01\,pp. This confirms that systematic tuning can substantially improve tree-based performance on high-dimensional TF-IDF features.
-    \item \textbf{Semantic overlap is the bottleneck.} Joy$\leftrightarrow$Love and Fear$\rightarrow$Surprise confusion persisted across all architectures, indicating that the misclassification boundary is defined by emotional semantics rather than model capacity.
-    \item \textbf{Dataset and annotation biases exist.} Platform-specific language, crowd-sourced labelling noise, and temporal drift constrain the generalisability of all results to the Twitter domain.
-\end{enumerate}
