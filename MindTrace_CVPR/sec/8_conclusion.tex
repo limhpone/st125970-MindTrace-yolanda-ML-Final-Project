@@ -7,7 +7,7 @@ This study contributes a reproducible experimental benchmark for text-based emot
 
 \subsection{Conclusion}
 
-BiLSTM achieved the highest test accuracy (94.78\%, macro-F1 0.9477), outperforming CNN (92.91\%), SVM (91.80\%), and XGBoost (80.93\%), confirming that bidirectional contextual encoding provides a measurable advantage for multi-class emotion classification. Confusion matrix analysis revealed that Joy$\leftrightarrow$Love and Fear$\rightarrow$Surprise were the dominant misclassification pairs across all architectures, validating that semantic overlap --- not model capacity --- is the primary classification bottleneck.
+BiLSTM achieved the highest test accuracy (93.93\%, macro-F1 0.9391), outperforming CNN (92.54\%), SVM (91.80\%), and XGBoost (90.79\%), confirming that bidirectional contextual encoding provides a measurable advantage for multi-class emotion classification. Confusion matrix analysis revealed that Joy$\leftrightarrow$Love and Fear$\rightarrow$Surprise were the dominant misclassification pairs across all architectures, validating that semantic overlap --- not model capacity --- is the primary classification bottleneck.
 
 Despite achieving the highest accuracy, BiLSTM was not selected for deployment due to ${\sim}23\times$ higher inference latency. SVM was deployed as a Flask-based REST API containerised with Docker, demonstrating that a classical model with TF-IDF features can deliver reliable real-time predictions at minimal cost.
 

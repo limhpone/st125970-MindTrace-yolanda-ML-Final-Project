@@ -81,12 +81,12 @@ CHAT_WORDS = {
 }
 
 # ── Model results — Table 4.1, MindTrace thesis ────────────────────────────────
-# Actual metrics from Emotion_prediction_source_code.ipynb on balanced 89,232-sample corpus
+# Actual metrics from Emotion_prediction_source_code.ipynb on balanced 89,832-sample corpus
 MODEL_STATS = {
-    "BiLSTM":  {"train":96.3,"val":94.5,"test":95.2,"precision":95.4,"recall":95.2,"f1":95.2},
-    "CNN":     {"train":94.3,"val":93.2,"test":92.6,"precision":92.8,"recall":92.6,"f1":92.5},
-    "SVM":     {"train":91.3,"val":91.3,"test":91.4,"precision":91.6,"recall":91.4,"f1":91.3},
-    "XGBoost": {"train":81.7,"val":81.7,"test":81.9,"precision":85.7,"recall":82.0,"f1":82.4},
+    "BiLSTM":  {"train":94.7,"val":94.2,"test":93.9,"precision":94.1,"recall":93.9,"f1":93.9},
+    "CNN":     {"train":93.2,"val":92.8,"test":92.5,"precision":92.7,"recall":92.5,"f1":92.5},
+    "SVM":     {"train":94.4,"val":92.1,"test":91.8,"precision":92.0,"recall":91.8,"f1":91.7},
+    "XGBoost": {"train":93.3,"val":91.1,"test":90.8,"precision":91.0,"recall":90.8,"f1":90.7},
 }
 
 # ── Class distribution — Table 3.3, MindTrace thesis ──────────────────────────
@@ -229,7 +229,7 @@ def stats():
         "dataset_size":       416809,
         "num_classes":        6,
         "deployed_model":     "SVM + TF-IDF Pipeline (sklearn)",
-        "best_model":         "BiLSTM (95.2% test accuracy)",
+        "best_model":         "BiLSTM (93.9% test accuracy)",
         "research_question":  (
             "How do traditional ML models (SVM, XGBoost) compare with deep learning "
             "models (CNN, BiLSTM) in multi-class emotion classification from social "

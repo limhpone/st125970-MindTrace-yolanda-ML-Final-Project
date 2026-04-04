@@ -16,10 +16,10 @@
 
 | Model | Training | Validation | **Test Acc.** | Precision | Recall | F1-Score |
 |---|---|---|---|---|---|---|
-| **BiLSTM** ✓ best | 96.3% | 94.5% | **95.2%** | 95.4% | 95.2% | 95.2% |
-| CNN | 94.3% | 93.2% | 92.6% | 92.8% | 92.6% | 92.5% |
-| SVM | 91.3% | 91.3% | 91.4% | 91.6% | 91.4% | 91.3% |
-| XGBoost | 81.7% | 81.7% | 81.9% | 85.7% | 82.0% | 82.4% |
+| **BiLSTM** ✓ best | 94.7% | 94.2% | **93.9%** | 94.1% | 93.9% | 93.9% |
+| CNN | 93.2% | 92.8% | 92.5% | 92.7% | 92.5% | 92.5% |
+| SVM | 94.4% | 92.1% | 91.8% | 92.0% | 91.8% | 91.7% |
+| XGBoost | 93.3% | 91.1% | 90.8% | 91.0% | 90.8% | 90.7% |
 
 > **Deployed model:** SVM + TF-IDF sklearn Pipeline — CPU inference, no GPU required, instant startup
 
@@ -175,14 +175,14 @@ Returns all model performance metrics and class distribution for the dashboard.
 ```json
 {
   "model_stats": {
-    "BiLSTM":  { "train": 96.3, "val": 94.5, "test": 95.2, "precision": 95.4, "recall": 95.2, "f1": 95.2 },
-    "CNN":     { "train": 94.3, "val": 93.2, "test": 92.6, ... },
-    "SVM":     { "train": 91.3, "val": 91.3, "test": 91.4, ... },
-    "XGBoost": { "train": 81.7, "val": 81.7, "test": 81.9, ... }
+    "BiLSTM":  { "train": 94.7, "val": 94.2, "test": 93.9, "precision": 94.1, "recall": 93.9, "f1": 93.9 },
+    "CNN":     { "train": 93.2, "val": 92.8, "test": 92.5, ... },
+    "SVM":     { "train": 94.4, "val": 92.1, "test": 91.8, ... },
+    "XGBoost": { "train": 93.3, "val": 91.1, "test": 90.8, ... }
   },
   "class_distribution": { ... },
   "dataset_size": 416809,
-  "best_model": "BiLSTM (95.2% test accuracy)",
+  "best_model": "BiLSTM (93.9% test accuracy)",
   "imbalance_ratio": "9.5:1 (Joy:Surprise)",
   "hard_pairs": ["Fear / Surprise", "Sadness / Love"]
 }
@@ -237,9 +237,9 @@ xgboost==2.0.3        # XGBoost baseline (training only)
 
 ## Reproducing the Results
 
-The `train_pipeline.py` script trains the **SVM** model deployed in this app. To reproduce the BiLSTM (95.2%) or CNN (92.6%) results, use the full `Emotion_prediction_source_code.ipynb` notebook in a TensorFlow 3.11 environment (Google Colab with NVIDIA T4 GPU recommended).
+The `train_pipeline.py` script trains the **SVM** model deployed in this app. To reproduce the BiLSTM (93.9%) or CNN (92.5%) results, use the full `Emotion_prediction_source_code.ipynb` notebook in a TensorFlow 3.11 environment (Google Colab with NVIDIA T4 GPU recommended).
 
-The sklearn pipeline produced by `train_pipeline.py` should achieve approximately **91.4% test accuracy** on the balanced dataset, matching the SVM row in Table 4.1.
+The sklearn pipeline produced by `train_pipeline.py` should achieve approximately **91.8% test accuracy** on the balanced dataset, matching the SVM row in Table 4.1.
 
 ---
 

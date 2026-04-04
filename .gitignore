@@ -19,8 +19,7 @@ data/
 *.xlsx
 *.csv
 
-# Model — regenerate with train_pipeline.py
-model.pkl
+
 
 # Spare / scratch folder (old notebooks, test data)
 spare/
