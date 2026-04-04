@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+.venv/
+venv/
+env/
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Dataset — large file, download from Kaggle separately
+data/
+*.xlsx
+*.csv
+
+# Model — regenerate with train_pipeline.py
+# Uncomment the line below if you do NOT want to commit model.pkl
+# model.pkl
+
+# Spare / scratch folder (old notebooks, test data)
+spare/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# NLTK local data (downloaded at runtime / Docker build)
+nltk_data/
+
+# Docker artifacts
+*.tar

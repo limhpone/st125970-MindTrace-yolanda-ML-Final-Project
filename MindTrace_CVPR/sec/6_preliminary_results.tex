@@ -1,0 +1,12 @@
+\section{Preliminary Results}
+\label{sec:preliminary}
+
+At the current proposal stage, formal model training has not yet been conducted. However, preliminary observations drawn from EDA provide a structured basis for expected performance benchmarks.
+
+\textbf{Expected baseline performance.} Based on the literature~\citep{dzikovska2012using, wang2018emotion}, SVM with TF-IDF is anticipated to achieve macro-F1 scores in the range of 0.70--0.78 on a balanced multi-class emotion dataset of this scale, serving as the primary classical baseline. XGBoost is expected to perform similarly or marginally below SVM due to the high dimensionality of TF-IDF features, which can limit tree-based ensemble effectiveness without dimensionality reduction.
+
+\textbf{Expected deep learning performance.} CNN models are expected to outperform classical baselines due to their ability to capture local phrase-level patterns~\citep{hasan2019emotion}. BiLSTM is anticipated to achieve the highest overall performance, with macro-F1 scores projected in the range of 0.80--0.87, owing to its bidirectional contextual encoding capability~\citep{sun2023bidirectional}. However, BiLSTM performance is expected to be most sensitive to class imbalance, particularly for the Surprise class (3.59\% of samples).
+
+\textbf{Expected misclassification patterns.} EDA word frequency analysis (Figure~\ref{fig:text_length}) indicates significant vocabulary overlap between semantically adjacent emotion pairs --- particularly fear/surprise and sadness/love. These pairs are expected to exhibit the highest inter-class confusion rates across all four models. This is consistent with prior findings in multi-class emotion classification literature~\citep{seyeditabari2018emotion, nandwani2021review}.
+
+\textbf{Planned preliminary experiment.} Prior to full-scale training, a preliminary experiment will be conducted using a stratified 10\% subsample ($\approx$ 41,680 records) to validate the preprocessing pipeline, confirm label encoding integrity, and generate initial macro-F1 estimates for all four models.

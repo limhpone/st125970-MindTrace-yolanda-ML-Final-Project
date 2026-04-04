@@ -1,0 +1,38 @@
+\section{Proposed Algorithms}
+\label{sec:algorithms}
+
+This study implements and compares four classification models selected to represent both traditional machine learning and deep learning approaches under identical experimental conditions.
+
+\subsection{Support Vector Machine (SVM)}
+
+SVM serves as a strong baseline classifier by maximising the margin between classes~\citep{dzikovska2012using}. The optimisation objective is defined as:
+\begin{equation}
+\min_{w, b} \;\frac{1}{2}\|w\|^2 + C \sum_{i} \xi_i
+\label{eq:svm}
+\end{equation}
+subject to $y_i(w \cdot x_i + b) \geq 1 - \xi_i$ and $\xi_i \geq 0$, where $w$ is the weight vector, $b$ is the bias term, $C$ is the regularisation parameter, and $\xi_i$ are slack variables permitting soft-margin classification.
+
+\subsection{Extreme Gradient Boosting (XGBoost)}
+
+XGBoost is applied as an ensemble learning method that minimises a regularised objective function~\citep{chen2016xgboost}:
+\begin{equation}
+\mathcal{L} = \sum_{i} l(y_i, \hat{y}_i) + \sum_{k} \Omega(f_k)
+\label{eq:xgboost}
+\end{equation}
+where $l$ is the loss function measuring prediction error, $\hat{y}_i$ is the predicted value, and $\Omega(f_k)$ is the regularisation term penalising model complexity.
+
+\subsection{Convolutional Neural Network (CNN)}
+
+CNN models extract local n-gram features through convolution and pooling layers~\citep{hasan2019emotion}. The convolutional operation applies learned filters over contiguous word sequences, capturing phrase-level patterns that are informative for emotion classification. Max-pooling retains the most salient features from each filter map.
+
+\subsection{Bidirectional LSTM (BiLSTM)}
+
+BiLSTM captures bidirectional contextual dependencies in sequential text by processing token sequences in both forward and backward directions~\citep{sun2023bidirectional}. This architecture is particularly suited for emotion classification where the meaning of a word may depend on both preceding and following context.
+
+\subsection{Evaluation Framework}
+
+All models are evaluated under identical experimental conditions. Both macro-averaged F1 (equal class weighting, sensitive to minority class performance) and weighted-averaged F1 (proportional to class size) are computed to address class imbalance. Confusion matrices provide class-wise predictive analysis, with particular focus on semantically similar emotion pairs (fear/surprise; sadness/love). The 80/20 stratified train-test split preserves class proportions across all subsets, ensuring consistent class representation throughout training and evaluation.
+
+\subsection{Deployment Architecture}
+
+Following evaluation, the best-performing model will be serialised and integrated into a lightweight REST API deployment pipeline. The selected model (along with its TF-IDF vectoriser or embedding weights) will be packaged using Flask or FastAPI and containerised with Docker to ensure reproducibility. The inference endpoint will accept raw text input, apply the same preprocessing pipeline used during training, and return a predicted emotion label with class probability scores. Future extensions may include a web-based dashboard for real-time emotion monitoring and a retraining pipeline triggered by incoming labelled data.

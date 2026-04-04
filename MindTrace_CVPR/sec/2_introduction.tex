@@ -1,0 +1,25 @@
+\section{Introduction}
+\label{sec:introduction}
+
+\subsection{Background and Motivation}
+
+Emotion detection from textual data has become increasingly significant in the digital era, where individuals frequently express their psychological states and reactions through social media platforms. Automated emotion recognition systems enable deeper understanding of user behaviour, going beyond traditional sentiment polarity analysis. Such systems have practical applications in marketing analytics, customer relationship management, healthcare monitoring, and human-computer interaction~\citep{nandwani2021review, poria2019deeper}.
+
+Unlike sentiment analysis, which categorises content as positive, negative, or neutral, emotion detection aims to identify discrete emotional states such as anger, joy, sadness, fear, surprise, and love. However, accurately classifying emotions remains challenging due to contextual ambiguity, informal language usage, sarcasm, and class imbalance within datasets~\citep{seyeditabari2018emotion}. This proposed study intends to develop a structured NLP pipeline and conduct a comparative evaluation between traditional machine learning and deep learning approaches for multi-class emotion classification.
+
+\subsection{Problem Statement}
+
+Despite significant research progress, a fundamental methodological gap persists. Comparative analyses across studies frequently differ in dataset selection, preprocessing strategies, feature engineering approaches, and evaluation metrics --- making observed performance differences attributable to experimental inconsistencies rather than intrinsic model capabilities. Multi-class emotion classification across semantically similar categories (\eg, fear vs.\ surprise, sadness vs.\ love) remains an unsolved challenge, further compounded by class imbalance in real-world social media datasets.
+
+\subsection{Research Question}
+
+How do traditional ML models (SVM, XGBoost) compare with deep learning models (CNN, BiLSTM) in multi-class emotion classification from social media text, when evaluated under a unified preprocessing pipeline, standardised dataset partitioning, and consistent evaluation metrics?
+
+\subsection{Research Objectives}
+
+The primary objective of this study is to develop a structured NLP-based framework for multi-class emotion prediction from social media text and to conduct a controlled comparison of traditional machine learning and deep learning models under identical experimental conditions. Specifically, the study:
+\begin{enumerate}[nosep]
+    \item examines the impact of preprocessing strategies, feature representation, and class balancing on model performance;
+    \item analyses class-wise prediction behaviour across models; and
+    \item provides empirical insights into the effectiveness and suitability of different modelling approaches for emotion classification.
+\end{enumerate}

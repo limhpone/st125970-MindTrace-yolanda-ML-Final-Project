@@ -1,0 +1,49 @@
+\section{Literature Review}
+\label{sec:literature}
+
+\subsection{State of the Art}
+
+Emotion detection research has progressed from lexicon-based methods to machine learning and, more recently, deep learning architectures. Early approaches used predefined resources such as the NRC Emotion Lexicon and WordNet-Affect to map words to emotion categories, but they were limited in handling context, figurative language, and emerging slang in social media text~\citep{mohammad2013crowdsourcing, strapparava2008learning}.
+
+Traditional machine learning methods improved performance through feature engineering using Bag-of-Words and TF-IDF representations, with models such as SVM and Na\"ive Bayes performing well on structured datasets, though they remained limited in capturing sequential and long-range context~\citep{dzikovska2012using, wang2018emotion}. Deep learning further improved emotion classification by learning contextual patterns directly from text. CNNs were effective in extracting local n-gram features, while LSTM and BiLSTM models captured sequential dependencies more effectively~\citep{hasan2019emotion, sun2023bidirectional}. XGBoost also provided a strong non-linear baseline for feature-based text classification~\citep{chen2016xgboost}.
+
+More recently, transformer-based models such as BERT have achieved state-of-the-art performance by learning rich contextual embeddings, although their computational cost remains a practical limitation~\citep{acheampong2021transformer, devlin2019bert}. Across these approaches, class imbalance and inconsistent evaluation remain persistent challenges in emotion detection research~\citep{nandwani2021review}.
+
+\subsection{Related Work on Base Models}
+
+This study considers four representative model families frequently applied in text classification:
+
+\noindent\textbf{Support Vector Machine (SVM)} is a margin-based classifier that performs well in sparse, high-dimensional feature spaces such as TF-IDF representations but cannot capture sequential word relationships~\citep{dzikovska2012using}.
+
+\noindent\textbf{XGBoost} is a regularised gradient-boosted decision tree ensemble that improves predictive performance through iterative boosting and L1/L2 regularisation, though it also relies on engineered features rather than sequential text modelling~\citep{chen2016xgboost}.
+
+\noindent\textbf{Convolutional Neural Networks (CNN)} extract local n-gram features through convolution and pooling operations~\citep{hasan2019emotion}.
+
+\noindent\textbf{Bidirectional LSTM (BiLSTM)} captures long-range contextual dependencies by processing token sequences in both forward and backward directions~\citep{sun2023bidirectional}. Prior studies have shown that BiLSTM often outperforms classical baselines on multi-class emotion datasets due to its ability to model contextual semantics.
+
+\subsection{Prior Work Comparison}
+
+Table~\ref{tab:prior_work} summarises representative studies on text-based emotion classification, highlighting the dataset, model type, best reported macro-F1, and key experimental limitations.
+
+\begin{table*}[t]
+\centering
+\caption{Summary of representative prior studies --- dataset, models, performance, and experimental gaps.}
+\label{tab:prior_work}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}p{3.2cm}p{3.2cm}p{2.8cm}cp{4.2cm}@{}}
+\toprule
+\textbf{Study} & \textbf{Dataset} & \textbf{Models} & \textbf{Best F1} & \textbf{Key Limitation} \\
+\midrule
+\citet{saravia2018carer} & Twitter (6 cls, $\sim$20K) & CNN + word emb. & 0.79 macro & Small dataset; single model family \\
+\citet{hasan2019emotion} & Twitter multi-class & CNN, LSTM & $\sim$0.82 acc. & No class-balancing; accuracy only \\
+\citet{demszky2020goemotions} & GoEmotions --- Reddit (27 cls, 58K) & BERT fine-tuned & 0.46 macro & Different domain; 27 classes \\
+\citet{sun2023bidirectional} & Twitter sentiment & BiLSTM & $\sim$0.85 acc. & Accuracy-only; inconsistent preproc. \\
+\citet{acheampong2021transformer} & Multiple benchmarks & BERT (survey) & N/A & Survey only; no unified comparison \\
+\midrule
+\textbf{Proposed Study} & \textbf{Kaggle Twitter (6 cls, 416K)} & \textbf{SVM, XGBoost, CNN, BiLSTM} & \textbf{TBD} & \textbf{Unified pipeline; macro-F1 eval.} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+Existing studies vary widely in dataset selection, preprocessing methods, evaluation metrics, and model choices, making direct performance comparisons difficult. Among the studies surveyed, no prior work has evaluated SVM, XGBoost, CNN, and BiLSTM on the same 416,809-sample Twitter corpus under identical preprocessing, stratified splits, and macro-F1 evaluation. Although transformer models such as BERT represent the current state of the art~\citep{acheampong2021transformer, devlin2019bert}, they are excluded due to computational constraints. This study instead focuses on a controlled comparison of classical and sequence-based architectures, with transformer-based extensions proposed as future work.
