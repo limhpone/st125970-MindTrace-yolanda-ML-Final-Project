@@ -31,7 +31,7 @@ BiLSTM captures bidirectional contextual dependencies in sequential text by proc
 
 \subsection{Evaluation Framework}
 
-All models are evaluated under identical experimental conditions. Both macro-averaged F1 (equal class weighting, sensitive to minority class performance) and weighted-averaged F1 (proportional to class size) are computed to address class imbalance. Confusion matrices provide class-wise predictive analysis, with particular focus on semantically similar emotion pairs (fear/surprise; sadness/love). The 80/20 stratified train-test split preserves class proportions across all subsets, ensuring consistent class representation throughout training and evaluation.
+All models are evaluated under identical experimental conditions. Macro-averaged F1 (equal class weighting, sensitive to minority class performance) is the primary evaluation metric, ensuring that all six emotion classes contribute equally regardless of prevalence. Confusion matrices provide class-wise predictive analysis, with particular focus on semantically similar emotion pairs (fear/surprise; sadness/love). The 80/20 stratified train-test split preserves class proportions across all subsets, ensuring consistent class representation throughout training and evaluation.
 
 \subsection{Deployment Architecture}
 

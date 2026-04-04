@@ -68,12 +68,13 @@ Applied identically in `train_pipeline.py` during training and in `app.py` at in
 | Step | Operation | Key Detail |
 |---|---|---|
 | 1 | Lowercase | `str.lower()` |
-| 2 | URL removal | `re.sub(r'http\S+\|www\S+', '', t)` |
-| 3 | Emoji removal | `emoji.replace_emoji(t, replace='')` |
-| 4 | Special character removal | Keep only `[a-z\s]` |
-| 5 | Chat word expansion | `u→you`, `lol→laugh out loud`, 28 rules |
-| 6 | Stopword removal | NLTK English stopwords — **negation words preserved** |
-| 7 | Lemmatisation | `nltk.WordNetLemmatizer` |
+| 2 | Whitespace stripping | Collapse multiple spaces, strip leading/trailing |
+| 3 | URL removal | `re.sub(r'http\S+\|www\S+', '', t)` |
+| 4 | Emoji removal | `emoji.replace_emoji(t, replace='')` |
+| 5 | Special character removal | Keep only `[a-z\s]` |
+| 6 | Chat word expansion | `u→you`, `lol→laugh out loud`, 28 rules |
+| 7 | Stopword removal | NLTK English stopwords — **negation words preserved** |
+| 8 | Lemmatisation | `nltk.WordNetLemmatizer` |
 
 **Negation words preserved** (Section 3.4): `not, never, no, nor, neither, nothing, nobody, nowhere, without, very, extremely, barely, hardly` — these carry emotional polarity and their removal would lose discriminative signal.
 

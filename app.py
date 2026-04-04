@@ -81,7 +81,7 @@ CHAT_WORDS = {
 }
 
 # ── Model results — Table 4.1, MindTrace thesis ────────────────────────────────
-# Actual metrics from Emotion_prediction_source_code.ipynb on balanced 89,832-sample corpus
+# Actual metrics from Emotion_prediction_source_code.ipynb on balanced 89,232-sample corpus
 MODEL_STATS = {
     "BiLSTM":  {"train":96.3,"val":94.5,"test":95.2,"precision":95.4,"recall":95.2,"f1":95.2},
     "CNN":     {"train":94.3,"val":93.2,"test":92.6,"precision":92.8,"recall":92.6,"f1":92.5},
@@ -113,30 +113,34 @@ def clean_text(text: str) -> dict:
     t = original.lower()
     steps["lowercased"] = t
 
-    # Step 2: URL removal
+    # Step 2: Whitespace stripping
+    t = re.sub(r"\s+", " ", t).strip()
+    steps["whitespace_stripped"] = t
+
+    # Step 3: URL removal
     t = re.sub(r"http\S+|www\S+", "", t)
     steps["url_removed"] = t
 
-    # Step 3: Emoji removal
+    # Step 4: Emoji removal
     t = emoji.replace_emoji(t, replace="")
     steps["emoji_removed"] = t
 
-    # Step 4: Special char removal (keep a-z and spaces)
+    # Step 5: Special char removal (keep a-z and spaces)
     t = re.sub(r"[^a-z\s]", "", t)
     steps["special_removed"] = t
 
-    # Step 5: Chat word expansion
+    # Step 6: Chat word expansion
     words = t.split()
     expanded = [CHAT_WORDS.get(w, w) for w in words]
     steps["chat_expanded"] = " ".join(expanded)
 
-    # Step 6: Stopword removal (negations preserved)
+    # Step 7: Stopword removal (negations preserved)
     filtered = [w for w in expanded if w not in STOP_WORDS]
     negations_kept = [w for w in expanded if w in NEGATION_WORDS and w in expanded]
     steps["stopwords_removed"] = " ".join(filtered)
     steps["negations_preserved"] = negations_kept
 
-    # Step 7: Lemmatisation
+    # Step 8: Lemmatisation
     lemmatised = [LEMMATIZER.lemmatize(w) for w in filtered]
     steps["lemmatised"] = lemmatised
     final = " ".join(lemmatised)

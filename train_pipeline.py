@@ -102,14 +102,16 @@ def clean_text(text: str) -> str:
 
     Steps (must mirror app.py clean_text exactly):
       1. Lowercase
-      2. URL removal
-      3. Emoji removal
-      4. Special character removal (keep a-z and spaces)
-      5. Chat word expansion
-      6. Stopword removal (negation words preserved)
-      7. Lemmatisation (NLTK WordNetLemmatizer)
+      2. Whitespace stripping
+      3. URL removal
+      4. Emoji removal
+      5. Special character removal (keep a-z and spaces)
+      6. Chat word expansion
+      7. Stopword removal (negation words preserved)
+      8. Lemmatisation (NLTK WordNetLemmatizer)
     """
     text = str(text).lower()
+    text = re.sub(r"\s+", " ", text).strip()
     text = re.sub(r"http\S+|www\S+", "", text)
     text = emoji.replace_emoji(text, replace="")
     text = re.sub(r"[^a-z\s]", "", text)
@@ -209,6 +211,11 @@ def main():
     ])
 
     # ── GridSearchCV ──────────────────────────────────────────────────────────
+    # NOTE: The notebook (Emotion_prediction_source_code.ipynb) searches over
+    # kernel ∈ {linear, rbf, poly} during the full experiment.  Here we fix
+    # kernel=["linear"] because the experiment already confirmed linear as
+    # optimal for TF-IDF features, and this script's sole purpose is to
+    # produce the deployment model.pkl as fast as possible.
     param_grid = {
         "svm__C":      [0.1, 1],
         "svm__kernel": ["linear"],
