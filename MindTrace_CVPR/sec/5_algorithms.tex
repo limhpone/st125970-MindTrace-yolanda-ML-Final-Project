@@ -35,4 +35,13 @@ All models are evaluated under identical experimental conditions. Both macro-ave
 
 \subsection{Deployment Architecture}
 
-Following evaluation, the best-performing model will be serialised and integrated into a lightweight REST API deployment pipeline. The selected model (along with its TF-IDF vectoriser or embedding weights) will be packaged using Flask or FastAPI and containerised with Docker to ensure reproducibility. The inference endpoint will accept raw text input, apply the same preprocessing pipeline used during training, and return a predicted emotion label with class probability scores. Future extensions may include a web-based dashboard for real-time emotion monitoring and a retraining pipeline triggered by incoming labelled data.
+Following evaluation, the best-performing classical model was serialised and integrated into a lightweight REST API deployment pipeline. The SVM model (along with its TF-IDF vectoriser) was packaged using Flask and containerised with Docker to ensure reproducibility. The inference endpoint accepts raw text input, applies the same preprocessing pipeline used during training, and returns a predicted emotion label with class probability scores. Figure~\ref{fig:deployed_app} shows the deployed web interface.
+
+\textbf{CI/CD Pipeline.} A GitHub Actions workflow automates the full build-and-deploy cycle. On every push to the \texttt{main} branch, the pipeline executes two sequential jobs: (1)~\emph{Lint \& Smoke Test} --- installs dependencies, runs Flake8 on critical error codes, and verifies that the serialised model loads correctly; (2)~\emph{Build \& Push} --- builds the Docker image via Docker Buildx and pushes it to Docker Hub (\texttt{yolandalim/125970-mindtrace}) tagged with both \texttt{latest} and the commit SHA. Pull requests trigger only the lint-and-test stage, preventing untested code from being deployed. This automated pipeline ensures that every production deployment is reproducible and regression-tested.
+
+\begin{figure}[t]
+\centering
+\fbox{\includegraphics[width=0.92\linewidth]{figures/deployed_app.png}}
+\caption{MindTrace deployed web interface. Users enter text and receive a predicted emotion label with confidence scores.}
+\label{fig:deployed_app}
+\end{figure}

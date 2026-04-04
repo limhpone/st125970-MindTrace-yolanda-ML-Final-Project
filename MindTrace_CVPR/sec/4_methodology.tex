@@ -84,78 +84,35 @@ Figure~\ref{fig:class_dist} shows the absolute counts per class alongside the pr
 
 \subsubsection{Text Length and Word Count Distribution}
 
-Table~\ref{tab:num_stats} presents descriptive statistics for structural text features by emotion class. Class-wise comparisons reveal observable differences in average text length across emotions, suggesting that certain emotional expressions tend to be shorter (Anger, Sadness) or longer (Love, Surprise).
+Figure~\ref{fig:text_length} presents the text length histogram and Figure~\ref{fig:wordcount} shows the word count boxplot by emotion class. The overall median text length is 86 characters (mean 97.0, std 56.2), with Love having the longest posts (median 94) and Anger the shortest (median 84). The histogram confirms a right-skewed distribution with posts concentrated between 20 and 150 characters. The boxplot reveals that Love has the highest median text length (median $\approx 94$ chars), while Anger is the most concise (median $\approx 69$ chars). These findings inform the maximum sequence length (512) and padding strategies for neural network architectures.
 
-\begin{table}[t]
+\begin{figure*}[t]
 \centering
-\caption{Numerical summary statistics --- \texttt{text\_length} by emotion class.}
-\label{tab:num_stats}
-\footnotesize
-\setlength{\tabcolsep}{3pt}
-\begin{tabular}{@{}lrrrrrl@{}}
-\toprule
-\textbf{Class} & \textbf{Mean} & \textbf{Med.} & \textbf{Std} & \textbf{Min} & \textbf{Max} & \textbf{Note} \\
-\midrule
-Overall & 97.0 & 86 & 56.2 & 11 & 512 & Right-skewed \\
-Anger   & 96.0 & 84 & 57.1 & 11 & 512 & Concise tone \\
-Fear    & 96.7 & 85 & 56.3 & 12 & 512 & Narrative \\
-Joy     & 98.8 & 88 & 55.5 & 12 & 512 & Celebratory \\
-Love    & 104.7 & 94 & 56.4 & 13 & 512 & Longest avg. \\
-Sadness & 93.1 & 81 & 53.9 & 11 & 512 & Compressed \\
-Surprise & 99.7 & 89 & 56.0 & 14 & 512 & Exclamatory \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-Figure~\ref{fig:text_length} presents the histogram of text length distribution and word count boxplot by emotion class. The histogram confirms a right-skewed distribution with the majority of posts concentrated between 20 and 150 characters, and a long tail extending to 512. The boxplot reveals that the Love class has the highest median text length (median $\approx 94$ chars), while Anger is the most concise (median $\approx 69$ chars). These findings directly inform the maximum sequence length selection (512), truncation thresholds, and padding strategies for all neural network architectures.
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\linewidth]{figures/text_length_wordcount.png}
-\caption{Histogram of text length distribution (left) and word count boxplot by emotion class (right).}
-\label{fig:text_length}
-\end{figure}
+\begin{minipage}{0.48\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{figures/text_length_wordcount_1.png}
+  \captionof{figure}{Histogram of text length distribution.}
+  \label{fig:text_length}
+\end{minipage}\hfill
+\begin{minipage}{0.48\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{figures/text_length_wordcount_2.png}
+  \captionof{figure}{Word count boxplot by emotion class.}
+  \label{fig:wordcount}
+\end{minipage}
+\end{figure*}
 
 \subsubsection{Correlation Analysis}
 
-A Pearson correlation matrix (Figure~\ref{fig:correlation}) was computed to examine linear relationships among numerical features. A strong positive correlation ($r = 0.984$) was observed between \texttt{text\_length} and \texttt{word\_count}, confirming structural redundancy --- only one need be retained as a feature. In contrast, the correlation between the numeric label encoding and length-based features is near-zero ($r < 0.03$), confirming that emotional classification depends primarily on semantic and contextual content rather than message length. This reinforces TF-IDF and embedding-based representations as the essential feature extraction strategy.
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.85\linewidth]{figures/correlation_matrix.png}
-\caption{Pearson correlation heatmap among numeric features. The near-zero correlation between \texttt{label} and length features confirms that semantic content drives classification.}
-\label{fig:correlation}
-\end{figure}
-
-\subsection{EDA Summary and Modelling Implications}
-
-Table~\ref{tab:eda_summary} consolidates the key EDA dimensions with their findings, modelling implications, and required actions before model development.
-
-\begin{table*}[t]
-\centering
-\caption{EDA summary --- key findings, modelling implications, and required actions.}
-\label{tab:eda_summary}
-\small
-\begin{tabular}{@{}llll@{}}
-\toprule
-\textbf{EDA Dimension} & \textbf{Key Finding} & \textbf{Modelling Implication} & \textbf{Required Action} \\
-\midrule
-Class distribution & Joy $\approx$33.8\%; Surprise $\approx$3.6\% & Use macro-F1 and weighted-F1 & Class weights or SMOTE \\
-Text length & Right-skewed; median $\approx$ 85 chars & Max seq.\ length = 512 for DL & Truncation and padding \\
-Word count & $r \approx 0.99$ with text\_length & Structurally redundant & Auxiliary feature only \\
-Null values & 0.00\% null rate & No imputation required & Dataset ready \\
-Emotion--length & Weak correlation ($r < 0.03$) & Semantic content is primary & TF-IDF \& embeddings essential \\
-\bottomrule
-\end{tabular}
-\end{table*}
+A Pearson correlation analysis revealed a strong positive correlation ($r = 0.984$) between \texttt{text\_length} and \texttt{word\_count}, confirming structural redundancy. The correlation between the numeric label encoding and length-based features is near-zero ($r < 0.03$), confirming that emotional classification depends on semantic content rather than message length, reinforcing TF-IDF and embedding-based representations as the essential feature extraction strategy.
 
 \subsection{Proposed Architecture}
 
 The proposed methodology follows a structured NLP workflow: preprocessing $\rightarrow$ feature extraction $\rightarrow$ model development $\rightarrow$ evaluation $\rightarrow$ deployment. The full pipeline is illustrated in Figures~\ref{fig:process_flow} and~\ref{fig:pipeline}.
 
-\textbf{Preprocessing.} Text normalisation includes lowercasing, URL and special character removal, stopword elimination, and lemmatisation. Informal abbreviations and chat words are standardised to reduce lexical noise. Stopword removal uses the NLTK English stopword list; however, negation words and intensifiers (\eg, ``not'', ``never'', ``very'', ``extremely'') are retained via a custom exception list, as these tokens carry direct emotional polarity and their removal would cause loss of discriminative signal. Class imbalance is addressed through stratified sampling and class-weighted learning, with SMOTE resampling considered as an alternative strategy.
+\textbf{Preprocessing.} An eight-step NLP pipeline normalises raw text: (1)~lowercasing, (2)~whitespace stripping, (3)~URL removal, (4)~emoji removal, (5)~special character removal (retaining only \texttt{[a-z\textbackslash s]}), (6)~chat-word expansion (30 common abbreviations), (7)~stopword removal, and (8)~lemmatisation. Stopword removal uses the NLTK English stopword list; however, negation words and intensifiers (\eg, ``not'', ``never'', ``very'', ``extremely'') are retained via a custom exception list, as these tokens carry direct emotional polarity and their removal would cause loss of discriminative signal. Class imbalance is addressed through random downsampling to the minority-class size ($\approx$14,872 per class, 89,232 total).
 
-\textbf{Feature Representation.} For machine learning models, TF-IDF vectorisation transforms text into numerical feature representations:
+\textbf{Feature Representation.} For machine learning models, TF-IDF vectorisation (\texttt{max\_features=5000}, \texttt{ngram\_range=(1,2)}) transforms text into numerical feature representations capturing both unigrams and bigrams:
 \begin{equation}
 \text{TF-IDF}(t, d) = \text{TF}(t, d) \times \log\!\left(\frac{N}{\text{DF}(t)}\right)
 \label{eq:tfidf}
@@ -183,7 +140,115 @@ F_1 = \frac{2 \times \text{Precision} \times \text{Recall}}{\text{Precision} + \
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\linewidth]{figures/pipeline_architecture.png}
-\caption{Detailed pipeline architecture showing preprocessing branches for ML (TF-IDF) and DL (tokenisation and padding) models, training, validation, and evaluation workflow.}
+\begin{tikzpicture}[
+    node distance=0.4cm and 0.3cm,
+    >={Stealth[length=2.5pt]},
+    mainbox/.style={rectangle, draw=gray!60, rounded corners=2pt, align=center,
+                font=\sffamily\tiny, minimum width=2.4cm,
+                minimum height=0.45cm, fill=#1, text width=2.4cm,
+                line width=0.4pt},
+    mainbox/.default={blue!8},
+    featbox/.style={rectangle, draw=gray!60, rounded corners=2pt, align=center,
+                font=\sffamily\tiny, minimum width=1.6cm,
+                minimum height=0.35cm, fill=#1, text width=1.6cm,
+                line width=0.4pt},
+    featbox/.default={green!10},
+    modelbox/.style={rectangle, draw=gray!60, rounded corners=2pt, align=center,
+                font=\sffamily\tiny\bfseries, minimum width=0.9cm,
+                minimum height=0.32cm, fill=orange!12, line width=0.4pt},
+    arr/.style={->, semithick, color=gray!60},
+    plainline/.style={semithick, color=gray!60},
+]
+
+% ── Row 1: Dataset ──
+\node[mainbox=cyan!10] (data) {
+    \textbf{Emotional Text Dataset}\\[-1pt]
+    {\tiny 416{,}809 labelled tweets}
+};
+
+% ── Row 2: Preprocessing ──
+\node[mainbox=blue!8, below=0.4cm of data] (preproc) {
+    \textbf{Data Preprocessing}\\[-1pt]
+    {\tiny Downsample \,$\cdot$\, Standardise \,$\cdot$\, Lemmatise}
+};
+
+% ── Row 3: Feature branches (side by side) ──
+\node[featbox=green!10, below left=0.55cm and 0.5cm of preproc] (ml) {
+    \textbf{ML Features}\\[-1pt]
+    {\tiny TF-IDF Vectoriser}\\[-1pt]
+    {\tiny Label Encoder}
+};
+\node[featbox=violet!10, below right=0.55cm and 0.5cm of preproc] (dl) {
+    \textbf{DL Features}\\[-1pt]
+    {\tiny Tokenisation}\\[-1pt]
+    {\tiny Sequence Padding}
+};
+
+% ── Row 4: Data split ──
+\node[mainbox=yellow!12, below=1.35cm of preproc] (split) {
+    \textbf{Data Splitting}\\[-1pt]
+    {\tiny 80\,\% Train (20\,\% Val) \,$\cdot$\, 20\,\% Test}
+};
+
+% ── Row 5: Four model boxes ──
+\node[modelbox, below=0.55cm of split, xshift=-1.05cm] (svm)    {SVM};
+\node[modelbox, right=0.08cm of svm]                    (xgb)    {XGBoost};
+\node[modelbox, right=0.08cm of xgb]                    (cnn)    {CNN};
+\node[modelbox, right=0.08cm of cnn]                    (bilstm) {BiLSTM};
+
+% ── Row 6: Evaluation ──
+\node[mainbox=red!7, below=1.6cm of split] (eval) {
+    \textbf{Model Evaluation}\\[-1pt]
+    {\tiny Accuracy \,$\cdot$\, F1-Score \,$\cdot$\, Confusion Matrix}
+};
+
+% ── Row 7: Deployment ──
+\node[mainbox=teal!10, below=0.4cm of eval] (deploy) {
+    \textbf{Deployment (SVM)}\\[-1pt]
+    {\tiny Flask REST API + Docker + CI/CD}\\[-1pt]
+    {\tiny Best accuracy--latency trade-off}
+};
+
+% ════════════════ Arrows ════════════════
+
+% Dataset → Preprocessing
+\draw[arr] (data.south) -- (preproc.north);
+
+% Preprocessing → branches (T-fork: down, then left/right)
+\coordinate (fork) at ($(preproc.south)+(0,-0.18)$);
+\draw[plainline] (preproc.south) -- (fork);
+\draw[plainline] (fork) -- (fork -| ml.north);
+\draw[plainline] (fork) -- (fork -| dl.north);
+\draw[arr] (fork -| ml.north) -- (ml.north);
+\draw[arr] (fork -| dl.north) -- (dl.north);
+
+% Branches → Split (each goes down then horizontal to split edge)
+\coordinate (mlbot) at ($(ml.south)+(0,-0.12)$);
+\coordinate (dlbot) at ($(dl.south)+(0,-0.12)$);
+\draw[plainline] (ml.south) -- (mlbot);
+\draw[arr] (mlbot) -- (mlbot -| split.west) -- (split.west);
+\draw[plainline] (dl.south) -- (dlbot);
+\draw[arr] (dlbot) -- (dlbot -| split.east) -- (split.east);
+
+% Split → models (T-fork: down, then spread to each model)
+\coordinate (mfork) at ($(split.south)+(0,-0.12)$);
+\draw[plainline] (split.south) -- (mfork);
+\draw[plainline] (mfork -| svm.north) -- (mfork -| bilstm.north);
+\draw[arr] (mfork -| svm.north) -- (svm.north);
+\draw[arr] (mfork -| xgb.north) -- (xgb.north);
+\draw[arr] (mfork -| cnn.north) -- (cnn.north);
+\draw[arr] (mfork -| bilstm.north) -- (bilstm.north);
+
+% Models → Evaluation (individual rectangular arrows, funnel inward)
+\draw[arr] (svm.south)    -- ++(0,-0.30) -| ($(eval.north)+(-0.6,0)$);
+\draw[arr] (xgb.south)    -- ++(0,-0.15) -| ($(eval.north)+(-0.2,0)$);
+\draw[arr] (cnn.south)    -- ++(0,-0.15) -| ($(eval.north)+(0.2,0)$);
+\draw[arr] (bilstm.south) -- ++(0,-0.30) -| ($(eval.north)+(0.6,0)$);
+
+% Evaluation → Deployment
+\draw[arr] (eval.south) -- (deploy.north);
+
+\end{tikzpicture}
+\caption{MindTrace end-to-end pipeline architecture.}
 \label{fig:pipeline}
 \end{figure}

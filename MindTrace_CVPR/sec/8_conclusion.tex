@@ -1,16 +1,22 @@
-\section{Conclusion and Future Work}
+\section{Contribution, Conclusion, and Future Work}
 \label{sec:conclusion}
 
-This proposal has argued that the dominant limitation in current emotion classification research is not model capability but experimental inconsistency --- studies differ in dataset, preprocessing, and evaluation metric, making performance comparisons unreliable. MindTrace addresses this directly by fixing all experimental conditions and varying only the model, isolating intrinsic differences between SVM, XGBoost, CNN, and BiLSTM on a 416,809-sample Twitter corpus.
+\subsection{Contribution}
 
-The EDA presented in Section~\ref{sec:methodology} confirms that the dataset is structurally sound, class-imbalanced at a ratio of approximately 9.5\,:\,1, and that semantic overlap between adjacent emotion categories (fear/surprise, sadness/love) will be the primary challenge for all models. The architectural specifications in Section~\ref{sec:algorithms} ensure the study is fully reproducible.
+This study contributes a reproducible experimental benchmark for text-based emotion classification by evaluating SVM, XGBoost, CNN, and BiLSTM under identical preprocessing, stratified splits, and evaluation metrics on a 416,809-sample Twitter corpus. Unlike prior work that varies these conditions across studies, this research isolates intrinsic model differences. The complete pipeline --- preprocessing scripts, training code, and performance comparison --- is publicly available for future researchers to extend.
 
-If the comparative results confirm that BiLSTM outperforms classical baselines on minority emotion classes under macro-F1 --- as the literature suggests --- this will provide concrete, dataset-specific evidence that deep contextual architectures are worth the additional computational cost for emotion-aware applications in social media analytics, mental health monitoring, and human-computer interaction.
+\subsection{Conclusion}
+
+BiLSTM achieved the highest test accuracy (94.78\%, macro-F1 0.9477), outperforming CNN (92.91\%), SVM (91.80\%), and XGBoost (80.93\%), confirming that bidirectional contextual encoding provides a measurable advantage for multi-class emotion classification. Confusion matrix analysis revealed that Joy$\leftrightarrow$Love and Fear$\rightarrow$Surprise were the dominant misclassification pairs across all architectures, validating that semantic overlap --- not model capacity --- is the primary classification bottleneck.
+
+Despite achieving the highest accuracy, BiLSTM was not selected for deployment due to ${\sim}23\times$ higher inference latency. SVM was deployed as a Flask-based REST API containerised with Docker, demonstrating that a classical model with TF-IDF features can deliver reliable real-time predictions at minimal cost.
+
+\subsection{Future Work}
 
 Future work will extend the framework in four directions:
 \begin{enumerate}[nosep]
     \item Fine-tuning transformer-based models (BERT, RoBERTa) on the same dataset to compare against the baselines established here.
-    \item Cross-domain evaluation extending the pipeline to non-Twitter corpora such as Reddit or product reviews to assess generalisation.
-    \item Real-time deployment as a production REST API with a web-based emotion monitoring dashboard.
-    \item Explainability analysis using SHAP and LIME to identify the token-level features that most discriminate between semantically similar emotion classes.
+    \item Cross-domain evaluation on non-Twitter corpora (Reddit, product reviews) to assess generalisation.
+    \item Scaling the deployed API with a real-time emotion monitoring dashboard.
+    \item Explainability analysis using SHAP and LIME to identify token-level features discriminating between semantically similar emotion classes.
 \end{enumerate}
