@@ -393,6 +393,16 @@ footer a{color:var(--g3);text-decoration:none;}
   .bar-row{grid-template-columns:78px 1fr 46px;gap:9px;}
   .dist-row{grid-template-columns:78px 1fr 90px;}
   .card-p{padding:20px 16px;}
+  .kbd-hint{display:none;}
+}
+
+/* ══════ REDUCED MOTION ══════ */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;
+    transition-duration:0.01ms!important;}
+  .fl-em{animation:none!important;}
+  .pdot{animation:none!important;opacity:1;}
+  .scroll-hint{animation:none!important;opacity:0.3;}
 }
 </style>
 </head>
@@ -455,14 +465,14 @@ footer a{color:var(--g3);text-decoration:none;}
 
 <!-- ══════════════ TAB NAV ══════════════ -->
 <div class="tab-nav" role="tablist" aria-label="MindTrace sections">
-  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-predict" onclick="switchTab('predict',this)">🔮 Predict</button>
-  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-dashboard" onclick="switchTab('dashboard',this)">📊 Dashboard</button>
-  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-history" onclick="switchTab('history',this)">🕓 History<span id="histBadge" style="display:none;background:var(--grad);color:#04100d;border-radius:999px;font-size:8.5px;padding:1px 6px;margin-left:5px;font-weight:800;vertical-align:middle;"></span></button>
-  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-about" onclick="switchTab('about',this)">📄 About</button>
+  <button class="tab-btn active" id="btn-predict" role="tab" aria-selected="true" aria-controls="tab-predict" onclick="switchTab('predict',this)">🔮 Predict</button>
+  <button class="tab-btn" id="btn-dashboard" role="tab" aria-selected="false" aria-controls="tab-dashboard" onclick="switchTab('dashboard',this)">📊 Dashboard</button>
+  <button class="tab-btn" id="btn-history" role="tab" aria-selected="false" aria-controls="tab-history" onclick="switchTab('history',this)">🕓 History<span id="histBadge" style="display:none;background:var(--grad);color:#04100d;border-radius:999px;font-size:8.5px;padding:1px 6px;margin-left:5px;font-weight:800;vertical-align:middle;"></span></button>
+  <button class="tab-btn" id="btn-about" role="tab" aria-selected="false" aria-controls="tab-about" onclick="switchTab('about',this)">📄 About</button>
 </div>
 
 <!-- ══════════════ TAB: PREDICT ══════════════ -->
-<div id="tab-predict" class="tab-panel active">
+<div id="tab-predict" class="tab-panel active" role="tabpanel" aria-labelledby="btn-predict">
 
   <div class="input-card">
     <label class="lbl" for="ti">✍️ &nbsp;Enter text to analyse</label>
@@ -498,7 +508,7 @@ footer a{color:var(--g3);text-decoration:none;}
   </div>
 
   <!-- RESULT -->
-  <div id="result-section">
+  <div id="result-section" aria-live="polite">
 
     <!-- emotion result card -->
     <div class="result-card" id="resultCard">
@@ -547,7 +557,7 @@ footer a{color:var(--g3);text-decoration:none;}
     <!-- NLP pipeline steps -->
     <div class="card card-p nlp-card">
       <div class="section-hdr">
-        <span class="section-title">NLP preprocessing pipeline — Section 3.4</span>
+        <span class="section-title">NLP preprocessing pipeline — Section 3.3</span>
         <span class="section-line"></span>
       </div>
       <div class="nlp-steps" id="nlpSteps"></div>
@@ -571,7 +581,7 @@ footer a{color:var(--g3);text-decoration:none;}
 </div><!-- /predict -->
 
 <!-- ══════════════ TAB: DASHBOARD ══════════════ -->
-<div id="tab-dashboard" class="tab-panel">
+<div id="tab-dashboard" class="tab-panel" role="tabpanel" aria-labelledby="btn-dashboard">
 
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
     <div style="font-family:var(--mono);font-size:10.5px;color:var(--muted2);">
@@ -622,10 +632,10 @@ footer a{color:var(--g3);text-decoration:none;}
     <div style="position:relative;height:170px;"><canvas id="distChart"></canvas></div>
   </div>
 
-  <!-- confusion pairs insight — Section 4.1 + Section 5 -->
+  <!-- confusion pairs insight — Section 5.3 -->
   <div class="chart-card">
     <div class="chart-hdr">
-      <span class="ct">⚡ High-risk confusion pairs — Section 4.1</span>
+      <span class="ct">⚡ High-risk confusion pairs — Section 5.3</span>
       <span class="cn">Semantically adjacent classes with vocabulary overlap</span>
     </div>
     <div class="conf-pairs">
@@ -633,14 +643,14 @@ footer a{color:var(--g3);text-decoration:none;}
         <div class="cp-em">😨😲</div>
         <div>
           <div class="cp-lbl">Fear ↔ Surprise</div>
-          <div class="cp-desc">Both involve unexpected stimuli and arousal. Vocabulary overlap drives highest inter-class confusion rate across all four models (Section 5, EDA finding).</div>
+          <div class="cp-desc">Both involve unexpected stimuli and arousal. Vocabulary overlap drives highest inter-class confusion rate across all four models (Section 5.3).</div>
         </div>
       </div>
       <div class="cp">
-        <div class="cp-em">😢❤️</div>
+        <div class="cp-em">😊❤️</div>
         <div>
-          <div class="cp-lbl">Sadness ↔ Love</div>
-          <div class="cp-desc">Affective language overlaps — longing, nostalgia, and loss appear in both classes. Second highest expected confusion rate per EDA word frequency analysis.</div>
+          <div class="cp-lbl">Joy ↔ Love</div>
+          <div class="cp-desc">Shared positively-valenced vocabulary ("happy", "amazing") causes valence conflation — second highest confusion rate per confusion matrix analysis (Section 5.3).</div>
         </div>
       </div>
     </div>
@@ -664,7 +674,7 @@ footer a{color:var(--g3);text-decoration:none;}
 </div><!-- /dashboard -->
 
 <!-- ══════════════ TAB: HISTORY ══════════════ -->
-<div id="tab-history" class="tab-panel">
+<div id="tab-history" class="tab-panel" role="tabpanel" aria-labelledby="btn-history">
   <div class="chart-card">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
       <div class="section-hdr" style="margin-bottom:0;flex:1;">
@@ -681,7 +691,7 @@ footer a{color:var(--g3);text-decoration:none;}
 </div>
 
 <!-- ══════════════ TAB: ABOUT ══════════════ -->
-<div id="tab-about" class="tab-panel">
+<div id="tab-about" class="tab-panel" role="tabpanel" aria-labelledby="btn-about">
 
   <div class="rq-full">
     <div class="rq-lbl">Research Question — Section 1.3</div>
@@ -701,7 +711,7 @@ footer a{color:var(--g3);text-decoration:none;}
 
   <div class="about-grid">
     <div class="about-card">
-      <div class="ab-title">NLP Pipeline — Section 3.4</div>
+      <div class="ab-title">NLP Pipeline — Section 3.3</div>
       <ul class="step-list">
         <li><span class="sn">01</span>Lowercasing — normalise case</li>
         <li><span class="sn">02</span>Whitespace stripping — collapse multiple spaces</li>
@@ -786,10 +796,10 @@ const CLASS_DATA = [
 
 // Confusion pairs that trigger a note on the bars card
 const CONFUSION_PAIRS = {
-  Fear:     {with:'Surprise', note:'Fear and Surprise share arousal-based vocabulary — watch for confusion between these classes (Section 4.1).'},
+  Fear:     {with:'Surprise', note:'Fear and Surprise share arousal-based vocabulary — watch for confusion between these classes (Section 5.3).'},
   Surprise: {with:'Fear',     note:'Surprise and Fear often overlap in informal text — check the probability bars carefully.'},
-  Sadness:  {with:'Love',     note:'Sadness and Love share affective vocabulary (longing, loss) — a known confusion pair per Section 5.'},
-  Love:     {with:'Sadness',  note:'Love and Sadness overlap in nostalgic and emotionally-loaded language.'},
+  Joy:      {with:'Love',     note:'Joy and Love share positively-valenced vocabulary — a known confusion pair (valence conflation) per Section 5.3.'},
+  Love:     {with:'Joy',      note:'Love and Joy overlap in shared positive vocabulary ("happy", "amazing") — watch for confusion.'},
 };
 
 const NLP_STEPS = [

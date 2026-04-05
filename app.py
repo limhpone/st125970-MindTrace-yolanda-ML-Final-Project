@@ -232,7 +232,7 @@ def stats():
             "media text, under a unified preprocessing pipeline?"
         ),
         "imbalance_ratio":    "9.5:1 (Joy:Surprise)",
-        "hard_pairs":         ["Fear / Surprise", "Sadness / Love"],
+        "hard_pairs":         ["Fear / Surprise", "Joy / Love"],
     })
 
 @app.route("/health")
