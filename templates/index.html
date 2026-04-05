@@ -472,16 +472,16 @@ footer a{color:var(--g3);text-decoration:none;}
     <div class="char-bar-wrap"><div class="char-bar" id="charBar"></div></div>
 
     <div class="ex-section">
-      <span class="lbl">💡 &nbsp;Try an example — one per emotion class</span>
+      <span class="lbl">Try an example — one per emotion class</span>
       <div class="ex-grid">
-        <button class="ex-pill" onclick="setEx(this,'😢')">😢 I can't stop thinking about what I lost — it hurts so much.</button>
-        <button class="ex-pill" onclick="setEx(this,'😊')">😊 Best news ever! I just got accepted — I'm on cloud nine!</button>
-        <button class="ex-pill" onclick="setEx(this,'😠')">😠 This is beyond unfair — I've never been so angry in my life.</button>
-        <button class="ex-pill" onclick="setEx(this,'😨')">😨 My heart was pounding — I thought something terrible would happen.</button>
-        <button class="ex-pill" onclick="setEx(this,'❤️')">❤️ You mean the world to me — I'm so lucky to have you.</button>
-        <button class="ex-pill" onclick="setEx(this,'😲')">😲 Wait, what?! I did not see that coming at all!</button>
-        <button class="ex-pill" onclick="setEx(this,'😢')">😢 I am not happy at all — nothing ever goes right.</button>
-        <button class="ex-pill" onclick="setEx(this,'😊')">😊 We finally did it! All the hard work paid off — so proud of us!</button>
+        <button class="ex-pill" onclick="setEx(this)">I can't stop thinking about what I lost — it hurts so much.</button>
+        <button class="ex-pill" onclick="setEx(this)">Best news ever! I just got accepted — I'm on cloud nine!</button>
+        <button class="ex-pill" onclick="setEx(this)">This is beyond unfair — I've never been so angry in my life.</button>
+        <button class="ex-pill" onclick="setEx(this)">My heart was pounding — I thought something terrible would happen.</button>
+        <button class="ex-pill" onclick="setEx(this)">You mean the world to me — I'm so lucky to have you.</button>
+        <button class="ex-pill" onclick="setEx(this)">Wait, what?! I did not see that coming at all!</button>
+        <button class="ex-pill" onclick="setEx(this)">I am not happy at all — nothing ever goes right.</button>
+        <button class="ex-pill" onclick="setEx(this)">We finally did it! All the hard work paid off — so proud of us!</button>
       </div>
     </div>
 
@@ -583,7 +583,7 @@ footer a{color:var(--g3);text-decoration:none;}
   <!-- KPIs -->
   <div class="kpi-grid">
     <div class="kpi"><span class="kpi-em">🏆</span><div class="kpi-val">93.9%</div><div class="kpi-lbl">BiLSTM test accuracy</div></div>
-    <div class="kpi"><span class="kpi-em">�</span><div class="kpi-val">91.8%</div><div class="kpi-lbl">SVM deployed model</div></div>
+    <div class="kpi"><span class="kpi-em">🚀</span><div class="kpi-val">91.8%</div><div class="kpi-lbl">SVM deployed model</div></div>
     <div class="kpi"><span class="kpi-em">📦</span><div class="kpi-val">416K</div><div class="kpi-lbl">Dataset samples</div></div>
     <div class="kpi"><span class="kpi-em">🎭</span><div class="kpi-val">6</div><div class="kpi-lbl">Emotion classes</div></div>
   </div>
@@ -761,12 +761,12 @@ footer a{color:var(--g3);text-decoration:none;}
    CONSTANTS — match app.py exactly
 ═══════════════════════════════════════════ */
 const EMOTION_META = {
-  Sadness:  {emoji:'😢', color:'#14b8a6', orb:'rgba(20,184,166,0.14)'},
-  Joy:      {emoji:'😊', color:'#0fffa0', orb:'rgba(15,255,160,0.17)'},
-  Love:     {emoji:'❤️', color:'#06b6d4', orb:'rgba(6,182,212,0.14)'},
-  Anger:    {emoji:'😠', color:'#f87171', orb:'rgba(248,113,113,0.14)'},
-  Fear:     {emoji:'😨', color:'#a78bfa', orb:'rgba(167,139,250,0.14)'},
-  Surprise: {emoji:'😲', color:'#fbbf24', orb:'rgba(251,191,36,0.14)'},
+  Sadness:  {emoji:'😢', color:'#14b8a6', orb:'rgba(20,184,166,0.15)'},
+  Joy:      {emoji:'😊', color:'#0fffa0', orb:'rgba(15,255,160,0.18)'},
+  Love:     {emoji:'❤️', color:'#06b6d4', orb:'rgba(6,182,212,0.15)'},
+  Anger:    {emoji:'😠', color:'#f87171', orb:'rgba(248,113,113,0.15)'},
+  Fear:     {emoji:'😨', color:'#a78bfa', orb:'rgba(167,139,250,0.15)'},
+  Surprise: {emoji:'😲', color:'#fbbf24', orb:'rgba(251,191,36,0.15)'},
 };
 
 const MODEL_DATA = {
@@ -831,10 +831,9 @@ function onInput(ta) {
   document.getElementById('errorMsg').style.display = 'none';
 }
 
-function setEx(btn, emoji) {
-  // Get only the text node content (not child element text)
+function setEx(btn) {
   const ta = document.getElementById('ti');
-  ta.value = btn.childNodes[btn.childNodes.length-1].textContent.trim();
+  ta.value = btn.textContent.trim();
   onInput(ta); ta.focus();
 }
 
@@ -990,7 +989,7 @@ function addToHistory(data, rawText) {
     emoji:      meta.emoji,
     color:      data.color || meta.color,
   });
-  if (sessionHistory.length>60) sessionHistory.pop();
+  if (sessionHistory.length>50) sessionHistory.pop();
   sessionCounts[data.prediction] = (sessionCounts[data.prediction]||0)+1;
   renderHistory();
   updateHistBadge();
