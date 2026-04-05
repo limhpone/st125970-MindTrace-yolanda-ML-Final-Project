@@ -729,19 +729,18 @@ footer a{color:var(--g3);text-decoration:none;}
       <div class="ab-title">Key EDA Findings — Section 3.2</div>
       <ul class="step-list">
         <li><span class="sn">↳</span>Class imbalance 9.5:1 (Joy:Surprise) → macro-F1 evaluation required</li>
-        <li><span class="sn">↳</span>Text length right-skewed; median 85 chars, range 11–512</li>
+        <li><span class="sn">↳</span>Text length right-skewed; median 86 chars, concentrated 20–150</li>
         <li><span class="sn">↳</span>text_length ↔ word_count correlation r = 0.984 (structurally redundant)</li>
         <li><span class="sn">↳</span>Label ↔ length correlation r &lt; 0.03 → semantic content is the primary signal</li>
-        <li><span class="sn">↳</span>Love class longest (mean 104.7 chars); Sadness shortest (mean 93.1 chars)</li>
+        <li><span class="sn">↳</span>Love class longest (median 94 chars); Anger shortest (median 84 chars)</li>
       </ul>
     </div>
     <div class="about-card">
-      <div class="ab-title">Contribution — Section 6.1</div>
+      <div class="ab-title">Contribution — Section 7.1</div>
       <div class="contrib-list">
-        <div class="cl-item"><div class="cl-dot" style="background:var(--g1)"></div><span>Unified experimental framework — identical preprocessing, splits, and metrics for all four models</span></div>
-        <div class="cl-item"><div class="cl-dot" style="background:var(--g2)"></div><span>Class-wise confusion matrix analysis with focus on semantically similar pairs (Fear/Surprise, Sadness/Love)</span></div>
-        <div class="cl-item"><div class="cl-dot" style="background:var(--g3)"></div><span>Reproducible benchmark: preprocessing scripts, training code, and performance comparison table</span></div>
-        <div class="cl-item"><div class="cl-dot" style="background:var(--g4)"></div><span>End-to-end REST API deployment pipeline with Flask + Docker containerisation</span></div>
+        <div class="cl-item"><div class="cl-dot" style="background:var(--g1)"></div><span>Unified benchmarking framework — identical preprocessing, stratified splits, and macro-F1 evaluation across SVM, XGBoost, CNN, and BiLSTM</span></div>
+        <div class="cl-item"><div class="cl-dot" style="background:var(--g2)"></div><span>Error taxonomy — confusion matrix analysis identifying Joy↔Love (valence conflation) and Fear→Surprise (arousal ambiguity) as architecture-independent misclassification patterns</span></div>
+        <div class="cl-item"><div class="cl-dot" style="background:var(--g3)"></div><span>End-to-end deployment pipeline — SVM integrated into Flask REST API with Docker containerisation and CI/CD automation at sub-millisecond inference latency</span></div>
       </div>
     </div>
   </div>
