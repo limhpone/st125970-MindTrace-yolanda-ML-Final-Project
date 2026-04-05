@@ -21,11 +21,7 @@ GET  /stats     → model performance + class distribution (for dashboard)
 GET  /health    → health check
 """
 
-import os, re, sys, subprocess
-
-for pkg in ["emoji", "nltk"]:
-    try: __import__(pkg)
-    except ImportError: subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", pkg])
+import os, re
 
 import joblib, emoji, nltk, numpy as np
 from flask import Flask, request, jsonify, render_template

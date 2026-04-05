@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="description" content="MindTrace — Text Mining &amp; NLP-Driven Emotion Prediction. Thesis by Aye Khin Khin Hpone (ST125970), Asian Institute of Technology."/>
 <title>MindTrace — Emotion Prediction · AIT</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -453,11 +454,11 @@ footer a{color:var(--g3);text-decoration:none;}
 </header>
 
 <!-- ══════════════ TAB NAV ══════════════ -->
-<div class="tab-nav">
-  <button class="tab-btn active" onclick="switchTab('predict',this)">🔮 Predict</button>
-  <button class="tab-btn" onclick="switchTab('dashboard',this)">📊 Dashboard</button>
-  <button class="tab-btn" onclick="switchTab('history',this)">🕓 History<span id="histBadge" style="display:none;background:var(--grad);color:#04100d;border-radius:999px;font-size:8.5px;padding:1px 6px;margin-left:5px;font-weight:800;vertical-align:middle;"></span></button>
-  <button class="tab-btn" onclick="switchTab('about',this)">📄 About</button>
+<div class="tab-nav" role="tablist" aria-label="MindTrace sections">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-predict" onclick="switchTab('predict',this)">🔮 Predict</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-dashboard" onclick="switchTab('dashboard',this)">📊 Dashboard</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-history" onclick="switchTab('history',this)">🕓 History<span id="histBadge" style="display:none;background:var(--grad);color:#04100d;border-radius:999px;font-size:8.5px;padding:1px 6px;margin-left:5px;font-weight:800;vertical-align:middle;"></span></button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-about" onclick="switchTab('about',this)">📄 About</button>
 </div>
 
 <!-- ══════════════ TAB: PREDICT ══════════════ -->
@@ -582,9 +583,9 @@ footer a{color:var(--g3);text-decoration:none;}
   <!-- KPIs -->
   <div class="kpi-grid">
     <div class="kpi"><span class="kpi-em">🏆</span><div class="kpi-val">93.9%</div><div class="kpi-lbl">BiLSTM test accuracy</div></div>
+    <div class="kpi"><span class="kpi-em">�</span><div class="kpi-val">91.8%</div><div class="kpi-lbl">SVM deployed model</div></div>
     <div class="kpi"><span class="kpi-em">📦</span><div class="kpi-val">416K</div><div class="kpi-lbl">Dataset samples</div></div>
     <div class="kpi"><span class="kpi-em">🎭</span><div class="kpi-val">6</div><div class="kpi-lbl">Emotion classes</div></div>
-    <div class="kpi"><span class="kpi-em">⚖️</span><div class="kpi-val">9.5:1</div><div class="kpi-lbl">Joy:Surprise imbalance</div></div>
   </div>
 
   <!-- model comparison grouped bar -->
@@ -752,7 +753,7 @@ footer a{color:var(--g3);text-decoration:none;}
 <footer>
   <p class="ft-name">MindTrace — Text Mining &amp; NLP-Driven Emotion Prediction</p>
   <p>Aye Khin Khin Hpone (Yolanda Lim) &nbsp;·&nbsp; ST125970 &nbsp;·&nbsp; Computer Science, Asian Institute of Technology</p>
-  <p>Dataset: <a href="https://www.kaggle.com/datasets/nelgiriyewithana/emotions" target="_blank">Kaggle Emotions</a> (416,809 samples) &nbsp;·&nbsp; Models: SVM · XGBoost · CNN · BiLSTM</p>
+  <p>Dataset: <a href="https://www.kaggle.com/datasets/nelgiriyewithana/emotions" target="_blank" rel="noopener noreferrer">Kaggle Emotions</a> (416,809 samples) &nbsp;·&nbsp; Models: SVM · XGBoost · CNN · BiLSTM</p>
 </footer>
 
 <script>
@@ -811,20 +812,23 @@ let sessionChartObj = null;
 /* ═══════════════ TABS ═══════════════ */
 function switchTab(id, btn) {
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-selected','false');});
   document.getElementById('tab-'+id).classList.add('active');
   btn.classList.add('active');
+  btn.setAttribute('aria-selected','true');
   if (id==='dashboard') initCharts();
 }
 
 /* ═══════════════ INPUT ═══════════════ */
 function onInput(ta) {
-  const len = ta.value.trim().length;
+  const len = ta.value.length;
   document.getElementById('charCount').textContent = len+' / 1000';
   const pct = (len/1000)*100;
   const bar = document.getElementById('charBar');
   bar.style.width = pct+'%';
   bar.classList.toggle('warn', pct > 82);
+  // Auto-dismiss any error when user starts typing
+  document.getElementById('errorMsg').style.display = 'none';
 }
 
 function setEx(btn, emoji) {
@@ -937,6 +941,8 @@ function renderResult(data) {
     let val = steps[s.key];
     if (Array.isArray(val)) val = val.join(', ') || '—';
     val = val ? (val.length > 55 ? val.slice(0,55)+'…' : val) : '—';
+    // Escape HTML to prevent XSS from early pipeline steps (1-4 contain user input)
+    val = val.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     return `<div class="nlp-step">
       <div class="step-num">${i+1}</div>
       <div class="step-name">${s.icon} ${s.label}</div>
@@ -1081,19 +1087,20 @@ const GRID='rgba(15,255,160,0.065)'; const TXT='#669e91';
 function initCharts(){
   if(chartsInited)return; chartsInited=true;
 
-  /* 1. Grouped bar — all 4 metrics */
+  /* 1. Grouped bar — all 4 metrics (from MODEL_DATA / Table 4.1) */
+  const models = Object.keys(MODEL_DATA);
   new Chart(document.getElementById('modelChart'),{
     type:'bar',
     data:{
-      labels:['BiLSTM','CNN','SVM','XGBoost'],
+      labels:models,
       datasets:[
-        {label:'Accuracy', data:[95.2,92.6,91.4,81.9],
+        {label:'Accuracy', data:models.map(m=>MODEL_DATA[m].test),
           backgroundColor:[G+'cc',T+'cc',C+'cc',S+'cc'],borderRadius:6,borderSkipped:false},
-        {label:'Precision',data:[95.4,92.8,91.6,85.7],
+        {label:'Precision',data:models.map(m=>MODEL_DATA[m].precision),
           backgroundColor:[G+'88',T+'88',C+'88',S+'88'],borderRadius:6,borderSkipped:false},
-        {label:'Recall',   data:[95.2,92.6,91.4,82.0],
+        {label:'Recall',   data:models.map(m=>MODEL_DATA[m].recall),
           backgroundColor:[G+'55',T+'55',C+'55',S+'55'],borderRadius:6,borderSkipped:false},
-        {label:'F1 Score', data:[95.2,92.5,91.3,82.4],
+        {label:'F1 Score', data:models.map(m=>MODEL_DATA[m].f1),
           backgroundColor:[G+'33',T+'33',C+'33',S+'33'],borderRadius:6,borderSkipped:false},
       ]
     },
@@ -1170,7 +1177,7 @@ function initCharts(){
       plugins:{legend:{display:true,labels:{color:TXT,font:{size:10},boxWidth:10}}},
       scales:{
         x:{grid:{color:GRID},ticks:{color:TXT,font:{size:10}}},
-        y:{min:85,max:96,grid:{color:GRID},ticks:{color:TXT,font:{size:10},callback:v=>v+'%'}}
+        y:{min:70,max:96,grid:{color:GRID},ticks:{color:TXT,font:{size:10},callback:v=>v+'%'}}
       }}
   });
 
