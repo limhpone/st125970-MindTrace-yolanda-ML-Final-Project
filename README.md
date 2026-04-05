@@ -4,6 +4,10 @@
 **Programme:** Computer Science, Asian Institute of Technology  
 **Thesis:** *MindTrace: Text Mining and NLP-Driven Emotion Prediction Using Machine Learning and Deep Learning Approaches*
 
+<p align="center">
+  <img src="figures/demo.gif" alt="MindTrace Demo" width="720">
+</p>
+
 ---
 
 ## Research Question
@@ -57,11 +61,11 @@ mindtrace/
 | Love | 2 | 34,554 | 8.29% | Minority class |
 | Surprise | 5 | 14,872 | 3.59% | Smallest — highest misclassification risk |
 
-**High-risk confusion pairs (Section 4.1):** Fear ↔ Surprise · Sadness ↔ Love
+**High-risk confusion pairs (Section 5.3):** Fear ↔ Surprise · Joy ↔ Love
 
 ---
 
-## NLP Preprocessing Pipeline — Section 3.4
+## NLP Preprocessing Pipeline — Section 3.3
 
 Applied identically in `train_pipeline.py` during training and in `app.py` at inference time. Any divergence between the two causes training/serving skew.
 
@@ -76,7 +80,7 @@ Applied identically in `train_pipeline.py` during training and in `app.py` at in
 | 7 | Stopword removal | NLTK English stopwords — **negation words preserved** |
 | 8 | Lemmatisation | `nltk.WordNetLemmatizer` |
 
-**Negation words preserved** (Section 3.4): `not, never, no, nor, neither, nothing, nobody, nowhere, without, very, extremely, barely, hardly` — these carry emotional polarity and their removal would lose discriminative signal.
+**Negation words preserved** (Section 3.3): `not, never, no, nor, neither, nothing, nobody, nowhere, without, very, extremely, barely, hardly` — these carry emotional polarity and their removal would lose discriminative signal.
 
 ---
 
@@ -114,11 +118,11 @@ docker run -p 5000:5000 mindtrace
 # → Open http://localhost:5000
 ```
 
-### Option 3 — Docker Hub (if published)
+### Option 3 — Docker Hub
 
 ```bash
-docker pull <your-dockerhub-username>/mindtrace
-docker run -p 5000:5000 <your-dockerhub-username>/mindtrace
+docker pull yolandalim/125970-mindtrace:latest
+docker run -p 5000:5000 yolandalim/125970-mindtrace:latest
 ```
 
 ---
@@ -184,7 +188,7 @@ Returns all model performance metrics and class distribution for the dashboard.
   "dataset_size": 416809,
   "best_model": "BiLSTM (93.9% test accuracy)",
   "imbalance_ratio": "9.5:1 (Joy:Surprise)",
-  "hard_pairs": ["Fear / Surprise", "Sadness / Love"]
+  "hard_pairs": ["Fear / Surprise", "Joy / Love"]
 }
 ```
 
@@ -203,7 +207,7 @@ Returns all model performance metrics and class distribution for the dashboard.
 | **🔮 Predict** | Text input with 8 example pills (one per emotion class + 2 negation examples). After prediction: animated emoji + confidence ring + intensity bar + word count, probability bars for all 6 emotions, 8-step NLP pipeline output with negation tokens highlighted in red |
 | **📊 Dashboard** | 4 KPI cards · Grouped bar chart (all 4 metrics) · Performance table with mini bars · Radar chart · Class distribution (Table 3.3) with animated inline bars + horizontal chart · BiLSTM training curve · Live session doughnut chart (updates as you predict) |
 | **🕓 History** | Session prediction log with emotion summary chips (×count per label) and clear-all button. Badge counter on the tab itself |
-| **📄 About** | Research question (Section 1.3) · Research gap (Section 1.2) · Dataset justification (Section 3.1) · NLP pipeline steps (Section 3.4) · All 4 model descriptions (Section 4) · 5 key EDA findings (Section 3.2) · 4 contribution points (Section 6.1) |
+| **📄 About** | Research question (Section 1.3) · Research gap (Section 1.2) · Dataset justification (Section 3.1) · NLP pipeline steps (Section 3.3) · All 4 model descriptions (Section 4) · 5 key EDA findings (Section 3.2) · 3 contribution points (Section 7.1) |
 
 **Interactive features:** Confetti animation on high-confidence Joy (≥72%) · Gold star burst on Surprise (≥62%) · Keyboard shortcut `Ctrl+Enter` to predict · Hovering on emotion floaters pauses their animation
 
@@ -248,6 +252,21 @@ The sklearn pipeline produced by `train_pipeline.py` should achieve approximatel
 If you use this work, please cite:
 
 > Aye Khin Khin Hpone (Yolanda Lim), *MindTrace: Text Mining and NLP-Driven Emotion Prediction Using Machine Learning and Deep Learning Approaches*, Asian Institute of Technology, Computer Science, March 2026.
+
+---
+
+## Acknowledgement
+
+Sincere thanks to **Dr. Sein Minn** for his supervision and guidance, and to **TA Rakshya Lama Moktan** for her valuable support and feedback.
+
+---
+
+## Links
+
+- **Source Code:** https://github.com/limhpone/st125970-MindTrace-yolanda-ML-Final-Project.git
+- **Live Deployment:** http://192.41.170.112:5970/
+- **YouTube Demo:** https://youtu.be/BuqDFtVFqBw
+- **Docker Hub:** https://hub.docker.com/r/yolandalim/125970-mindtrace
 
 ---
 

@@ -50,3 +50,6 @@ nltk_data/
 
 # Docker artifacts
 *.tar
+
+# Video recordings — too large for git
+*.mp4
