@@ -1,0 +1,30 @@
+\section{Introduction}
+\label{sec:introduction}
+
+\subsection{Background and Problem Statement}
+
+Emotion detection from textual data has become increasingly significant as individuals express their psychological states through social media platforms. Unlike sentiment analysis, which categorises content as positive, negative, or neutral, emotion detection identifies discrete emotional states such as anger, joy, sadness, fear, surprise, and love~\citep{nandwani2021review, poria2019deeper}. However, accurately classifying emotions remains challenging due to contextual ambiguity, informal language, sarcasm, and class imbalance~\citep{seyeditabari2018emotion}.
+
+Despite research progress, a methodological gap persists: comparative analyses across studies differ in dataset selection, preprocessing strategies, feature engineering, and evaluation metrics --- making observed performance differences attributable to experimental inconsistencies rather than intrinsic model capabilities. Multi-class classification across semantically similar categories (\eg, joy vs.\ love, fear vs.\ surprise) remains particularly challenging, compounded by class imbalance in real-world datasets. This study addresses this gap by developing a unified NLP pipeline and conducting a controlled comparison between traditional machine learning and deep learning approaches for multi-class emotion classification.
+
+\subsection{Research Questions}
+
+\begin{enumerate}[nosep]
+    \item[\textbf{RQ1.}] How do traditional ML models (SVM, XGBoost) compare with deep learning models (CNN, BiLSTM) in multi-class emotion classification when evaluated under identical preprocessing, data splits, and evaluation metrics?
+    \item[\textbf{RQ2.}] What systematic error patterns and biases emerge across model architectures, and to what extent is misclassification driven by semantic overlap rather than model capacity?
+    \item[\textbf{RQ3.}] Which preprocessing and architectural components contribute most to classification performance, and what is the practical trade-off between accuracy and inference cost for real-time deployment?
+\end{enumerate}
+
+\subsection{Research Objectives}
+
+The primary objective is to develop a unified NLP-based framework for multi-class emotion prediction from social media text and to conduct a controlled comparison of traditional machine learning and deep learning models. Specifically, the study:
+\begin{enumerate}[nosep]
+    \item designs a standardised preprocessing pipeline with class balancing and evaluates four models (SVM, XGBoost, CNN, BiLSTM) under identical experimental conditions \textbf{(RQ1)};
+    \item analyses class-wise prediction behaviour, identifies architecture-independent misclassification patterns, and examines dataset-level biases \textbf{(RQ2)};
+    \item conducts ablation studies to quantify the contribution of individual preprocessing steps and architectural choices \textbf{(RQ3)}; and
+    \item deploys the best accuracy--latency trade-off model as a production-ready Flask REST API with Docker containerisation and CI/CD automation \textbf{(RQ3)}.
+\end{enumerate}
+
+\subsection{Scope of the Work}
+
+The study uses a single English-language Twitter corpus of 416,809 samples across the six emotion categories defined in Section~\ref{sec:methodology}. The comparison covers two ML models (SVM, XGBoost) and two DL architectures (CNN, BiLSTM); transformer-based models are excluded due to computational constraints and identified as future work. Class imbalance is handled through random downsampling. Evaluation uses a single stratified 80/20 train--test split with macro-averaged F1 as the primary metric. The deployed system targets single-sentence inference.

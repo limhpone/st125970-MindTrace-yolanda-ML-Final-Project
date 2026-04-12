@@ -1,0 +1,159 @@
+\section{Experimental Results and Discussion}
+\label{sec:results}
+
+All four models were trained and evaluated on the class-balanced dataset (89,832 samples; $\approx$14,972 per class) using an 80/20 stratified train-test split with a 20\% validation holdout. The test set comprised 17,967 samples. The subsections below address each research question: overall model comparison (\textbf{RQ1}, \S\ref{sec:perf}--\ref{sec:hyper}), error patterns and biases (\textbf{RQ2}, \S\ref{sec:confusion}), and computational trade-offs for deployment (\textbf{RQ3}, \S\ref{sec:compute}--\ref{sec:deploy}).
+
+\subsection{Overall Performance Comparison}
+\label{sec:perf}
+
+Table~\ref{tab:results} summarises the test-set performance. BiLSTM outperformed all models ($+1.39$\,pp over CNN, $+2.13$\,pp over SVM, $+3.14$\,pp over XGBoost in accuracy). The ranking BiLSTM $>$ CNN $>$ SVM $>$ XGBoost indicates that sequential context modelling provides a measurable advantage over local feature extraction and bag-of-words approaches.
+
+\begin{table}[!htb]
+\centering
+\caption{Test-set performance comparison. All metrics are macro-averaged.}
+\label{tab:results}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Model} & \textbf{Acc.\,(\%)} & \textbf{Prec.\,(\%)} & \textbf{Rec.\,(\%)} & \textbf{F1\,(\%)} \\
+\midrule
+BiLSTM   & \textbf{93.93} & \textbf{94.08} & \textbf{93.93} & \textbf{93.91} \\
+CNN      & 92.54 & 92.67 & 92.54 & 92.48 \\
+SVM      & 91.80 & 92.00 & 91.80 & 91.75 \\
+XGBoost  & 90.79 & 90.98 & 90.79 & 90.73 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Hyperparameter Tuning}
+\label{sec:hyper}
+
+Table~\ref{tab:hyperparams} summarises the tuning strategy, search space, best configuration, and selection rationale for each model. ML models used grid search with 3-fold cross-validation; DL models used EarlyStopping (patience\,=\,3, restoring best weights) with architecture choices guided by prior work.
+
+\begin{table*}[!htbp]
+\centering
+\caption{Hyperparameter search space, best configuration, and justification per model.}
+\label{tab:hyperparams}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}llllp{5.5cm}@{}}
+\toprule
+\textbf{Model} & \textbf{Strategy} & \textbf{Search Space} & \textbf{Best Config} & \textbf{Justification} \\
+\midrule
+SVM & Grid + 3-fold CV & $C \!\in\! \{0.1, 1\}$, kernel $\!\in\!$ \{lin, rbf, poly\} & $C\!=\!1$, linear & Linear kernel suits sparse TF-IDF features; $C\!=\!1$ balances margin width and misclassification~\citep{dzikovska2012using} \\
+\addlinespace
+XGBoost & Grid + 3-fold CV & lr $\!\in\! \{0.01, 0.1\}$, depth $\!\in\! \{5, 10\}$, est $\!\in\! \{50, 100\}$ & lr$\!=\!0.1$, depth$\!=\!10$, est$\!=\!100$ & Higher learning rate with deeper trees captures non-linear feature interactions~\citep{chen2016xgboost} \\
+\addlinespace
+CNN & EarlyStopping (pat.\,=\,3) & \begin{tabular}[t]{@{}l@{}}2$\times$Conv (256$\!\rightarrow\!$128, $k\!=\!5$),\\MaxPool, Dense(64), drop$\!=\!0.5{\times}2$\end{tabular} & Best ep.\,3/6 & Kernel size 5 captures bigram--trigram patterns; two Conv blocks increase receptive field~\citep{hasan2019emotion} \\
+\addlinespace
+BiLSTM & EarlyStopping (pat.\,=\,3) & \begin{tabular}[t]{@{}l@{}}2$\times$BiLSTM (256$\!\rightarrow\!$128),\\Dense(128$\!\rightarrow\!$64), drop$\!=\!0.5{\times}3$\end{tabular} & Best ep.\,3/6 & Stacked BiLSTM with tapering units captures hierarchical context; dropout 0.5 prevents overfitting~\citep{sun2023bidirectional} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+The hyperparameter search was intentionally constrained to a focused grid to ensure controlled comparison across model families rather than exhaustive optimisation; this may limit each model's true performance ceiling, particularly for non-linear models such as XGBoost. For ML models, the grid was designed to test the most impactful parameters (regularisation strength and kernel type for SVM; learning rate, tree depth, and ensemble size for XGBoost). For DL models, architecture choices were guided by prior work on emotion classification and validated through the architecture ablation study (Section~\ref{sec:ablation}).
+
+\subsection{Confusion Matrix and Error Analysis}
+\label{sec:confusion}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.85\linewidth]{figures/bilstm_confusion_matrix.png}
+\caption{BiLSTM confusion matrix on the test set. Confusion matrices for all four models are provided in Figure~\ref{fig:confusion_matrices} (Appendix).}
+\label{fig:confusion_bilstm}
+\end{figure}
+
+Figure~\ref{fig:confusion_bilstm} presents the confusion matrix for the best-performing BiLSTM model. Three systematic error patterns persisted across all architectures (full matrices in Figure~\ref{fig:confusion_matrices}, Appendix):
+
+\begin{enumerate}[nosep]
+    \item \textbf{Valence conflation (Joy $\leftrightarrow$ Love).} All models misclassified Joy as Love (BiLSTM: 236, CNN: 255, SVM: 258, XGBoost: 246), reflecting shared positively-valenced vocabulary (``happy'', ``amazing'').
+    \item \textbf{Arousal ambiguity (Fear $\rightarrow$ Surprise).} Fear was frequently predicted as Surprise (BiLSTM: 269, CNN: 278, SVM: 275, XGBoost: 303), due to shared high-arousal tokens (``shocked'', ``suddenly'') where the two emotions differ primarily in valence.
+    \item \textbf{Residual majority-class bias (XGBoost).} Despite class-balanced training, XGBoost still misclassified negatively-valenced samples as Joy: Sadness$\rightarrow$Joy (852), Anger$\rightarrow$Joy (650), Fear$\rightarrow$Joy (531).
+\end{enumerate}
+
+Per-class word clouds (Figure~\ref{fig:wordclouds} in the Appendix) corroborate these patterns. At the dataset level, four biases should be acknowledged: \textbf{platform bias} (Twitter-only corpus may not generalise to longer-form text); \textbf{annotation bias} from crowd-sourced labels~\citep{demszky2020goemotions}; \textbf{temporal bias} from evolving language; and a \textbf{label granularity constraint} (single-label taxonomy cannot capture mixed emotions).
+
+\subsection{Training Dynamics and Computational Cost}
+\label{sec:compute}
+
+\begin{figure*}[!htbp]
+\centering
+\begin{minipage}{0.48\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{figures/bilstm_training_curves.png}
+  \captionof{figure}{BiLSTM training curves over 6 epochs. Convergence at epoch~3 with minimal train--val gap ($\approx$0.5\,pp).}
+  \label{fig:train_bilstm}
+\end{minipage}\hfill
+\begin{minipage}{0.48\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{figures/cnn_training_curves.png}
+  \captionof{figure}{CNN training curves over 6 epochs. Early overfitting signs appear after epoch~3.}
+  \label{fig:train_cnn}
+\end{minipage}
+\end{figure*}
+
+Figure~\ref{fig:train_bilstm} shows BiLSTM converged by epoch~3 (94.17\% validation accuracy) with a small train-val gap (${\approx}0.5$\,pp), confirming good generalisation. Figure~\ref{fig:train_cnn} shows CNN reaching 92.77\% validation accuracy at epoch~3 with early signs of overfitting.
+
+Table~\ref{tab:compute} reports computational cost. SVM required the least training time while delivering the second-highest accuracy, making it the most efficient on a performance-per-compute basis. BiLSTM demanded $12\times$ the training time of SVM for a 2.13\,pp accuracy gain and ${\sim}23\times$ higher inference latency, motivating SVM's selection for deployment.
+
+\begin{table}[!htb]
+\centering
+\caption{Computational cost comparison across models.}
+\label{tab:compute}
+\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Model} & \textbf{Train Time} & \textbf{Inference} & \textbf{Model Size} \\
+\midrule
+SVM      & $\sim$2\,min  & $<$1\,ms/sample  & 48\,MB \\
+XGBoost  & $\sim$8\,min  & $<$1\,ms/sample  & 12\,MB \\
+CNN      & $\sim$2\,min (6 ep.) & $\sim$3\,ms/sample & 4.2\,MB \\
+BiLSTM   & $\sim$24\,min (6 ep.) & $\sim$23\,ms/sample & 5.6\,MB \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Discussion}
+\label{sec:discussion}
+
+The consistently high performance across all four models (90.79--93.93\% accuracy) warrants interpretation. Three factors likely contribute to these results.
+
+First, \textbf{effective class balancing}. Downsampling to 14,972 samples per class eliminated the 9.5:1 imbalance ratio, preventing majority-class bias from inflating accuracy. The macro-F1 scores closely track accuracy ($\leq$0.06\,pp gap), confirming that performance is not inflated by majority classes and validating the effectiveness of class balancing.
+
+Second, \textbf{the preprocessing pipeline}. The ablation study (Section~\ref{sec:ablation}) demonstrated that the full eight-step pipeline contributes $1.42$\,pp over raw text. Crucially, retaining negation words and intensifiers during stopword removal preserved discriminative emotional signals (``not happy'' vs.\ ``happy''), which would otherwise collapse semantically opposite inputs into identical representations.
+
+Third, \textbf{dataset characteristics}. The Kaggle Emotions corpus comprises short, emotionally explicit tweets (median 86 characters) where the target emotion is typically conveyed through direct lexical cues rather than subtle pragmatic inference. This lexical explicitness favours both TF-IDF and embedding-based models, explaining why even SVM with a linear kernel achieves 91.80\%. The 2.13\,pp gap between SVM and BiLSTM reflects the added value of sequential context modelling, which resolves cases where word order disambiguates emotion (\eg, ``I am not afraid'' vs.\ ``I am afraid'').
+
+However, the performance ceiling is bounded by \textbf{inherent label ambiguity}. The architecture-independent Joy$\leftrightarrow$Love and Fear$\rightarrow$Surprise confusion patterns (Section~\ref{sec:confusion}) persist regardless of model complexity, indicating that the remaining ${\sim}6\%$ error rate reflects genuine semantic overlap in the annotation scheme rather than model inadequacy. This interpretation is consistent with prior work reporting similar confusion boundaries on emotion datasets with overlapping affective categories~\citep{demszky2020goemotions}. It also suggests that further accuracy gains may require richer representations (\eg, contextual embeddings from transformer models) rather than architectural scaling within the current feature space.
+
+\subsection{Interpretability and Deployment Feasibility}
+\label{sec:deploy}
+
+SVM offered high interpretability through its linear weight vector $w$, enabling direct feature importance analysis --- essential for clinical applications. XGBoost provided moderate interpretability via feature importance scores, while CNN and BiLSTM remained black-box classifiers. Table~\ref{tab:feasibility} summarises the deployment assessment: SVM achieved the best balance of latency, interpretability, and accuracy.
+
+\begin{table}[!htb]
+\centering
+\caption{Deployment feasibility assessment across models.}
+\label{tab:feasibility}
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Criterion} & \textbf{SVM} & \textbf{XGB} & \textbf{CNN} & \textbf{BiLSTM} \\
+\midrule
+Inference latency  & \cmark & \cmark & $\sim$ & \xmark \\
+Memory footprint   & $\sim$ & \cmark & \cmark & \cmark \\
+Interpretability   & \cmark & $\sim$ & \xmark & \xmark \\
+Accuracy           & $\sim$ & $\sim$ & $\sim$ & \cmark \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The deployment architecture described in Section~\ref{sec:algorithms} was validated in practice. Figure~\ref{fig:joy_demo} illustrates a sample prediction, where the input is classified as Joy with 94.4\% confidence alongside the full preprocessing trace. Additional screenshots are in Appendix~\ref{sec:app_ui} (Figures~\ref{fig:ui_overview}--\ref{fig:ui_about}).
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.85\linewidth]{img/joy.png}
+\caption{MindTrace web application --- sample prediction for the Joy emotion class (94.4\% confidence). The interface displays per-class probability scores and the complete NLP preprocessing pipeline trace.}
+\label{fig:joy_demo}
+\end{figure}

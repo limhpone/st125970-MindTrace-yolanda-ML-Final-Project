@@ -1,0 +1,31 @@
+% Additional packages for MindTrace paper
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{makecell}
+\usepackage{needspace}
+\usepackage{float}
+\usepackage{stfloats}   % improved figure* placement in twocolumn mode
+\usepackage{placeins}   % provides \FloatBarrier to prevent float drift
+\usepackage{enumitem}
+\usepackage{xspace}
+\usepackage{microtype}
+\usepackage{caption}
+\usepackage{amsmath}   % for align environment
+\usepackage{amssymb}   % for \checkmark
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, calc}
+
+% Tick and cross marks for feasibility table
+\newcommand{\cmark}{\checkmark}
+\newcommand{\xmark}{$\times$}
+
+% APA 7th author-year citation style
+\setcitestyle{authoryear,round,semicolon,aysep={,}}
+
+% Math operators
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+% Convenience command
+\newcommand{\paper}{MindTrace\xspace}

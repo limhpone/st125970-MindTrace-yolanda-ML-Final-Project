@@ -1,0 +1,67 @@
+% MindTrace: CVPR 2026 Template Format
+% Based on https://github.com/cvpr-org/author-kit/releases/tag/CVPR2026-v1
+
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+%%%%%%%%% PAPER TYPE
+\usepackage[pagenumbers]{cvpr} % Use pagenumbers for this version
+
+% Import additional packages
+\input{preamble}
+
+\definecolor{cvprblue}{rgb}{0.21,0.49,0.74}
+\usepackage[pagebackref,breaklinks,colorlinks,allcolors=cvprblue]{hyperref}
+
+%%%%%%%%% PAPER ID
+\def\paperID{125970}
+\def\confName{CVPR}
+\def\confYear{2026}
+
+%%%%%%%%% TITLE
+\title{MindTrace: Text Mining and NLP-Driven Emotion Prediction Using Machine Learning and Deep Learning Approaches}
+
+%%%%%%%%% AUTHORS
+\author{Aye Khin Khin Hpone (Yolanda Lim)\\
+Asian Institute of Technology\\
+Computer Science and Communication Technology\\
+Faculty of Advanced Science and Technology\\
+Pathum Thani, Thailand\\
+{\tt\small st125970@ait.asia}
+}
+
+\begin{document}
+\raggedbottom
+
+% ---- COVER PAGE (retained as-is from original) ----
+\input{sec/0_coverpage}
+
+% ---- CVPR-formatted content begins ----
+\maketitle
+\input{sec/1_abstract}
+\input{sec/2_introduction}
+\input{sec/3_literature_review}
+\input{sec/4_methodology}
+\input{sec/5_algorithms}
+\input{sec/6_preliminary_results}
+\input{sec/7_contribution}
+\input{sec/8_conclusion}
+
+\section*{Acknowledgement}
+The author would like to express sincere gratitude to Dr.\ Sein Minn for his supervision and guidance throughout this research, and to TA Rakshya Lama Moktan for her valuable support and feedback.
+
+\section*{Source Code Availability}
+\begin{itemize}[nosep]
+    \item \textbf{Source Code:} \url{https://github.com/limhpone/st125970-MindTrace-yolanda-ML-Final-Project.git}
+    \item \textbf{Live Deployment:} \url{http://192.41.170.112:5970/}
+    \item \textbf{YouTube Demo:} \url{https://youtu.be/BuqDFtVFqBw}
+\end{itemize}
+
+{
+    \small
+    \bibliographystyle{apalike}
+    \bibliography{references}
+}
+
+\input{sec/9_appendix}
+
+\end{document}

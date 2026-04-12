@@ -33,7 +33,7 @@ for res in ["stopwords", "wordnet", "omw-1.4"]:
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 
-# ── Emotion classes — label map from dataset (Table 3.1) ──────────────────────
+# ── Emotion classes — label map from dataset ─────────────────────────────────
 # 0=Sadness, 1=Joy, 2=Love, 3=Anger, 4=Fear, 5=Surprise
 LABEL_MAP = {0:"Sadness", 1:"Joy", 2:"Love", 3:"Anger", 4:"Fear", 5:"Surprise"}
 
@@ -53,7 +53,7 @@ EMOTION_META = {
                  "description":"A feeling of mild astonishment or unexpected discovery"},
 }
 
-# ── Negation words preserved — Section 3.4 of MindTrace thesis ───────────────
+# ── Negation words preserved — Section 3.3 of MindTrace thesis ───────────────
 # These carry emotional polarity and must NOT be removed as stopwords
 NEGATION_WORDS = {
     "not","never","no","nor","neither","nothing","nobody",
@@ -63,7 +63,7 @@ NEGATION_WORDS = {
 STOP_WORDS = set(stopwords.words("english")) - NEGATION_WORDS
 LEMMATIZER = WordNetLemmatizer()
 
-# Chat words / informal abbreviations — standardised per Section 3.4
+# Chat words / informal abbreviations — standardised per Section 3.3
 CHAT_WORDS = {
     "u":"you","r":"are","ur":"your","lol":"laugh out loud","omg":"oh my god",
     "brb":"be right back","btw":"by the way","idk":"i do not know",
@@ -92,14 +92,14 @@ CLASS_DISTRIBUTION = {
     "Anger":   {"count":57317, "pct":13.75,"note":"Mid-tier; distinct vocabulary aids separation"},
     "Fear":    {"count":47712, "pct":11.45,"note":"Often confused with Surprise due to overlap"},
     "Love":    {"count":34554, "pct":8.29, "note":"Minority class; requires balancing strategy"},
-    "Surprise":{"count":14872, "pct":3.59, "note":"Smallest — highest misclassification risk"},
+    "Surprise":{"count":14972, "pct":3.59, "note":"Smallest — highest misclassification risk"},
 }
 
-# ── NLP Preprocessing pipeline — Section 3.4 ─────────────────────────────────
+# ── NLP Preprocessing pipeline — Section 3.3 ─────────────────────────────────
 # This function MUST mirror train_pipeline.py exactly — any divergence = data leakage
 def clean_text(text: str) -> dict:
     """
-    Full NLP pipeline per MindTrace thesis Section 3.4.
+    Full NLP pipeline per MindTrace thesis Section 3.3.
     Returns both the cleaned text AND a trace of each step for the UI.
     """
     steps = {}

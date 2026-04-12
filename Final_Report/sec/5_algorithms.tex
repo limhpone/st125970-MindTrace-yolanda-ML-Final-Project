@@ -1,0 +1,74 @@
+\section{Classification Algorithms}
+\label{sec:algorithms}
+
+Four classification models were implemented and compared, selected to represent both traditional machine learning and deep learning approaches under unified preprocessing, data splits, and evaluation metrics. Table~\ref{tab:model_select} summarises the selection rationale and expected strengths of each model.
+
+\begin{table}[!htb]
+\centering
+\caption{Model selection rationale and expected characteristics.}
+\label{tab:model_select}
+\small
+\setlength{\tabcolsep}{2.5pt}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Model} & \textbf{Family} & \textbf{Selection Rationale} & \textbf{Reference} \\
+\midrule
+SVM & Linear ML & Strong baseline for sparse TF-IDF; interpretable & \citep{dzikovska2012using} \\
+XGBoost & Ensemble ML & Non-linear feature interactions; regularised & \citep{chen2016xgboost} \\
+CNN & Deep Learning & Local n-gram pattern extraction & \citep{hasan2019emotion} \\
+BiLSTM & Deep Learning & Bidirectional sequential context & \citep{sun2023bidirectional} \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\subsection{Support Vector Machine (SVM)}
+
+SVM served as a strong baseline classifier by maximising the margin between classes~\citep{dzikovska2012using}. The optimisation objective is defined as:
+\begin{equation}
+\min_{w, b} \;\frac{1}{2}\|w\|^2 + C \sum_{i} \xi_i
+\label{eq:svm}
+\end{equation}
+subject to $y_i(w \cdot x_i + b) \geq 1 - \xi_i$ and $\xi_i \geq 0$, where $w$ is the weight vector, $b$ is the bias term, $C$ is the regularisation parameter, and $\xi_i$ are slack variables permitting soft-margin classification.
+
+\subsection{Extreme Gradient Boosting (XGBoost)}
+
+XGBoost is applied as an ensemble learning method that minimises a regularised objective function~\citep{chen2016xgboost}:
+\begin{equation}
+\mathcal{L} = \sum_{i} l(y_i, \hat{y}_i) + \sum_{k} \Omega(f_k)
+\label{eq:xgboost}
+\end{equation}
+where $l$ is the loss function measuring prediction error, $\hat{y}_i$ is the predicted value, and $\Omega(f_k)$ is the regularisation term penalising model complexity.
+
+\subsection{Convolutional Neural Network (CNN)}
+
+CNN models extracted local n-gram features through convolution and pooling layers~\citep{hasan2019emotion}. For an input sequence $x_{1:n}$, a filter $w \in \mathbb{R}^{k \times d}$ of width $k$ produces a feature map; local max pooling then downsamples the sequence:
+\begin{align}
+c_i &= \text{ReLU}(w \cdot x_{i:i+k-1} + b) \label{eq:conv}\\
+p_j &= \max_{i \in \mathcal{R}_j}\, c_i \label{eq:maxpool}
+\end{align}
+where $b$ is a bias term, $x_{i:i+k-1}$ denotes concatenated embeddings over a $k$-word window, and $\mathcal{R}_j$ is the $j$-th pooling region (pool size\,=\,2). The architecture stacks two Conv1D--MaxPool--Dropout blocks (256$\rightarrow$128 filters, $k\!=\!5$), followed by a Dense(64, ReLU) layer and a softmax output layer.
+
+\subsection{Bidirectional LSTM (BiLSTM)}
+
+BiLSTM captured bidirectional contextual dependencies in sequential text by processing token sequences in both forward and backward directions~\citep{sun2023bidirectional}. Each LSTM unit computes:
+\begin{align}
+f_t &= \sigma(W_f [h_{t-1}, x_t] + b_f) \label{eq:forget}\\
+i_t &= \sigma(W_i [h_{t-1}, x_t] + b_i) \label{eq:input}\\
+\tilde{c}_t &= \tanh(W_c [h_{t-1}, x_t] + b_c) \label{eq:candidate}\\
+c_t &= f_t \odot c_{t-1} + i_t \odot \tilde{c}_t \label{eq:cell}\\
+o_t &= \sigma(W_o [h_{t-1}, x_t] + b_o) \label{eq:output_gate}\\
+h_t &= o_t \odot \tanh(c_t) \label{eq:hidden}
+\end{align}
+where $f_t$, $i_t$, $o_t$ are the forget, input, and output gates respectively, $c_t$ is the cell state, $\sigma$ is the sigmoid function, and $\odot$ denotes element-wise multiplication. The bidirectional variant concatenated forward and backward hidden states $h_t = [\overrightarrow{h_t}; \overleftarrow{h_t}]$ to capture both past and future context at each time step. Two stacked BiLSTM layers (256$\rightarrow$128 units) feed into Dense(128)$\rightarrow$Dense(64) fully-connected layers with ReLU activations and Dropout(0.5) after each layer.
+
+\subsection{Deployment Architecture}
+
+The best-performing classical model (SVM with TF-IDF vectoriser) was packaged as a Flask REST API, containerised with Docker, and automated via a GitHub Actions CI/CD pipeline for reproducible deployment. The inference endpoint accepts raw text, applies the same preprocessing pipeline used during training, and returns a predicted emotion label with class probability scores. Figure~\ref{fig:deployed_app} shows the deployed web interface.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.92\linewidth]{img/overview.png}
+\caption{MindTrace deployed web interface. Users enter text and receive a predicted emotion label with confidence scores.}
+\label{fig:deployed_app}
+\end{figure}

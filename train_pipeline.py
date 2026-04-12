@@ -71,7 +71,7 @@ from nltk.stem import WordNetLemmatizer
 # Dataset encoding: 0=Sadness, 1=Joy, 2=Love, 3=Anger, 4=Fear, 5=Surprise
 LABEL_MAP = {0: "Sadness", 1: "Joy", 2: "Love", 3: "Anger", 4: "Fear", 5: "Surprise"}
 
-# ── NEGATION WORDS — preserved from stopword removal (Section 3.4) ────────────
+# ── NEGATION WORDS — preserved from stopword removal (Section 3.3) ────────────
 # !! MUST be identical to the set in app.py !!
 NEGATION_WORDS = {
     "not", "never", "no", "nor", "neither", "nothing", "nobody",
@@ -98,7 +98,7 @@ CHAT_WORDS = {
 
 def clean_text(text: str) -> str:
     """
-    NLP preprocessing pipeline — Section 3.4 of MindTrace thesis.
+    NLP preprocessing pipeline — Section 3.3 of MindTrace thesis.
 
     Steps (must mirror app.py clean_text exactly):
       1. Lowercase
@@ -153,7 +153,7 @@ def load_and_balance(path: str, seed: int = 42) -> pd.DataFrame:
     for label_id, count in sorted(df["label"].value_counts().items()):
         print(f"        {LABEL_MAP[label_id]:<10} {count:>7,}")
 
-    # Downsample to minority class (Surprise ≈ 14,872)
+    # Downsample to minority class (Surprise ≈ 14,972)
     min_count = df["label"].value_counts().min()
     print(f"\n      Balancing: downsampling all classes to {min_count:,} samples")
     print(f"      (Original imbalance ratio ~9.5:1 → equalised)")
@@ -184,7 +184,7 @@ def main():
     df = load_and_balance(args.data)
 
     # ── Preprocess ────────────────────────────────────────────────────────────
-    print("\n[2/5] Preprocessing text (NLP pipeline — Section 3.4) …")
+    print("\n[2/5] Preprocessing text (NLP pipeline — Section 3.3) …")
     df["clean"] = df["text"].apply(clean_text)
     empty = (df["clean"].str.strip() == "").sum()
     if empty > 0:
