@@ -557,7 +557,7 @@ footer a{color:var(--g3);text-decoration:none;}
     <!-- NLP pipeline steps -->
     <div class="card card-p nlp-card">
       <div class="section-hdr">
-        <span class="section-title">NLP preprocessing pipeline — Section 3.3</span>
+        <span class="section-title">NLP preprocessing pipeline</span>
         <span class="section-line"></span>
       </div>
       <div class="nlp-steps" id="nlpSteps"></div>
@@ -585,7 +585,7 @@ footer a{color:var(--g3);text-decoration:none;}
 
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
     <div style="font-family:var(--mono);font-size:10.5px;color:var(--muted2);">
-      Empirical results — MindTrace thesis Tables 4 &amp; 9
+      Empirical results
     </div>
     <div class="live-pill"><div class="ldot"></div><span id="livePredCount">0 predictions this session</span></div>
   </div>
@@ -602,7 +602,7 @@ footer a{color:var(--g3);text-decoration:none;}
   <div class="chart-card">
     <div class="chart-hdr">
       <span class="ct">🔬 Model comparison — accuracy, precision, recall &amp; F1</span>
-      <span class="cn">Test set · 20% hold-out · Table 9</span>
+      <span class="cn">Test set · 20% hold-out</span>
     </div>
     <div style="position:relative;height:240px;"><canvas id="modelChart"></canvas></div>
   </div>
@@ -625,7 +625,7 @@ footer a{color:var(--g3);text-decoration:none;}
   <!-- class distribution — Table 4 -->
   <div class="chart-card" style="margin-top:14px;">
     <div class="chart-hdr">
-      <span class="ct">📊 Dataset class distribution — Table 4 (416,809 samples)</span>
+      <span class="ct">📊 Dataset class distribution (416,809 samples)</span>
       <span class="cn">Imbalance ratio 9.5:1 → macro-F1 evaluation required</span>
     </div>
     <div id="distBars" style="margin-bottom:16px;"></div>
@@ -635,7 +635,7 @@ footer a{color:var(--g3);text-decoration:none;}
   <!-- confusion pairs insight — Section 5.3 -->
   <div class="chart-card">
     <div class="chart-hdr">
-      <span class="ct">⚡ High-risk confusion pairs — Section 5.3</span>
+      <span class="ct">⚡ High-risk confusion pairs</span>
       <span class="cn">Semantically adjacent classes with vocabulary overlap</span>
     </div>
     <div class="conf-pairs">
@@ -643,14 +643,14 @@ footer a{color:var(--g3);text-decoration:none;}
         <div class="cp-em">😨😲</div>
         <div>
           <div class="cp-lbl">Fear ↔ Surprise</div>
-          <div class="cp-desc">Both involve unexpected stimuli and arousal. Vocabulary overlap drives highest inter-class confusion rate across all four models (Section 5.3).</div>
+          <div class="cp-desc">Both involve unexpected stimuli and arousal. Vocabulary overlap drives highest inter-class confusion rate across all four models.</div>
         </div>
       </div>
       <div class="cp">
         <div class="cp-em">😊❤️</div>
         <div>
           <div class="cp-lbl">Joy ↔ Love</div>
-          <div class="cp-desc">Shared positively-valenced vocabulary ("happy", "amazing") causes valence conflation — second highest confusion rate per confusion matrix analysis (Section 5.3).</div>
+          <div class="cp-desc">Shared positively-valenced vocabulary ("happy", "amazing") causes valence conflation — second highest confusion rate per confusion matrix analysis.</div>
         </div>
       </div>
     </div>
@@ -694,24 +694,24 @@ footer a{color:var(--g3);text-decoration:none;}
 <div id="tab-about" class="tab-panel" role="tabpanel" aria-labelledby="btn-about">
 
   <div class="rq-full">
-    <div class="rq-lbl">Research Question — Section 1.2</div>
+    <div class="rq-lbl">Research Question</div>
     <div class="rq-text">How do traditional ML models (SVM, XGBoost) compare with deep learning models (CNN, BiLSTM) in multi-class emotion classification from social media text, when evaluated under a unified preprocessing pipeline, standardised dataset partitioning, and consistent evaluation metrics?</div>
   </div>
 
   <div class="about-grid">
     <div class="about-card">
-      <div class="ab-title">Research Gap — Section 1.1</div>
+      <div class="ab-title">Research Gap</div>
       <div class="ab-text">Comparative analyses across studies frequently differ in dataset selection, preprocessing strategies, feature engineering, and evaluation metrics — making observed performance differences attributable to experimental inconsistencies rather than intrinsic model capabilities. This study fixes all conditions and varies only the model family.</div>
     </div>
     <div class="about-card">
-      <div class="ab-title">Dataset — Section 3.1</div>
+      <div class="ab-title">Dataset</div>
       <div class="ab-text">Kaggle Emotions dataset: 416,809 labelled Twitter samples across 6 classes (anger, joy, sadness, fear, surprise, love). Justified by: large sample size for statistical reliability, real-world informal language for ecological validity, and six-class taxonomy for fine-grained emotion analysis beyond binary sentiment polarity.</div>
     </div>
   </div>
 
   <div class="about-grid">
     <div class="about-card">
-      <div class="ab-title">NLP Pipeline — Section 3.3</div>
+      <div class="ab-title">NLP Pipeline</div>
       <ul class="step-list">
         <li><span class="sn">01</span>Lowercasing — normalise case</li>
         <li><span class="sn">02</span>Whitespace stripping — collapse multiple spaces</li>
@@ -724,7 +724,7 @@ footer a{color:var(--g3);text-decoration:none;}
       </ul>
     </div>
     <div class="about-card">
-      <div class="ab-title">Four Models — Section 4</div>
+      <div class="ab-title">Four Models</div>
       <div class="model-chips">
         <div class="mc"><span class="mc-name">BiLSTM</span><span class="mc-desc">Captures long-range bidirectional contextual dependencies; highest test accuracy 93.9%</span></div>
         <div class="mc"><span class="mc-name">CNN</span><span class="mc-desc">Extracts local n-gram features via convolution and pooling; test accuracy 92.5%</span></div>
@@ -736,7 +736,7 @@ footer a{color:var(--g3);text-decoration:none;}
 
   <div class="about-grid">
     <div class="about-card">
-      <div class="ab-title">Key EDA Findings — Section 3.2</div>
+      <div class="ab-title">Key EDA Findings</div>
       <ul class="step-list">
         <li><span class="sn">↳</span>Class imbalance 9.5:1 (Joy:Surprise) → macro-F1 evaluation required</li>
         <li><span class="sn">↳</span>Text length right-skewed; median 86 chars, concentrated 20–150</li>
@@ -796,9 +796,9 @@ const CLASS_DATA = [
 
 // Confusion pairs that trigger a note on the bars card
 const CONFUSION_PAIRS = {
-  Fear:     {with:'Surprise', note:'Fear and Surprise share arousal-based vocabulary — watch for confusion between these classes (Section 5.3).'},
+  Fear:     {with:'Surprise', note:'Fear and Surprise share arousal-based vocabulary — watch for confusion between these classes.'},
   Surprise: {with:'Fear',     note:'Surprise and Fear often overlap in informal text — check the probability bars carefully.'},
-  Joy:      {with:'Love',     note:'Joy and Love share positively-valenced vocabulary — a known confusion pair (valence conflation) per Section 5.3.'},
+  Joy:      {with:'Love',     note:'Joy and Love share positively-valenced vocabulary — a known confusion pair (valence conflation).'},
   Love:     {with:'Joy',      note:'Love and Joy overlap in shared positive vocabulary ("happy", "amazing") — watch for confusion.'},
 };
 
