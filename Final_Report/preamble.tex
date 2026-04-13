@@ -11,10 +11,16 @@
 \usepackage{xspace}
 \usepackage{microtype}
 \usepackage{caption}
+
+% Reduce spacing around floats and captions
+\setlength{\textfloatsep}{8pt plus 2pt minus 2pt}
+\setlength{\floatsep}{8pt plus 2pt minus 2pt}
+\setlength{\intextsep}{8pt plus 2pt minus 2pt}
+\setlength{\abovecaptionskip}{4pt}
+\setlength{\belowcaptionskip}{2pt}
+
 \usepackage{amsmath}   % for align environment
 \usepackage{amssymb}   % for \checkmark
-\usepackage{tikz}
-\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, calc}
 
 % Tick and cross marks for feasibility table
 \newcommand{\cmark}{\checkmark}

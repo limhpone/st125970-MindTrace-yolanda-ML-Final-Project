@@ -159,10 +159,16 @@ All models trained on the **same preprocessing pipeline** and **stratified datas
 
 The pipeline follows a controlled experimental design:
 
-1. **Preprocessing** — 8-step NLP pipeline applied identically across all models
-2. **Feature engineering** — TF-IDF for ML models (SVM, XGBoost); tokenisation + padding for DL models (CNN, BiLSTM)
-3. **Stratified split** — 80% train / 20% test, with 20% validation holdout from training
-4. **Training & evaluation** — All four models evaluated on the same test set using accuracy, precision, recall, and macro-F1
+1. **Exploratory Data Analysis** — Class distribution, text length statistics, and correlation analysis to inform design decisions
+2. **Class balancing** — Random downsampling to 14,972 samples per class (89,832 total)
+3. **Text preprocessing** — 8-step NLP pipeline including stopword removal with negation retention, lemmatisation, and chat-word expansion
+4. **Feature engineering** — TF-IDF (5k features, uni+bigrams) for ML models; tokenisation, padding, and trainable embedding (d=100) for DL models
+5. **Stratified split** — 80% train / 20% test, with 20% validation holdout from training (seed=42)
+6. **Hyperparameter tuning** — Grid search with 3-fold CV for ML models; EarlyStopping (patience=3) for DL models
+7. **Training & evaluation** — All four models evaluated on the same test set using Macro-F1 (primary), accuracy, precision, recall, and confusion matrix
+8. **Model selection** — Accuracy–latency trade-off and computational cost comparison
+9. **Ablation study** — Two complementary retrospective analyses: (A) SVM preprocessing ablation disabling each of the 8 pipeline steps individually, and (B) BiLSTM architecture ablation testing depth, dropout, and attention variants
+10. **Deployment** — SVM deployed via Flask REST API with Docker containerisation and GitHub Actions CI/CD
 
 ---
 
