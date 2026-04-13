@@ -742,7 +742,7 @@ footer a{color:var(--g3);text-decoration:none;}
         <li><span class="sn">↳</span>Text length right-skewed; median 86 chars, concentrated 20–150</li>
         <li><span class="sn">↳</span>text_length ↔ word_count correlation r = 0.984 (structurally redundant)</li>
         <li><span class="sn">↳</span>Label ↔ length correlation r &lt; 0.03 → semantic content is the primary signal</li>
-        <li><span class="sn">↳</span>Love class longest (median 94 chars); Anger shortest (median 84 chars)</li>
+        <li><span class="sn">↳</span>Love class longest (median 94 chars); Sadness shortest (median 81 chars)</li>
       </ul>
     </div>
     <div class="about-card">
@@ -1173,10 +1173,10 @@ function initCharts(){
     data:{
       labels:['Epoch 1','Epoch 2','Epoch 3','Epoch 4','Epoch 5','Epoch 6'],
       datasets:[
-        {label:'Train accuracy',data:[76.5,88.9,92.4,93.6,94.2,94.7],
+        {label:'Train accuracy',data:[60.4,93.0,94.7,95.3,95.6,95.9],
           borderColor:G,backgroundColor:G+'10',pointBackgroundColor:G,
           fill:true,tension:0.42,borderWidth:2.5,pointRadius:4},
-        {label:'Validation accuracy',data:[73.0,86.1,94.2,93.8,93.5,93.1],
+        {label:'Validation accuracy',data:[91.8,93.7,94.2,94.0,94.3,94.4],
           borderColor:T,backgroundColor:T+'10',pointBackgroundColor:T,
           fill:true,tension:0.42,borderWidth:2.5,borderDash:[6,3],pointRadius:4},
       ]

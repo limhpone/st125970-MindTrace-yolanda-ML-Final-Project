@@ -23,10 +23,10 @@ Figure~\ref{fig:confusion_matrices} presents the full set of confusion matrices.
 \centering
 \includegraphics[width=0.48\linewidth]{figures/bilstm_confusion_matrix.png}\hfill
 \includegraphics[width=0.48\linewidth]{figures/cnn_confusion_matrix.png}\\[4pt]
-{\small\hspace{0.24\linewidth}(a) BiLSTM\hfill(b) CNN\hspace{0.24\linewidth}}\\[8pt]
+\makebox[0.48\linewidth]{\small (a) BiLSTM}\hfill\makebox[0.48\linewidth]{\small (b) CNN}\\[8pt]
 \includegraphics[width=0.48\linewidth]{figures/svm_confusion_matrix.png}\hfill
 \includegraphics[width=0.48\linewidth]{figures/xgboost_confusion_matrix.png}\\[4pt]
-{\small\hspace{0.24\linewidth}(c) SVM\hfill(d) XGBoost\hspace{0.24\linewidth}}
+\makebox[0.48\linewidth]{\small (c) SVM}\hfill\makebox[0.48\linewidth]{\small (d) XGBoost}
 \caption{Confusion matrices for all four models on the balanced test set (17,967 samples). Joy$\leftrightarrow$Love and Fear$\rightarrow$Surprise misclassifications are consistent across architectures; XGBoost displays additional majority-class bias.}
 \label{fig:confusion_matrices}
 \end{figure}
@@ -35,13 +35,13 @@ Figure~\ref{fig:confusion_matrices} presents the full set of confusion matrices.
 \needspace{12\baselineskip}
 \subsection{Text Length and Word Count Distributions}
 
-Figure~\ref{fig:text_length} shows (a)~a right-skewed text length distribution concentrated between 20--150 characters (median 86, mean 97.0), and (b)~per-class word count variation where Love produces the longest posts (median 18 words) and Anger the shortest (median 15 words), informing the dynamic sequence padding strategy for DL models.
+Figure~\ref{fig:text_length} shows (a)~a right-skewed text length distribution concentrated between 20--150 characters (median 86, mean 97.0), and (b)~per-class word count variation where Love produces the longest posts (median 19 words) and Sadness the shortest (median 16 words), informing the dynamic sequence padding strategy for DL models.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.48\linewidth]{figures/text_length_wordcount_1.png}\hfill
 \includegraphics[width=0.48\linewidth]{figures/text_length_wordcount_2.png}\\[4pt]
-{\small\hspace{0.24\linewidth}(a) Text length histogram\hfill(b) Word count by emotion class\hspace{0.24\linewidth}}
+\makebox[0.48\linewidth]{\small (a) Text length histogram}\hfill\makebox[0.48\linewidth]{\small (b) Word count by emotion class}
 \caption{(a)~Text length distribution across the full 416,809-sample corpus. (b)~Word count boxplot by emotion class.}
 \label{fig:text_length}
 \label{fig:wordcount}
@@ -79,13 +79,13 @@ Figure~\ref{fig:wordclouds} highlights the most frequent tokens per emotion afte
 \centering
 \includegraphics[width=0.46\linewidth]{figures/wordcloud_anger.png}\hfill
 \includegraphics[width=0.46\linewidth]{figures/wordcloud_fear.png}\\[4pt]
-{\small\hspace{0.23\linewidth}(a) Anger\hfill(b) Fear\hspace{0.23\linewidth}}\\[8pt]
+\makebox[0.46\linewidth]{\small (a) Anger}\hfill\makebox[0.46\linewidth]{\small (b) Fear}\\[8pt]
 \includegraphics[width=0.46\linewidth]{figures/wordcloud_joy.png}\hfill
 \includegraphics[width=0.46\linewidth]{figures/wordcloud_love.png}\\[4pt]
-{\small\hspace{0.23\linewidth}(c) Joy\hfill(d) Love\hspace{0.23\linewidth}}\\[8pt]
+\makebox[0.46\linewidth]{\small (c) Joy}\hfill\makebox[0.46\linewidth]{\small (d) Love}\\[8pt]
 \includegraphics[width=0.46\linewidth]{figures/wordcloud_sadness.png}\hfill
 \includegraphics[width=0.46\linewidth]{figures/wordcloud_surprise.png}\\[4pt]
-{\small\hspace{0.23\linewidth}(e) Sadness\hfill(f) Surprise\hspace{0.23\linewidth}}
+\makebox[0.46\linewidth]{\small (e) Sadness}\hfill\makebox[0.46\linewidth]{\small (f) Surprise}
 \caption{Per-class word clouds from the preprocessed corpus. Joy and Love share positive vocabulary; Fear and Surprise share high-arousal tokens.}
 \label{fig:wordclouds}
 \end{figure}
@@ -106,7 +106,7 @@ Figure~\ref{fig:ui_overview} shows the default Predict tab and an Anger predicti
 \centering
 \includegraphics[width=0.48\linewidth]{img/overview.png}\hfill
 \includegraphics[width=0.48\linewidth]{img/Anger.png}\\[4pt]
-{\small\hspace{0.24\linewidth}(a) Default state\hfill(b) Anger --- 98.0\% confidence\hspace{0.24\linewidth}}
+\makebox[0.48\linewidth]{\small (a) Default state}\hfill\makebox[0.48\linewidth]{\small (b) Anger --- 98.0\% confidence}
 \caption{Predict tab --- (a)~default state with example sentences; (b)~Anger detected at 98.0\% confidence with preprocessing trace.}
 \label{fig:ui_overview}
 \label{fig:ui_anger}
@@ -116,7 +116,7 @@ Figure~\ref{fig:ui_overview} shows the default Predict tab and an Anger predicti
 \centering
 \includegraphics[width=0.48\linewidth]{img/love.png}\hfill
 \includegraphics[width=0.48\linewidth]{img/sadness.png}\\[4pt]
-{\small\hspace{0.24\linewidth}(a) Love --- 83.3\% confidence\hfill(b) Sadness --- 98.9\% confidence\hspace{0.24\linewidth}}
+\makebox[0.48\linewidth]{\small (a) Love --- 83.3\% confidence}\hfill\makebox[0.48\linewidth]{\small (b) Sadness --- 98.9\% confidence}
 \caption{Predict tab --- (a)~Love detected at 83.3\% confidence (Joy runner-up at 16.4\%); (b)~Sadness detected at 98.9\% confidence.}
 \label{fig:ui_love}
 \label{fig:ui_sadness}
@@ -131,7 +131,7 @@ Figure~\ref{fig:ui_dashboard} presents the model performance dashboard with accu
 \centering
 \includegraphics[width=0.48\linewidth]{img/dashboard.png}\hfill
 \includegraphics[width=0.48\linewidth]{img/dashboard_2.png}\\[4pt]
-{\small\hspace{0.24\linewidth}(a) Upper section\hfill(b) Lower section\hspace{0.24\linewidth}}
+\makebox[0.48\linewidth]{\small (a) Upper section}\hfill\makebox[0.48\linewidth]{\small (b) Lower section}
 \caption{Dashboard tab --- (a)~summary statistics, model comparison bar chart, results table, and radar chart; (b)~class distribution, high-risk confusion pairs, and BiLSTM training curves.}
 \label{fig:ui_dashboard}
 \label{fig:ui_dashboard2}

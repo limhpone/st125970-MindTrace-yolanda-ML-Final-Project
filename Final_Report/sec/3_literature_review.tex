@@ -5,7 +5,7 @@
 \centering
 \caption{Summary of representative prior studies --- dataset, models, performance, and experimental gaps.}
 \label{tab:prior_work}
-\scriptsize
+\footnotesize
 \setlength{\tabcolsep}{4pt}
 \begin{tabular}{@{}p{3.2cm}p{3.2cm}p{2.8cm}cp{4.2cm}@{}}
 \toprule
@@ -16,6 +16,8 @@
 \citet{demszky2020goemotions} & GoEmotions --- Reddit (27 cls, 58K) & BERT fine-tuned & 0.46 macro & Different domain; 27 classes \\
 \citet{sun2023bidirectional} & Twitter sentiment & BiLSTM & $\sim$0.85 acc. & Accuracy-only; inconsistent preproc. \\
 \citet{acheampong2021transformer} & Multiple benchmarks & BERT (survey) & N/A & Survey only; no unified comparison \\
+\citet{rezapour2024emotion} & Social media text & Transformer variants & --- & Preprocessing can hurt transformers; no controlled comparison \\
+\citet{almalki2025sentiment} & Multi-platform & XLM-R, mBERT, T5 & $\sim$0.90 & High computational cost; heterogeneous eval. \\
 \midrule
 \textbf{This Study} & \textbf{Kaggle Twitter (6 cls, 416K)} & \textbf{SVM, XGBoost, CNN, BiLSTM} & \textbf{0.94} & \textbf{Unified pipeline; macro-F1 eval.} \\
 \bottomrule
@@ -24,4 +26,4 @@
 
 Emotion detection research has progressed from lexicon-based methods~\citep{mohammad2013crowdsourcing, strapparava2008learning} to machine learning and deep learning architectures. Traditional ML models such as SVM and Na\"ive Bayes perform well on structured data with TF-IDF features but cannot capture sequential context~\citep{dzikovska2012using, wang2018emotion}. Deep learning methods --- including CNNs for local n-gram feature extraction~\citep{hasan2019emotion} and BiLSTMs for long-range sequential dependencies~\citep{sun2023bidirectional} --- learn contextual patterns directly from text. XGBoost provides a strong non-linear baseline through gradient boosting with L1/L2 regularisation~\citep{chen2016xgboost}. More recently, transformer-based models such as BERT achieve state-of-the-art results through contextual embeddings, though at substantially higher computational cost~\citep{acheampong2021transformer, devlin2019bert}. Across these approaches, class imbalance and inconsistent evaluation remain persistent challenges~\citep{nandwani2021review}.
 
-Table~\ref{tab:prior_work} summarises representative studies, highlighting datasets, models, performance, and experimental gaps. To the best of our knowledge, no prior work evaluates SVM, XGBoost, CNN, and BiLSTM on the same large-scale Twitter corpus under identical preprocessing, stratified splits, and macro-F1 evaluation. This study fills that gap through a controlled comparison of classical and sequence-based architectures under a unified experimental framework.
+Table~\ref{tab:prior_work} summarises representative studies, highlighting datasets, models, performance, and experimental gaps. Recent studies have demonstrated strong performance using transformer-based and large language models~\citep{rezapour2024emotion, almalki2025sentiment, khan2026hybrid}; however, these approaches often require substantial computational resources and are typically evaluated under heterogeneous experimental settings. This study instead focuses on a controlled and reproducible comparison of classical and deep learning models under a unified pipeline to isolate the effect of model architecture.

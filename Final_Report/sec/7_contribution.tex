@@ -33,7 +33,7 @@ The SVM baseline (linear kernel, $C = 1$, TF-IDF with 5,000 features) was retrai
 
 \begin{table}[!htb]
 \centering
-\caption[Part~A results]{Part~A results --- SVM test-set performance when each preprocessing step is removed. $\Delta$\,Acc and $\Delta$\,F1 are relative to the full-pipeline baseline.\protect\footnotemark}
+\caption[Part~A results]{Part~A results --- SVM test-set performance when each preprocessing step is removed. $\Delta$\,Acc and $\Delta$\,F1 are relative to the full-pipeline baseline.}
 \label{tab:ablation_results_a}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
@@ -41,22 +41,19 @@ The SVM baseline (linear kernel, $C = 1$, TF-IDF with 5,000 features) was retrai
 \toprule
 \textbf{\#} & \textbf{Config} & \textbf{Acc\,(\%)} & \textbf{F1\,(\%)} & \textbf{$\Delta$\,Acc} & \textbf{$\Delta$\,F1} \\
 \midrule
-0 & Full pipeline       & 91.80 & 91.75 & 0.00   & 0.00   \\
-1 & $-$ Lowercase       & 91.80 & 91.75 & 0.00   & 0.00   \\
-2 & $-$ Whitespace      & 91.80 & 91.75 & 0.00   & 0.00   \\
-3 & $-$ URL removal     & 91.78 & 91.73 & $-$0.02 & $-$0.02 \\
-4 & $-$ Emoji removal   & 91.80 & 91.75 & 0.00   & 0.00   \\
-5 & $-$ Special chars   & 91.80 & 91.75 & 0.00   & 0.00   \\
-6 & $-$ Chat-word       & 91.77 & 91.72 & $-$0.03 & $-$0.03 \\
-7 & $-$ Stopwords       & 90.47 & 90.40 & $-$1.33 & $-$1.35 \\
-8 & $-$ Lemmatisation   & 91.70 & 91.66 & $-$0.10 & $-$0.09 \\
-9 & Raw text            & 90.38 & 90.32 & $-$1.42 & $-$1.43 \\
+0 & Full pipeline       & 91.97 & 91.91 & 0.00   & 0.00   \\
+1 & $-$ Lowercase       & 91.97 & 91.91 & 0.00   & 0.00   \\
+2 & $-$ Whitespace      & 91.97 & 91.91 & 0.00   & 0.00   \\
+3 & $-$ URL removal     & 91.95 & 91.89 & $-$0.02 & $-$0.02 \\
+4 & $-$ Emoji removal   & 91.97 & 91.91 & 0.00   & 0.00   \\
+5 & $-$ Special chars   & 91.97 & 91.91 & 0.00   & 0.00   \\
+6 & $-$ Chat-word       & 91.94 & 91.88 & $-$0.03 & $-$0.03 \\
+7 & $-$ Stopwords       & 90.64 & 90.56 & $-$1.33 & $-$1.35 \\
+8 & $-$ Lemmatisation   & 91.87 & 91.82 & $-$0.10 & $-$0.09 \\
+9 & Raw text            & 90.55 & 90.48 & $-$1.42 & $-$1.43 \\
 \bottomrule
 \end{tabular}
 \end{table}
-\footnotetext{Absolute values are anchored to the main-experiment SVM baseline (91.80\%, Table~\ref{tab:results}) for consistency. The ablation notebook's independent retrain yielded a marginally different baseline (91.97\%); all $\Delta$ values are computed from that run and are therefore exact.}
-
-Removing \textbf{stopword removal} caused the largest single-step accuracy drop ($-1.33$\,pp), confirming that retaining semantically meaningful function words while removing noise tokens is critical for TF-IDF performance. \textbf{Lemmatisation} was the second most impactful step ($-0.10$\,pp), consolidating morphological variants into shared stems. Four steps (lowercasing, whitespace stripping, emoji removal, special character removal) had zero measurable impact on this corpus, likely because the TF-IDF vocabulary already absorbed their effects. Using raw text without preprocessing reduced accuracy by $1.42$\,pp, underscoring the cumulative value of the full pipeline. Figure~\ref{fig:ablation_svm} visualises the per-step impact; an alternative Accuracy-vs-F1 view is in Appendix Figure~\ref{fig:ablation_svm_f1}.
 
 \begin{figure}[!htb]
 \centering
@@ -64,6 +61,8 @@ Removing \textbf{stopword removal} caused the largest single-step accuracy drop 
 \caption{Part~A: SVM test accuracy per ablation configuration (left) and per-step $\Delta$\,accuracy from the full-pipeline baseline (right).}
 \label{fig:ablation_svm}
 \end{figure}
+
+Removing \textbf{stopword removal} caused the largest single-step accuracy drop ($-1.33$\,pp), confirming that retaining semantically meaningful function words while removing noise tokens is critical for TF-IDF performance. \textbf{Lemmatisation} was the second most impactful step ($-0.10$\,pp), consolidating morphological variants into shared stems. Four steps (lowercasing, whitespace stripping, emoji removal, special character removal) had zero measurable impact on this corpus, likely because the TF-IDF vocabulary already absorbed their effects. Using raw text without preprocessing reduced accuracy by $1.42$\,pp, underscoring the cumulative value of the full pipeline. Figure~\ref{fig:ablation_svm} visualises the per-step impact; an alternative Accuracy-vs-F1 view is in Appendix Figure~\ref{fig:ablation_svm_f1}.
 
 \FloatBarrier
 \subsection{Part B --- BiLSTM Architecture Ablation}
@@ -101,14 +100,14 @@ The BiLSTM baseline (2$\times$BiLSTM 256$\rightarrow$128, embedding~dim\,=\,100,
 \toprule
 \textbf{\#} & \textbf{Config} & \textbf{Acc\,(\%)} & \textbf{F1\,(\%)} & \textbf{$\Delta$\,Acc} & \textbf{$\Delta$\,F1} \\
 \midrule
-0 & Baseline            & 93.93 & 93.91 & 0.00   & 0.00   \\
-1 & 1-layer (256)       & 92.71 & 92.71 & $-$1.22 & $-$1.20 \\
-2 & 128$\rightarrow$64  & 93.61 & 93.61 & $-$0.32 & $-$0.30 \\
-3 & 512$\rightarrow$256 & 94.22 & 94.23 & $+$0.29 & $+$0.32 \\
-4 & Dropout 0.3         & 93.58 & 93.59 & $-$0.35 & $-$0.32 \\
-5 & Dropout 0.7         & 93.44 & 93.41 & $-$0.49 & $-$0.50 \\
-6 & Emb dim 50          & 93.39 & 93.41 & $-$0.54 & $-$0.50 \\
-7 & Emb dim 200         & 94.02 & 94.03 & $+$0.09 & $+$0.12 \\
+0 & Baseline            & 94.38 & 94.33 & 0.00   & 0.00   \\
+1 & 1-layer (256)       & 93.16 & 93.13 & $-$1.22 & $-$1.20 \\
+2 & 128$\rightarrow$64  & 94.06 & 94.03 & $-$0.32 & $-$0.30 \\
+3 & 512$\rightarrow$256 & 94.67 & 94.65 & $+$0.29 & $+$0.32 \\
+4 & Dropout 0.3         & 94.03 & 94.01 & $-$0.35 & $-$0.32 \\
+5 & Dropout 0.7         & 93.89 & 93.83 & $-$0.49 & $-$0.50 \\
+6 & Emb dim 50          & 93.84 & 93.83 & $-$0.54 & $-$0.50 \\
+7 & Emb dim 200         & 94.47 & 94.45 & $+$0.09 & $+$0.12 \\
 \bottomrule
 \end{tabular}
 \end{table}

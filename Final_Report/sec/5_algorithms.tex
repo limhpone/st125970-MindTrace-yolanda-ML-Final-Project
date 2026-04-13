@@ -47,7 +47,7 @@ CNN models extracted local n-gram features through convolution and pooling layer
 c_i &= \text{ReLU}(w \cdot x_{i:i+k-1} + b) \label{eq:conv}\\
 p_j &= \max_{i \in \mathcal{R}_j}\, c_i \label{eq:maxpool}
 \end{align}
-where $b$ is a bias term, $x_{i:i+k-1}$ denotes concatenated embeddings over a $k$-word window, and $\mathcal{R}_j$ is the $j$-th pooling region (pool size\,=\,2). The architecture stacks two Conv1D--MaxPool--Dropout blocks (256$\rightarrow$128 filters, $k\!=\!5$), followed by a Dense(64, ReLU) layer and a softmax output layer. Figure~\ref{fig:cnn_arch} illustrates the general CNN architecture.
+where $b$ is a bias term, $x_{i:i+k-1}$ denotes concatenated embeddings over a $k$-word window, and $\mathcal{R}_j$ is the $j$-th pooling region (pool size\,=\,2). The architecture stacks two Conv1D--MaxPool blocks (256$\rightarrow$128 filters, $k\!=\!5$) with two Dropout(0.5) layers, followed by a Dense(64, ReLU) layer and a softmax output layer. Figure~\ref{fig:cnn_arch} illustrates the general CNN architecture.
 
 \begin{figure}[!htb]
 \centering
@@ -86,7 +86,7 @@ The best-performing classical model (SVM with TF-IDF vectoriser) was packaged as
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.52\linewidth]{img/overview.png}
+\includegraphics[width=0.72\linewidth]{img/overview.png}
 \vspace{4pt}
 \caption{MindTrace deployed web interface. Users enter text and receive a predicted emotion label with confidence scores.}
 \label{fig:deployed_app}

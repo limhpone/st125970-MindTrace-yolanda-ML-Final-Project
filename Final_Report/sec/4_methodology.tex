@@ -31,7 +31,7 @@ The label encoding follows: 0\,=\,Sadness, 1\,=\,Joy, 2\,=\,Love, 3\,=\,Anger, 4
 \centering
 \caption{Sample records from the Kaggle Emotions Dataset.}
 \label{tab:sample_records}
-\scriptsize
+\footnotesize
 \setlength{\tabcolsep}{3pt}
 \begin{tabular}{@{}clc@{}}
 \toprule
@@ -79,7 +79,7 @@ Figure~\ref{fig:class_dist} and Table~\ref{tab:class_dist} show the class distri
 \end{tabular}
 \end{table}
 
-Table~\ref{tab:eda_summary} summarises per-class text length statistics. Posts are concentrated between 20--150 characters (right-skewed), with Love producing the longest posts (median 94 chars) and Anger the shortest (median 84). These statistics informed maximum sequence length and padding strategies for DL models. A Pearson correlation analysis confirmed strong redundancy between \texttt{text\_length} and \texttt{word\_count} ($r = 0.984$), while correlation between label encoding and length features was near-zero ($r < 0.03$), confirming that classification depends on semantic content rather than message length. Full distribution plots are in Appendix~\ref{sec:appendix} (Figures~\ref{fig:text_length} and~\ref{fig:correlation_matrix}).
+Table~\ref{tab:eda_summary} summarises per-class text length statistics. Posts are concentrated between 20--150 characters (right-skewed), with Love producing the longest posts (median 94 chars) and Sadness the shortest (median 81). These statistics informed maximum sequence length and padding strategies for DL models. A Pearson correlation analysis confirmed strong redundancy between \texttt{text\_length} and \texttt{word\_count} ($r = 0.984$), while correlation between label encoding and length features was near-zero ($r < 0.03$), confirming that classification depends on semantic content rather than message length. Full distribution plots are in Appendix~\ref{sec:appendix} (Figures~\ref{fig:text_length} and~\ref{fig:correlation_matrix}).
 
 \begin{table}[!htb]
 \centering
@@ -91,12 +91,12 @@ Table~\ref{tab:eda_summary} summarises per-class text length statistics. Posts a
 \toprule
 \textbf{Emotion} & \textbf{Min} & \textbf{Max} & \textbf{Mean} & \textbf{Median} \\
 \midrule
-Joy       & 2 & 465 & 93.4 & 85 \\
-Sadness   & 2 & 493 & 99.2 & 88 \\
-Anger     & 2 & 478 & 94.8 & 84 \\
-Fear      & 3 & 487 & 101.6 & 90 \\
-Love      & 3 & 471 & 104.3 & 94 \\
-Surprise  & 3 & 459 & 98.7 & 87 \\
+Joy       & 2 & 465 & 98.8 & 88 \\
+Sadness   & 2 & 493 & 93.1 & 81 \\
+Anger     & 2 & 478 & 96.0 & 84 \\
+Fear      & 3 & 487 & 96.7 & 85 \\
+Love      & 3 & 471 & 104.7 & 94 \\
+Surprise  & 3 & 459 & 99.7 & 89 \\
 \midrule
 \textbf{Overall} & 2 & 493 & 97.0 & 86 \\
 \bottomrule
