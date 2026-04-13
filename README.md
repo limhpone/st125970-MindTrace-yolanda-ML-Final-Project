@@ -31,20 +31,30 @@ Computer Science · Asian Institute of Technology
 
 ## Table of Contents
 
-- [Research Question](#research-question)
-- [Highlights](#highlights)
-- [Model Performance](#model-performance)
-- [Dataset](#dataset)
-- [Methodology](#methodology)
-- [NLP Preprocessing Pipeline](#nlp-preprocessing-pipeline)
-- [Project Structure](#project-structure)
-- [Quick Start](#quick-start)
-- [API Reference](#api-reference)
-- [Web UI](#web-ui)
-- [Environment Variables](#environment-variables)
-- [Dependencies](#dependencies)
-- [Reproducing Results](#reproducing-results)
-- [Citation & Acknowledgements](#citation--acknowledgements)
+- [🧠 MindTrace](#-mindtrace)
+    - [Text Mining \& NLP-Driven Emotion Prediction](#text-mining--nlp-driven-emotion-prediction)
+  - [Table of Contents](#table-of-contents)
+  - [Research Question](#research-question)
+  - [Highlights](#highlights)
+  - [Model Performance](#model-performance)
+  - [Dataset](#dataset)
+    - [Web Application](#web-application)
+  - [Methodology](#methodology)
+  - [NLP Preprocessing Pipeline](#nlp-preprocessing-pipeline)
+  - [Project Structure](#project-structure)
+  - [Quick Start](#quick-start)
+    - [Option 1 — Local Python](#option-1--local-python)
+    - [Option 2 — Docker (build locally)](#option-2--docker-build-locally)
+    - [Option 3 — Docker Hub (no build required)](#option-3--docker-hub-no-build-required)
+  - [API Reference](#api-reference)
+    - [`POST /predict`](#post-predict)
+    - [`GET /stats`](#get-stats)
+    - [`GET /health`](#get-health)
+  - [Web UI](#web-ui)
+  - [Environment Variables](#environment-variables)
+  - [Dependencies](#dependencies)
+  - [Reproducing Results](#reproducing-results)
+  - [Citation \& Acknowledgements](#citation--acknowledgements)
 
 ---
 
@@ -109,33 +119,27 @@ All models trained on the **same preprocessing pipeline** and **stratified datas
 
 ---
 
-### Screenshots
-
-<details>
-<summary><strong>Click to expand screenshots</strong></summary>
-
-<br>
-
-**Overview & About**
-
-<p align="center">
-  <img src="Final_Report/img/overview.png" alt="MindTrace overview" width="47%">
-  <img src="Final_Report/img/about.png" alt="About section" width="47%">
-</p>
-
-**Dashboard**
-
-<p align="center">
-  <img src="Final_Report/img/dashboard_overview.png" alt="Dashboard — KPIs and model comparison" width="47%">
-  <img src="Final_Report/img/dashboard.png" alt="Dashboard — radar and performance table" width="47%">
-</p>
-
-**Emotion Predictions**
+### Web Application
 
 <p align="center">
   <img src="Final_Report/img/joy.png" alt="Joy prediction" width="31%">
   <img src="Final_Report/img/love.png" alt="Love prediction" width="31%">
   <img src="Final_Report/img/sadness.png" alt="Sadness prediction" width="31%">
+</p>
+
+<details>
+<summary><strong>View more screenshots</strong></summary>
+
+<br>
+
+<p align="center">
+  <img src="Final_Report/img/overview.png" alt="MindTrace — Predict tab" width="47%">
+  <img src="Final_Report/img/about.png" alt="About section" width="47%">
+</p>
+
+<p align="center">
+  <img src="Final_Report/img/dashboard_overview.png" alt="Dashboard — KPIs and model comparison" width="47%">
+  <img src="Final_Report/img/dashboard.png" alt="Dashboard — radar and performance table" width="47%">
 </p>
 
 <p align="center">
