@@ -11,7 +11,7 @@
 \section{Supplementary Materials}
 \label{sec:appendix}
 
-This appendix provides supplementary visualisations referenced in the main text, organised into five sections: (A.1)~confusion matrices for all four models, (A.2)~EDA distribution plots, (A.3)~the detailed process flow diagram, (A.4)~per-class word clouds, and (A.5)~web application interface screenshots.
+This appendix provides supplementary visualisations referenced in the main text, organised into six sections: (A.1)~confusion matrices for all four models, (A.2)~EDA distribution plots, (A.3)~the detailed process flow diagram, (A.4)~per-class word clouds, (A.5)~web application interface screenshots, and (A.6)~ablation study visualisations.
 
 %% ── A.1  Confusion Matrices ──
 \needspace{20\baselineskip}
@@ -45,6 +45,15 @@ Figure~\ref{fig:text_length} shows (a)~a right-skewed text length distribution c
 \caption{(a)~Text length distribution across the full 416,809-sample corpus. (b)~Word count boxplot by emotion class.}
 \label{fig:text_length}
 \label{fig:wordcount}
+\end{figure}
+
+Figure~\ref{fig:correlation_matrix} shows a Pearson correlation heatmap of the numeric features in the dataset. Text length and word count are near-perfectly correlated ($r=0.98$), while neither correlates with the encoded label ($r=0.02$), confirming that surface-level length statistics carry negligible class-discriminative signal.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.55\linewidth]{figures/correlation_matrix.png}
+\caption{Correlation matrix of numeric features. Text length and word count are highly correlated ($r=0.98$); neither correlates with the emotion label.}
+\label{fig:correlation_matrix}
 \end{figure}
 
 %% ── A.3  Process Flow ──
@@ -86,7 +95,7 @@ Figure~\ref{fig:wordclouds} highlights the most frequent tokens per emotion afte
 \subsection{Web Application Interface}
 \label{sec:app_ui}
 
-The deployed MindTrace web application provides three main views: a Predict tab for real-time emotion classification, a Dashboard tab for model performance analytics, and an About tab summarising the research methodology.
+The deployed MindTrace web application provides four main views: a Predict tab for real-time emotion classification, a Dashboard tab for model performance analytics, a History tab displaying the session prediction log with per-emotion summary chips and a clear-all function, and an About tab summarising the research methodology.
 
 \needspace{8\baselineskip}
 \subsubsection{Predict Tab}
@@ -138,4 +147,25 @@ Figure~\ref{fig:ui_about} presents the About page summarising the research quest
 \includegraphics[width=0.7\linewidth]{img/Aboutsection_whole.png}
 \caption{About tab --- full-page view summarising the research methodology, dataset, models, EDA findings, and contributions.}
 \label{fig:ui_about}
+\end{figure}
+
+%% ── A.6  Ablation Study Visualisations ──
+\clearpage
+\subsection{Ablation Study Visualisations}
+\label{sec:ablation_viz}
+
+Figures~\ref{fig:ablation_svm_f1} and~\ref{fig:ablation_bilstm_f1} complement the tabular ablation results in Section~\ref{sec:ablation}. Dashed lines indicate the baseline (full-pipeline) score; bars that fall below the line quantify each preprocessing step's contribution.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\linewidth]{figures/ablation_study_f1.png}
+\caption{SVM ablation --- Accuracy and Macro-F1 across preprocessing configurations. Stopword removal and the no-preprocessing control show the largest drops from the full-pipeline baseline.}
+\label{fig:ablation_svm_f1}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\linewidth]{figures/ablation_bilstm_f1.png}
+\caption{BiLSTM ablation --- Accuracy and Macro-F1 across architecture variants. Reducing depth to a single layer causes the largest performance loss; the larger 512$\to$256 variant slightly exceeds the baseline.}
+\label{fig:ablation_bilstm_f1}
 \end{figure}

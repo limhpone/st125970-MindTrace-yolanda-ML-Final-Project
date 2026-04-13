@@ -79,7 +79,7 @@ Figure~\ref{fig:class_dist} and Table~\ref{tab:class_dist} show the class distri
 \end{tabular}
 \end{table}
 
-Table~\ref{tab:eda_summary} summarises per-class text length statistics. Posts are concentrated between 20--150 characters (right-skewed), with Love producing the longest posts (median 94 chars) and Anger the shortest (median 84). These statistics informed maximum sequence length and padding strategies for DL models. A Pearson correlation analysis confirmed strong redundancy between \texttt{text\_length} and \texttt{word\_count} ($r = 0.984$), while correlation between label encoding and length features was near-zero ($r < 0.03$), confirming that classification depends on semantic content rather than message length. Full distribution plots are in Appendix~\ref{sec:appendix} (Figure~\ref{fig:text_length}).
+Table~\ref{tab:eda_summary} summarises per-class text length statistics. Posts are concentrated between 20--150 characters (right-skewed), with Love producing the longest posts (median 94 chars) and Anger the shortest (median 84). These statistics informed maximum sequence length and padding strategies for DL models. A Pearson correlation analysis confirmed strong redundancy between \texttt{text\_length} and \texttt{word\_count} ($r = 0.984$), while correlation between label encoding and length features was near-zero ($r < 0.03$), confirming that classification depends on semantic content rather than message length. Full distribution plots are in Appendix~\ref{sec:appendix} (Figures~\ref{fig:text_length} and~\ref{fig:correlation_matrix}).
 
 \begin{table}[!htb]
 \centering
@@ -105,7 +105,7 @@ Surprise  & 3 & 459 & 98.7 & 87 \\
 
 \subsection{System Architecture}
 
-The methodology followed a structured NLP workflow: preprocessing $\rightarrow$ feature extraction $\rightarrow$ model development $\rightarrow$ evaluation $\rightarrow$ deployment. The full pipeline is illustrated in Figure~\ref{fig:pipeline}.
+The methodology followed a structured NLP workflow: preprocessing $\rightarrow$ feature extraction $\rightarrow$ model development $\rightarrow$ evaluation $\rightarrow$ deployment. The full pipeline is illustrated in Figure~\ref{fig:pipeline}; Appendix Figure~\ref{fig:process_flow} provides a more detailed process-flow view of the same system.
 
 \textbf{Preprocessing.} An eight-step NLP pipeline normalised raw text prior to feature extraction. Table~\ref{tab:preproc_steps} details each step and its rationale. Stopword removal used the NLTK English stopword list; however, negation words and intensifiers (\eg, ``not'', ``never'', ``very'', ``extremely'') were retained via a custom exception list, as these tokens carry direct emotional polarity and their removal would cause loss of discriminative signal. Class imbalance was addressed through random downsampling to the minority-class size ($\approx$14,972 per class, 89,832 total). Downsampling was chosen for experimental simplicity and to ensure equal class representation; however, it discards approximately 78\% of the data, and alternatives such as class weighting or SMOTE may yield better generalisation.
 
@@ -164,7 +164,7 @@ Seq.\ info  & Lost (bag-of-words)       & Preserved (padding) \\
 \end{equation}
 where $\text{TF}(t,d)$ is the term frequency, $\text{DF}(t)$ is the document frequency, and $N$ is the total number of documents. For deep learning models, an embedding layer converts tokens into dense vector representations.
 
-\textbf{Data Splitting.} The dataset was split 80\% training / 20\% testing with a 20\% validation holdout from training data, using stratified sampling to preserve class proportions. After downsampling (89,832 total samples), this yielded 57,492 training, 14,373 validation, and 17,967 test samples.
+\textbf{Data Splitting.} The dataset was split 80\% training / 20\% testing with a 20\% validation holdout from training data, using stratified sampling to preserve class proportions. After downsampling (89,832 total samples), this yielded 57,492 training, 14,373 validation, and 17,967 test samples. Although this single stratified split ensured controlled comparison across all model families, the resulting estimates may remain split-dependent; future work should incorporate $k$-fold cross-validation for more robust performance estimation.
 
 \textbf{Evaluation Metrics.} Model performance was evaluated using precision, recall, per-class F1, macro-averaged F1 ($K=6$ classes), and accuracy:
 \begin{align}

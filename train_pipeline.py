@@ -197,7 +197,7 @@ def main():
         X, y, test_size=0.20, random_state=42, stratify=y
     )
     X_tr, X_val, y_tr, y_val = train_test_split(
-        X_train, y_train, test_size=0.20, random_state=0, stratify=y_train
+        X_train, y_train, test_size=0.20, random_state=42, stratify=y_train
     )
     print(f"      Train: {len(X_tr):,}  |  Val: {len(X_val):,}  |  Test: {len(X_test):,}")
 

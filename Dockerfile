@@ -4,7 +4,7 @@
 
 FROM python:3.11-slim
 
-LABEL maintainer="ST125970@ait.ac.th"
+LABEL maintainer="st125970@ait.asia"
 LABEL description="MindTrace — Emotion Prediction from Text"
 LABEL author="Aye Khin Khin Hpone (Yolanda Lim)"
 

@@ -6,7 +6,7 @@ All four models were trained and evaluated on the class-balanced dataset (89,832
 \subsection{Overall Performance Comparison}
 \label{sec:perf}
 
-Table~\ref{tab:results} summarises the test-set performance. BiLSTM outperformed all models ($+1.39$\,pp over CNN, $+2.13$\,pp over SVM, $+3.14$\,pp over XGBoost in accuracy). The ranking BiLSTM $>$ CNN $>$ SVM $>$ XGBoost indicates that sequential context modelling provides a measurable advantage over local feature extraction and bag-of-words approaches.
+Table~\ref{tab:results} summarises the test-set performance. BiLSTM outperformed all models ($+1.39$\,pp over CNN, $+2.13$\,pp over SVM, $+3.14$\,pp over XGBoost in accuracy). The ranking BiLSTM $>$ CNN $>$ SVM $>$ XGBoost indicates that sequential context modelling provides a measurable advantage over local feature extraction and bag-of-words approaches. However, no statistical significance testing was conducted, so these differences should be interpreted cautiously.
 
 \begin{table}[!htb]
 \centering
@@ -35,21 +35,25 @@ Table~\ref{tab:hyperparams} summarises the tuning strategy, search space, best c
 \caption{Hyperparameter search space, best configuration, and justification per model.}
 \label{tab:hyperparams}
 \scriptsize
-\setlength{\tabcolsep}{3pt}
-\begin{tabular}{@{}llllp{5.5cm}@{}}
+\setlength{\tabcolsep}{2pt}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}p{1.3cm}p{2.4cm}p{4.1cm}p{2.2cm}p{5.1cm}@{}}
 \toprule
 \textbf{Model} & \textbf{Strategy} & \textbf{Search Space} & \textbf{Best Config} & \textbf{Justification} \\
 \midrule
-SVM & Grid + 3-fold CV & $C \!\in\! \{0.1, 1\}$, kernel $\!\in\!$ \{lin, rbf, poly\} & $C\!=\!1$, linear & Linear kernel suits sparse TF-IDF features; $C\!=\!1$ balances margin width and misclassification~\citep{dzikovska2012using} \\
+SVM & Grid + 3-fold CV & $C \!\in\! \{0.1, 1\}$; kernel $\!\in\!$ \{lin, rbf, poly\}\textsuperscript{\dag} & $C\!=\!1$, linear & Linear kernel suits sparse TF-IDF features; $C\!=\!1$ balances margin width and misclassification~\citep{dzikovska2012using} \\
 \addlinespace
-XGBoost & Grid + 3-fold CV & lr $\!\in\! \{0.01, 0.1\}$, depth $\!\in\! \{5, 10\}$, est $\!\in\! \{50, 100\}$ & lr$\!=\!0.1$, depth$\!=\!10$, est$\!=\!100$ & Higher learning rate with deeper trees captures non-linear feature interactions~\citep{chen2016xgboost} \\
+XGBoost & Grid + 3-fold CV & lr $\!\in\! \{0.01, 0.1\}$; depth $\!\in\! \{5, 10\}$; est $\!\in\! \{50, 100\}$ & lr$\!=\!0.1$, depth$\!=\!10$, est$\!=\!100$ & Higher learning rate with deeper trees captures non-linear feature interactions~\citep{chen2016xgboost} \\
 \addlinespace
-CNN & EarlyStopping (pat.\,=\,3) & \begin{tabular}[t]{@{}l@{}}2$\times$Conv (256$\!\rightarrow\!$128, $k\!=\!5$),\\MaxPool, Dense(64), drop$\!=\!0.5{\times}2$\end{tabular} & Best ep.\,3/6 & Kernel size 5 captures bigram--trigram patterns; two Conv blocks increase receptive field~\citep{hasan2019emotion} \\
+CNN & EarlyStopping (pat.\,=\,3) & \begin{tabular}[t]{@{}l@{}}2$\times$Conv (256$\!\rightarrow\!$128, $k\!=\!5$),\\MaxPool, Dense(64), drop$\!=\!0.5{\times}2$\end{tabular} & Best ep.\,3/5 & Kernel size 5 captures bigram--trigram patterns; two Conv blocks increase receptive field~\citep{hasan2019emotion} \\
 \addlinespace
 BiLSTM & EarlyStopping (pat.\,=\,3) & \begin{tabular}[t]{@{}l@{}}2$\times$BiLSTM (256$\!\rightarrow\!$128),\\Dense(128$\!\rightarrow\!$64), drop$\!=\!0.5{\times}3$\end{tabular} & Best ep.\,3/6 & Stacked BiLSTM with tapering units captures hierarchical context; dropout 0.5 prevents overfitting~\citep{sun2023bidirectional} \\
 \bottomrule
 \end{tabular}
+}
 \end{table*}
+
+{\scriptsize \textsuperscript{\dag}The full kernel grid was explored in the training notebook; the deployment script (\texttt{train\_pipeline.py}) fixes kernel to \texttt{linear} as confirmed optimal.}
 
 The hyperparameter search was intentionally constrained to a focused grid to ensure controlled comparison across model families rather than exhaustive optimisation; this may limit each model's true performance ceiling, particularly for non-linear models such as XGBoost. For ML models, the grid was designed to test the most impactful parameters (regularisation strength and kernel type for SVM; learning rate, tree depth, and ensemble size for XGBoost). For DL models, architecture choices were guided by prior work on emotion classification and validated through the architecture ablation study (Section~\ref{sec:ablation}).
 
@@ -82,13 +86,13 @@ Per-class word clouds (Figure~\ref{fig:wordclouds} in the Appendix) corroborate 
 \begin{minipage}{0.48\textwidth}
   \centering
   \includegraphics[width=\linewidth]{figures/bilstm_training_curves.png}
-  \captionof{figure}{BiLSTM training curves over 6 epochs. Convergence at epoch~3 with minimal train--val gap ($\approx$0.5\,pp).}
+  \captionof{figure}{BiLSTM training curves (trained for 10 epochs with EarlyStopping, stopped at epoch~6). Convergence at epoch~3 with minimal train--val gap ($\approx$0.5\,pp).}
   \label{fig:train_bilstm}
 \end{minipage}\hfill
 \begin{minipage}{0.48\textwidth}
   \centering
   \includegraphics[width=\linewidth]{figures/cnn_training_curves.png}
-  \captionof{figure}{CNN training curves over 6 epochs. Early overfitting signs appear after epoch~3.}
+  \captionof{figure}{CNN training curves (trained for 10 epochs with EarlyStopping, stopped at epoch~5). Early overfitting signs appear after epoch~2.}
   \label{fig:train_cnn}
 \end{minipage}
 \end{figure*}
@@ -108,7 +112,7 @@ Table~\ref{tab:compute} reports computational cost. SVM required the least train
 \midrule
 SVM      & $\sim$2\,min  & $<$1\,ms/sample  & 48\,MB \\
 XGBoost  & $\sim$8\,min  & $<$1\,ms/sample  & 12\,MB \\
-CNN      & $\sim$2\,min (6 ep.) & $\sim$3\,ms/sample & 4.2\,MB \\
+CNN      & $\sim$2\,min (5 ep.) & $\sim$3\,ms/sample & 4.2\,MB \\
 BiLSTM   & $\sim$24\,min (6 ep.) & $\sim$23\,ms/sample & 5.6\,MB \\
 \bottomrule
 \end{tabular}

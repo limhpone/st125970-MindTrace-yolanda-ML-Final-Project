@@ -167,7 +167,7 @@ The pipeline follows a controlled experimental design:
 6. **Hyperparameter tuning** — Grid search with 3-fold CV for ML models; EarlyStopping (patience=3) for DL models
 7. **Training & evaluation** — All four models evaluated on the same test set using Macro-F1 (primary), accuracy, precision, recall, and confusion matrix
 8. **Model selection** — Accuracy–latency trade-off and computational cost comparison
-9. **Ablation study** — Two complementary retrospective analyses: (A) SVM preprocessing ablation disabling each of the 8 pipeline steps individually, and (B) BiLSTM architecture ablation testing depth, dropout, and attention variants
+9. **Ablation study** — Two complementary retrospective analyses: (A) SVM preprocessing ablation disabling each of the 8 pipeline steps individually, and (B) BiLSTM architecture ablation testing depth, capacity, dropout, and embedding dimensionality
 10. **Deployment** — SVM deployed via Flask REST API with Docker containerisation and GitHub Actions CI/CD
 
 ---
@@ -256,6 +256,8 @@ docker pull yolandalim/125970-mindtrace:latest
 docker run -p 5000:5000 yolandalim/125970-mindtrace:latest
 #    → Open http://localhost:5000
 ```
+
+> **Note:** The [live demo](http://192.41.170.112:5970/) maps the container's port 5000 to external port 5970 (`-p 5970:5000`).
 
 ---
 
@@ -402,7 +404,7 @@ If you use this work, please cite:
   school  = {Asian Institute of Technology},
   year    = {2026},
   type    = {Master's Project},
-  note    = {Computer Science, March 2026}
+  note    = {Computer Science, April 2026}
 }
 ```
 
