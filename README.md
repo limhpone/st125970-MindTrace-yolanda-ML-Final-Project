@@ -58,7 +58,7 @@
 |---|:---:|:---:|:---:|:---:|:---:|:---:|
 | **BiLSTM** *(best)* | 94.7% | 94.2% | **93.9%** | 94.1% | 93.9% | 93.9% |
 | CNN | 93.2% | 92.8% | 92.5% | 92.7% | 92.5% | 92.5% |
-| SVM | 94.4% | 92.1% | 91.8% | 92.0% | 91.8% | 91.7% |
+| SVM | 94.4% | 92.1% | 91.8% | 92.0% | 91.8% | 91.8% |
 | XGBoost | 93.3% | 91.1% | 90.8% | 91.0% | 90.8% | 90.7% |
 
 > **Deployed model:** SVM + TF-IDF sklearn Pipeline — CPU inference, no GPU required, instant startup.
@@ -300,7 +300,7 @@ The app ships a single-page, self-contained UI with four tabs.
 
 ## Reproducing Results
 
-`train_pipeline.py` trains the **SVM** model deployed in this app and should achieve approximately **91.8% test accuracy**, matching the SVM row in Table 4.1.
+`train_pipeline.py` trains the **SVM** model deployed in this app and should achieve approximately **91.8% test accuracy**, matching the SVM row in Table 9.
 
 To reproduce the **BiLSTM (93.9%)** or **CNN (92.5%)** results, use the full `Emotion_prediction_source_code.ipynb` notebook in a TensorFlow environment (Google Colab with NVIDIA T4 GPU recommended).
 

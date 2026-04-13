@@ -10,8 +10,8 @@ Thesis : MindTrace — Text Mining and NLP-Driven Emotion Prediction
 Research Question:
   How do traditional ML models (SVM, XGBoost) compare with deep learning
   models (CNN, BiLSTM) in multi-class emotion classification from social
-  media text, under a unified preprocessing pipeline, standardised dataset
-  partitioning, and consistent evaluation metrics?
+  media text, when evaluated under a unified preprocessing pipeline,
+  standardised dataset partitioning, and consistent evaluation metrics?
 
 Endpoints
 ---------
@@ -76,16 +76,16 @@ CHAT_WORDS = {
     "pls":"please","rn":"right now",
 }
 
-# ── Model results — Table 4.1, MindTrace thesis ────────────────────────────────
+# ── Model results — Table 9, MindTrace thesis ────────────────────────────────
 # Actual metrics from Emotion_prediction_source_code.ipynb on balanced 89,832-sample corpus
 MODEL_STATS = {
     "BiLSTM":  {"train":94.7,"val":94.2,"test":93.9,"precision":94.1,"recall":93.9,"f1":93.9},
     "CNN":     {"train":93.2,"val":92.8,"test":92.5,"precision":92.7,"recall":92.5,"f1":92.5},
-    "SVM":     {"train":94.4,"val":92.1,"test":91.8,"precision":92.0,"recall":91.8,"f1":91.7},
+    "SVM":     {"train":94.4,"val":92.1,"test":91.8,"precision":92.0,"recall":91.8,"f1":91.8},
     "XGBoost": {"train":93.3,"val":91.1,"test":90.8,"precision":91.0,"recall":90.8,"f1":90.7},
 }
 
-# ── Class distribution — Table 3.3, MindTrace thesis ──────────────────────────
+# ── Class distribution — Table 4, MindTrace thesis ──────────────────────────
 CLASS_DISTRIBUTION = {
     "Joy":     {"count":141067,"pct":33.84,"note":"Largest class — risk of bias if unweighted"},
     "Sadness": {"count":121187,"pct":29.07,"note":"Second largest; close to Fear/Love semantically"},
@@ -229,7 +229,8 @@ def stats():
         "research_question":  (
             "How do traditional ML models (SVM, XGBoost) compare with deep learning "
             "models (CNN, BiLSTM) in multi-class emotion classification from social "
-            "media text, under a unified preprocessing pipeline?"
+            "media text, when evaluated under a unified preprocessing pipeline, "
+            "standardised dataset partitioning, and consistent evaluation metrics?"
         ),
         "imbalance_ratio":    "9.5:1 (Joy:Surprise)",
         "hard_pairs":         ["Fear / Surprise", "Joy / Love"],

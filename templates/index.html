@@ -585,7 +585,7 @@ footer a{color:var(--g3);text-decoration:none;}
 
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
     <div style="font-family:var(--mono);font-size:10.5px;color:var(--muted2);">
-      Empirical results — MindTrace thesis Tables 3.3 &amp; 4.1
+      Empirical results — MindTrace thesis Tables 4 &amp; 9
     </div>
     <div class="live-pill"><div class="ldot"></div><span id="livePredCount">0 predictions this session</span></div>
   </div>
@@ -602,7 +602,7 @@ footer a{color:var(--g3);text-decoration:none;}
   <div class="chart-card">
     <div class="chart-hdr">
       <span class="ct">🔬 Model comparison — accuracy, precision, recall &amp; F1</span>
-      <span class="cn">Test set · 20% hold-out · Table 4.1</span>
+      <span class="cn">Test set · 20% hold-out · Table 9</span>
     </div>
     <div style="position:relative;height:240px;"><canvas id="modelChart"></canvas></div>
   </div>
@@ -622,10 +622,10 @@ footer a{color:var(--g3);text-decoration:none;}
     </div>
   </div>
 
-  <!-- class distribution — Table 3.3 -->
+  <!-- class distribution — Table 4 -->
   <div class="chart-card" style="margin-top:14px;">
     <div class="chart-hdr">
-      <span class="ct">📊 Dataset class distribution — Table 3.3 (416,809 samples)</span>
+      <span class="ct">📊 Dataset class distribution — Table 4 (416,809 samples)</span>
       <span class="cn">Imbalance ratio 9.5:1 → macro-F1 evaluation required</span>
     </div>
     <div id="distBars" style="margin-bottom:16px;"></div>
@@ -694,13 +694,13 @@ footer a{color:var(--g3);text-decoration:none;}
 <div id="tab-about" class="tab-panel" role="tabpanel" aria-labelledby="btn-about">
 
   <div class="rq-full">
-    <div class="rq-lbl">Research Question — Section 1.3</div>
+    <div class="rq-lbl">Research Question — Section 1.2</div>
     <div class="rq-text">How do traditional ML models (SVM, XGBoost) compare with deep learning models (CNN, BiLSTM) in multi-class emotion classification from social media text, when evaluated under a unified preprocessing pipeline, standardised dataset partitioning, and consistent evaluation metrics?</div>
   </div>
 
   <div class="about-grid">
     <div class="about-card">
-      <div class="ab-title">Research Gap — Section 1.2</div>
+      <div class="ab-title">Research Gap — Section 1.1</div>
       <div class="ab-text">Comparative analyses across studies frequently differ in dataset selection, preprocessing strategies, feature engineering, and evaluation metrics — making observed performance differences attributable to experimental inconsistencies rather than intrinsic model capabilities. This study fixes all conditions and varies only the model family.</div>
     </div>
     <div class="about-card">
@@ -746,7 +746,7 @@ footer a{color:var(--g3);text-decoration:none;}
       </ul>
     </div>
     <div class="about-card">
-      <div class="ab-title">Contribution — Section 7.1</div>
+      <div class="ab-title">Key Contributions</div>
       <div class="contrib-list">
         <div class="cl-item"><div class="cl-dot" style="background:var(--g1)"></div><span>Unified benchmarking framework — identical preprocessing, stratified splits, and macro-F1 evaluation across SVM, XGBoost, CNN, and BiLSTM</span></div>
         <div class="cl-item"><div class="cl-dot" style="background:var(--g2)"></div><span>Error taxonomy — confusion matrix analysis identifying Joy↔Love (valence conflation) and Fear→Surprise (arousal ambiguity) as architecture-independent misclassification patterns</span></div>
@@ -781,7 +781,7 @@ const EMOTION_META = {
 const MODEL_DATA = {
   BiLSTM:  {train:94.7,val:94.2,test:93.9,precision:94.1,recall:93.9,f1:93.9},
   CNN:     {train:93.2,val:92.8,test:92.5,precision:92.7,recall:92.5,f1:92.5},
-  SVM:     {train:94.4,val:92.1,test:91.8,precision:92.0,recall:91.8,f1:91.7},
+  SVM:     {train:94.4,val:92.1,test:91.8,precision:92.0,recall:91.8,f1:91.8},
   XGBoost: {train:93.3,val:91.1,test:90.8,precision:91.0,recall:90.8,f1:90.7},
 };
 
@@ -1095,7 +1095,7 @@ const GRID='rgba(15,255,160,0.065)'; const TXT='#669e91';
 function initCharts(){
   if(chartsInited)return; chartsInited=true;
 
-  /* 1. Grouped bar — all 4 metrics (from MODEL_DATA / Table 4.1) */
+  /* 1. Grouped bar — all 4 metrics (from MODEL_DATA / Table 9) */
   const models = Object.keys(MODEL_DATA);
   new Chart(document.getElementById('modelChart'),{
     type:'bar',
@@ -1128,7 +1128,7 @@ function initCharts(){
       datasets:[
         {label:'BiLSTM', data:[93.9,94.1,93.9,93.9,94.2],borderColor:G,backgroundColor:G+'18',pointBackgroundColor:G,borderWidth:2.5},
         {label:'CNN',    data:[92.5,92.7,92.5,92.5,92.8],borderColor:Y,backgroundColor:Y+'18',pointBackgroundColor:Y,borderWidth:2.5},
-        {label:'SVM',    data:[91.8,92.0,91.8,91.7,92.1],borderColor:P,backgroundColor:P+'18',pointBackgroundColor:P,borderWidth:2.5},
+        {label:'SVM',    data:[91.8,92.0,91.8,91.8,92.1],borderColor:P,backgroundColor:P+'18',pointBackgroundColor:P,borderWidth:2.5},
         {label:'XGBoost',data:[90.8,91.0,90.8,90.7,91.1],borderColor:A,backgroundColor:A+'18',pointBackgroundColor:A,borderWidth:2.5},
       ]
     },
@@ -1138,7 +1138,7 @@ function initCharts(){
         pointLabels:{color:'#dff2ec',font:{size:10}}}}}
   });
 
-  /* 3. Class distribution — Table 3.3 */
+  /* 3. Class distribution — Table 4 */
   const dEl = document.getElementById('distBars');
   const maxPct = Math.max(...CLASS_DATA.map(d=>d.pct));
   dEl.innerHTML = CLASS_DATA.map((d,i)=>`
