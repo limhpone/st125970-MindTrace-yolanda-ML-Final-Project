@@ -1,88 +1,186 @@
-# MindTrace — NLP-Driven Emotion Prediction
+<div align="center">
+
+# 🧠 MindTrace
+
+### Text Mining & NLP-Driven Emotion Prediction
+
+A unified benchmarking study comparing SVM, XGBoost, CNN, and BiLSTM on 416K Twitter samples across 6 emotion classes — with a production-ready Flask deployment.
+
+<br>
+
+[![Python 3.11](https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Flask 3.0.3](https://img.shields.io/badge/Flask-3.0.3-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com)
+[![scikit-learn](https://img.shields.io/badge/scikit--learn-1.4.2-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org)
+[![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://hub.docker.com/r/yolandalim/125970-mindtrace)
+[![Accuracy](https://img.shields.io/badge/Best_Accuracy-93.9%25-22c55e?style=for-the-badge)](http://192.41.170.112:5970/)
+
+**Aye Khin Khin Hpone (Yolanda Lim)** · ST125970  
+Computer Science · Asian Institute of Technology
+
+<br>
+
+[Live Demo](http://192.41.170.112:5970/) · [YouTube](https://youtu.be/UbVhXhSZs_0) · [Docker Hub](https://hub.docker.com/r/yolandalim/125970-mindtrace) · [Source Code](https://github.com/limhpone/st125970-MindTrace-yolanda-ML-Final-Project)
+
+<br>
+
+<img src="figures/demo.gif" alt="MindTrace Demo" width="680">
+
+</div>
+
+---
+
+## Table of Contents
+
+- [Research Question](#research-question)
+- [Highlights](#highlights)
+- [Model Performance](#model-performance)
+- [Dataset](#dataset)
+- [Methodology](#methodology)
+- [NLP Preprocessing Pipeline](#nlp-preprocessing-pipeline)
+- [Project Structure](#project-structure)
+- [Quick Start](#quick-start)
+- [API Reference](#api-reference)
+- [Web UI](#web-ui)
+- [Environment Variables](#environment-variables)
+- [Dependencies](#dependencies)
+- [Reproducing Results](#reproducing-results)
+- [Citation & Acknowledgements](#citation--acknowledgements)
+
+---
+
+## Research Question
+
+> *How do traditional ML models (SVM, XGBoost) compare with deep learning models (CNN, BiLSTM) in multi-class emotion classification from social media text, when evaluated under a unified preprocessing pipeline, standardised dataset partitioning, and consistent evaluation metrics?*
+
+---
+
+## Highlights
+
+| Feature | Detail |
+|---|---|
+| **93.9% accuracy** | BiLSTM achieves best test accuracy across all 4 models |
+| **Unified benchmark** | Same preprocessing, stratified splits, and macro-F1 evaluation |
+| **Error taxonomy** | Confusion matrix analysis reveals Joy↔Love and Fear↔Surprise patterns |
+| **Production deployed** | SVM + TF-IDF in Flask with Docker & CI/CD at sub-ms inference |
+| **Rich dashboard** | Interactive charts, training curves, live session analytics |
+| **8-step NLP trace** | Full pipeline visibility in every prediction |
+
+---
+
+## Model Performance
+
+All models trained on the **same preprocessing pipeline** and **stratified dataset split** (80/20 with 20% validation holdout).
+
+| Model | Train Acc. | Val Acc. | Test Acc. | Precision | Recall | F1-Score |
+|:---|:---:|:---:|:---:|:---:|:---:|:---:|
+| 🥇 **BiLSTM** | 94.7% | 94.2% | **93.9%** | 94.1% | 93.9% | 93.9% |
+| 🥈 **CNN** | 93.2% | 92.8% | 92.5% | 92.7% | 92.5% | 92.5% |
+| 🥉 **SVM** | 94.4% | 92.1% | 91.8% | 92.0% | 91.8% | 91.8% |
+| 4th **XGBoost** | 93.3% | 91.1% | 90.8% | 91.0% | 90.8% | 90.7% |
+
+> **Deployed model:** SVM + TF-IDF sklearn Pipeline — chosen for sub-millisecond CPU inference, no GPU needed.
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python 3.11">
-  <img src="https://img.shields.io/badge/Flask-3.0.3-000000?style=flat-square&logo=flask&logoColor=white" alt="Flask">
-  <img src="https://img.shields.io/badge/scikit--learn-1.4.2-F7931E?style=flat-square&logo=scikit-learn&logoColor=white" alt="scikit-learn">
-  <img src="https://img.shields.io/badge/Docker-ready-2496ED?style=flat-square&logo=docker&logoColor=white" alt="Docker">
-  <img src="https://img.shields.io/badge/Test_Accuracy-93.9%25_(BiLSTM)-22c55e?style=flat-square" alt="Accuracy">
+  <img src="Final_Report/figures/model_comparison.png" alt="Model comparison chart" width="70%">
 </p>
 
-<p align="center">
-  <b>Author:</b> Aye Khin Khin Hpone (Yolanda Lim) &nbsp;·&nbsp; ST125970<br>
-  <b>Programme:</b> Computer Science, Asian Institute of Technology<br>
-  <i>MindTrace: Text Mining and NLP-Driven Emotion Prediction Using Machine Learning and Deep Learning Approaches</i>
-</p>
+---
+
+## Dataset
+
+**Source:** [Kaggle — Emotions Dataset](https://www.kaggle.com/datasets/nelgiriyewithana/emotions)  
+
+`416,809` labelled Twitter samples · `6` emotion classes · Imbalance ratio `9.5:1`
+
+| Emotion | Code | Count | Share | Note |
+|:---|:---:|---:|:---:|:---|
+| 😊 Joy | 1 | 141,067 | 33.84% | Largest class — risk of bias if unweighted |
+| 😢 Sadness | 0 | 121,187 | 29.07% | Semantically close to Fear and Love |
+| 😠 Anger | 3 | 57,317 | 13.75% | Distinct vocabulary aids separation |
+| 😨 Fear | 4 | 47,712 | 11.45% | Often confused with Surprise |
+| ❤️ Love | 2 | 34,554 | 8.29% | Minority class |
+| 😲 Surprise | 5 | 14,972 | 3.59% | Smallest — highest misclassification risk |
+
+> **High-risk confusion pairs:** Fear ↔ Surprise (arousal overlap) · Joy ↔ Love (valence conflation)
 
 <p align="center">
-  <img src="figures/demo.gif" alt="MindTrace Demo" width="608">
+  <img src="Final_Report/figures/class_distribution.png" alt="Class distribution" width="60%">
 </p>
+
+---
+
+### Screenshots
+
+<details>
+<summary><strong>Click to expand screenshots</strong></summary>
+
+<br>
+
+**Overview & About**
 
 <p align="center">
   <img src="Final_Report/img/overview.png" alt="MindTrace overview" width="47%">
   <img src="Final_Report/img/about.png" alt="About section" width="47%">
 </p>
 
+**Dashboard**
+
 <p align="center">
-  <img src="Final_Report/img/dashboard_overview.png" alt="MindTrace dashboard overview" width="47%">
-  <img src="Final_Report/img/dashboard.png" alt="MindTrace dashboard" width="47%">
+  <img src="Final_Report/img/dashboard_overview.png" alt="Dashboard — KPIs and model comparison" width="47%">
+  <img src="Final_Report/img/dashboard.png" alt="Dashboard — radar and performance table" width="47%">
+</p>
+
+**Emotion Predictions**
+
+<p align="center">
+  <img src="Final_Report/img/joy.png" alt="Joy prediction" width="31%">
+  <img src="Final_Report/img/love.png" alt="Love prediction" width="31%">
+  <img src="Final_Report/img/sadness.png" alt="Sadness prediction" width="31%">
 </p>
 
 <p align="center">
-  <img src="Final_Report/img/joy.png" alt="Joy prediction screen" width="31%">
-  <img src="Final_Report/img/love.png" alt="Love prediction screen" width="31%">
-  <img src="Final_Report/img/sadness.png" alt="Sadness prediction screen" width="31%">
+  <img src="Final_Report/img/Anger.png" alt="Anger prediction" width="47%">
+  <img src="Final_Report/img/dashboard_2.png" alt="Dashboard — class distribution and training curve" width="47%">
 </p>
 
-<p align="center">
-  <img src="Final_Report/img/Anger.png" alt="Anger prediction screen" width="47%">
-  <img src="Final_Report/img/dashboard_2.png" alt="MindTrace dashboard analytics" width="47%">
-</p>
-
-<p align="center">
-  <a href="http://192.41.170.112:5970/">Live Demo</a> &nbsp;·&nbsp;
-  <a href="https://youtu.be/UbVhXhSZs_0">YouTube Demo</a> &nbsp;·&nbsp;
-  <a href="https://hub.docker.com/r/yolandalim/125970-mindtrace">Docker Hub</a> &nbsp;·&nbsp;
-  <a href="https://github.com/limhpone/st125970-MindTrace-yolanda-ML-Final-Project">Source Code</a>
-</p>
+</details>
 
 ---
 
-## Table of Contents
+## Methodology
 
-1. [Research Question](#research-question)
-2. [Model Performance](#model-performance)
-3. [Project Structure](#project-structure)
-4. [Dataset](#dataset)
-5. [NLP Preprocessing Pipeline](#nlp-preprocessing-pipeline)
-6. [Quick Start](#quick-start)
-7. [API Reference](#api-reference)
-8. [Web UI](#web-ui)
-9. [Environment Variables](#environment-variables)
-10. [Dependencies](#dependencies)
-11. [Reproducing Results](#reproducing-results)
-12. [Citation & Acknowledgements](#citation--acknowledgements)
+<p align="center">
+  <img src="Final_Report/img/processflow.png" alt="End-to-end methodology pipeline" width="85%">
+</p>
+
+The pipeline follows a controlled experimental design:
+
+1. **Preprocessing** — 8-step NLP pipeline applied identically across all models
+2. **Feature engineering** — TF-IDF for ML models (SVM, XGBoost); tokenisation + padding for DL models (CNN, BiLSTM)
+3. **Stratified split** — 80% train / 20% test, with 20% validation holdout from training
+4. **Training & evaluation** — All four models evaluated on the same test set using accuracy, precision, recall, and macro-F1
 
 ---
 
-## Research Question
+## NLP Preprocessing Pipeline
 
-> How do traditional ML models (SVM, XGBoost) compare with deep learning models (CNN, BiLSTM) in multi-class emotion classification from social media text, when evaluated under a unified preprocessing pipeline, standardised dataset partitioning, and consistent evaluation metrics?
+Applied identically in `train_pipeline.py` during training and in `app.py` at inference time.
 
----
+| Step | Operation | Detail |
+|:---:|---|---|
+| 1 | Lowercase | `str.lower()` |
+| 2 | Whitespace stripping | Collapse multiple spaces, strip leading/trailing |
+| 3 | URL removal | `re.sub(r'http\S+\|www\S+', '', t)` |
+| 4 | Emoji removal | `emoji.replace_emoji(t, replace='')` |
+| 5 | Special character removal | Keep only `[a-z\s]` |
+| 6 | Chat word expansion | `u→you`, `lol→laugh out loud`, 31 rules |
+| 7 | Stopword removal | NLTK English stopwords — **negation words preserved** |
+| 8 | Lemmatisation | `nltk.WordNetLemmatizer` |
 
-## Model Performance
+**Negation words preserved:**  
+`not` · `never` · `no` · `nor` · `neither` · `nothing` · `nobody` · `nowhere` · `without` · `very` · `extremely` · `barely` · `hardly`
 
-*All models trained on the same preprocessing pipeline and dataset split.*
-
-| Model | Train Acc. | Val Acc. | Test Acc. | Precision | Recall | F1-Score |
-|---|:---:|:---:|:---:|:---:|:---:|:---:|
-| **BiLSTM** *(best)* | 94.7% | 94.2% | **93.9%** | 94.1% | 93.9% | 93.9% |
-| CNN | 93.2% | 92.8% | 92.5% | 92.7% | 92.5% | 92.5% |
-| SVM | 94.4% | 92.1% | 91.8% | 92.0% | 91.8% | 91.8% |
-| XGBoost | 93.3% | 91.1% | 90.8% | 91.0% | 90.8% | 90.7% |
-
-> **Deployed model:** SVM + TF-IDF sklearn Pipeline — CPU inference, no GPU required, instant startup.
+These carry emotional polarity — removing them would lose discriminative signal.
 
 ---
 
@@ -106,50 +204,6 @@ mindtrace/
 └── data/
     └── text.xlsx                 # Raw dataset — download separately from Kaggle
 ```
-
----
-
-## Dataset
-
-**Source:** [Kaggle — Emotions Dataset](https://www.kaggle.com/datasets/nelgiriyewithana/emotions)  
-416,809 labelled Twitter samples · 6 emotion classes · Imbalance ratio 9.5:1
-
-*Class distribution (after Eq. 1 in the paper).*
-
-| Label | Code | Count | % | Note |
-|---|:---:|---:|:---:|---|
-| Joy | 1 | 141,067 | 33.84% | Largest class — risk of bias if unweighted |
-| Sadness | 0 | 121,187 | 29.07% | Semantically close to Fear and Love |
-| Anger | 3 | 57,317 | 13.75% | Distinct vocabulary aids separation |
-| Fear | 4 | 47,712 | 11.45% | Often confused with Surprise |
-| Love | 2 | 34,554 | 8.29% | Minority class |
-| Surprise | 5 | 14,972 | 3.59% | Smallest — highest misclassification risk |
-
-**High-risk confusion pairs:** Fear ↔ Surprise · Joy ↔ Love
-
----
-
-## NLP Preprocessing Pipeline
-
-Applied identically in `train_pipeline.py` during training and in `app.py` at inference time. Any divergence between the two causes training/serving skew.
-
-*8-step pipeline (Section 3.3 — System Architecture in the paper).*
-
-| Step | Operation | Detail |
-|:---:|---|---|
-| 1 | Lowercase | `str.lower()` |
-| 2 | Whitespace stripping | Collapse multiple spaces, strip leading/trailing |
-| 3 | URL removal | `re.sub(r'http\S+\|www\S+', '', t)` |
-| 4 | Emoji removal | `emoji.replace_emoji(t, replace='')` |
-| 5 | Special character removal | Keep only `[a-z\s]` |
-| 6 | Chat word expansion | `u→you`, `lol→laugh out loud`, 31 rules |
-| 7 | Stopword removal | NLTK English stopwords — **negation words preserved** |
-| 8 | Lemmatisation | `nltk.WordNetLemmatizer` |
-
-**Negation words preserved** (Section 3.3):  
-`not` · `never` · `no` · `nor` · `neither` · `nothing` · `nobody` · `nowhere` · `without` · `very` · `extremely` · `barely` · `hardly`
-
-These carry emotional polarity — removing them would lose discriminative signal.
 
 ---
 
@@ -321,7 +375,7 @@ The app ships a single-page, self-contained UI with four tabs.
 
 ## Reproducing Results
 
-`train_pipeline.py` trains the **SVM** model deployed in this app and should achieve approximately **91.8% test accuracy**, matching the SVM row in Table 9.
+`train_pipeline.py` trains the **SVM** model deployed in this app and should achieve approximately **91.8% test accuracy**.
 
 To reproduce the **BiLSTM (93.9%)** or **CNN (92.5%)** results, use the full `Emotion_prediction_source_code.ipynb` notebook in a TensorFlow environment (Google Colab with NVIDIA T4 GPU recommended).
 
@@ -329,14 +383,27 @@ To reproduce the **BiLSTM (93.9%)** or **CNN (92.5%)** results, use the full `Em
 
 ## Citation & Acknowledgements
 
-**Citation**
+If you use this work, please cite:
 
-> Aye Khin Khin Hpone (Yolanda Lim), *MindTrace: Text Mining and NLP-Driven Emotion Prediction Using Machine Learning and Deep Learning Approaches*, Asian Institute of Technology, Computer Science, March 2026.
+```bibtex
+@thesis{mindtrace2026,
+  author  = {Aye Khin Khin Hpone (Yolanda Lim)},
+  title   = {MindTrace: Text Mining and NLP-Driven Emotion Prediction Using Machine Learning and Deep Learning Approaches},
+  school  = {Asian Institute of Technology},
+  year    = {2026},
+  type    = {Master's Project},
+  note    = {Computer Science, March 2026}
+}
+```
 
-**Acknowledgements**
-
-Sincere thanks to **Dr. Sein Minn** for his supervision and guidance, and to **TA Rakshya Lama Moktan** for her valuable support and feedback.
+**Acknowledgements** — Sincere thanks to **Dr. Sein Minn** for his supervision and guidance, and to **TA Rakshya Lama Moktan** for her valuable support and feedback.
 
 ---
 
-*Asian Institute of Technology · Computer Science · March 2026*
+<div align="center">
+
+**Asian Institute of Technology · Computer Science · 2026**
+
+Made with ❤️ by Yolanda Lim
+
+</div>
