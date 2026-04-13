@@ -19,8 +19,29 @@
 </p>
 
 <p align="center">
+  <img src="Final_Report/img/overview.png" alt="MindTrace overview" width="47%">
+  <img src="Final_Report/img/about.png" alt="About section" width="47%">
+</p>
+
+<p align="center">
+  <img src="Final_Report/img/dashboard_overview.png" alt="MindTrace dashboard overview" width="47%">
+  <img src="Final_Report/img/dashboard.png" alt="MindTrace dashboard" width="47%">
+</p>
+
+<p align="center">
+  <img src="Final_Report/img/joy.png" alt="Joy prediction screen" width="31%">
+  <img src="Final_Report/img/love.png" alt="Love prediction screen" width="31%">
+  <img src="Final_Report/img/sadness.png" alt="Sadness prediction screen" width="31%">
+</p>
+
+<p align="center">
+  <img src="Final_Report/img/Anger.png" alt="Anger prediction screen" width="47%">
+  <img src="Final_Report/img/dashboard_2.png" alt="MindTrace dashboard analytics" width="47%">
+</p>
+
+<p align="center">
   <a href="http://192.41.170.112:5970/">Live Demo</a> &nbsp;·&nbsp;
-  <a href="https://youtu.be/BuqDFtVFqBw">YouTube Demo</a> &nbsp;·&nbsp;
+  <a href="https://youtu.be/UbVhXhSZs_0">YouTube Demo</a> &nbsp;·&nbsp;
   <a href="https://hub.docker.com/r/yolandalim/125970-mindtrace">Docker Hub</a> &nbsp;·&nbsp;
   <a href="https://github.com/limhpone/st125970-MindTrace-yolanda-ML-Final-Project">Source Code</a>
 </p>

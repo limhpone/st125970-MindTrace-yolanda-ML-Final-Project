@@ -10,6 +10,7 @@ build/
 venv/
 env/
 .env
+.env.*
 
 # Jupyter
 .ipynb_checkpoints/
@@ -32,8 +33,14 @@ Final_Report/*.aux
 Final_Report/*.bbl
 Final_Report/*.blg
 Final_Report/*.brf
+Final_Report/*.fdb_latexmk
+Final_Report/*.fls
 Final_Report/*.log
+Final_Report/*.lof
+Final_Report/*.lot
 Final_Report/*.out
+Final_Report/*.synctex.gz
+Final_Report/*.toc
 
 # macOS
 .DS_Store
