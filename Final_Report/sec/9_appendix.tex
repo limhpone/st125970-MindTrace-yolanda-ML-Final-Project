@@ -47,12 +47,12 @@ Figure~\ref{fig:text_length} shows (a)~a right-skewed text length distribution c
 \label{fig:wordcount}
 \end{figure}
 
-Figure~\ref{fig:correlation_matrix} shows a Pearson correlation heatmap of the numeric features in the dataset. Text length and word count are near-perfectly correlated ($r=0.98$), while neither correlates with the encoded label ($r=0.02$), confirming that surface-level length statistics carry negligible class-discriminative signal.
+Figure~\ref{fig:correlation_matrix} shows a Pearson correlation heatmap of the numeric features in the dataset. Text length and word count are near-perfectly correlated ($r=0.984$), while neither correlates with the encoded label ($r<0.03$), confirming that surface-level length statistics carry negligible class-discriminative signal.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.55\linewidth]{figures/correlation_matrix.png}
-\caption{Correlation matrix of numeric features. Text length and word count are highly correlated ($r=0.98$); neither correlates with the emotion label.}
+\caption{Correlation matrix of numeric features. Text length and word count are highly correlated ($r=0.984$); neither correlates with the emotion label.}
 \label{fig:correlation_matrix}
 \end{figure}
 

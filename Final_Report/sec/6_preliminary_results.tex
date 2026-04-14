@@ -69,7 +69,7 @@ The hyperparameter search was intentionally constrained to ensure controlled com
 Figure~\ref{fig:confusion_bilstm} presents the confusion matrix for the best-performing BiLSTM model. Three systematic error patterns persisted across all architectures (full matrices in Figure~\ref{fig:confusion_matrices}, Appendix):
 
 \begin{enumerate}[nosep]
-    \item \textbf{Valence conflation (Joy $\leftrightarrow$ Love).} All models showed notable Joy$\rightarrow$Love misclassification (see Figure~\ref{fig:confusion_matrices}), reflecting shared positively-valenced vocabulary (``happy'', ``amazing'').
+    \item \textbf{Valence conflation (Joy $\leftrightarrow$ Love).} All models showed notable Joy$\leftrightarrow$Love misclassification (see Figure~\ref{fig:confusion_matrices}), reflecting shared positively-valenced vocabulary (``happy'', ``amazing'').
     \item \textbf{Arousal ambiguity (Fear $\rightarrow$ Surprise).} Fear was frequently predicted as Surprise across all architectures (see Figure~\ref{fig:confusion_matrices}), due to shared high-arousal tokens (``shocked'', ``suddenly'') where the two emotions differ primarily in valence.
     \item \textbf{Residual majority-class bias (XGBoost).} Despite class-balanced training, XGBoost still misclassified negatively-valenced samples as Joy, with elevated Sadness$\rightarrow$Joy, Anger$\rightarrow$Joy, and Fear$\rightarrow$Joy off-diagonal counts (see Figure~\ref{fig:confusion_matrices}d).
 \end{enumerate}
@@ -97,7 +97,7 @@ Per-class word clouds (Figure~\ref{fig:wordclouds} in the Appendix) corroborate 
 
 Figure~\ref{fig:train_bilstm} shows BiLSTM converged by epoch~3 (94.17\% validation accuracy) with a small train-val gap (${\approx}0.5$\,pp), confirming good generalisation. Figure~\ref{fig:train_cnn} shows CNN reaching 92.77\% validation accuracy at epoch~3 with early signs of overfitting.
 
-Table~\ref{tab:compute} reports computational cost. SVM required the least training time while delivering the second-highest accuracy, making it the most efficient on a performance-per-compute basis. BiLSTM demanded $12\times$ the training time of SVM for a 2.90\,pp accuracy gain and ${\sim}23\times$ higher inference latency, motivating SVM's selection for deployment.
+Table~\ref{tab:compute} reports computational cost. SVM matched CNN for the shortest training time ($\sim$2\,min) while delivering the second-highest accuracy, making it the most efficient on a performance-per-compute basis. BiLSTM demanded $12\times$ the training time of SVM for a 2.90\,pp accuracy gain and ${\sim}23\times$ higher inference latency, motivating SVM's selection for deployment.
 
 \begin{table}[!htb]
 \centering
