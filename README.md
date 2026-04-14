@@ -12,7 +12,7 @@ A unified benchmarking study comparing SVM, XGBoost, CNN, and BiLSTM on 416K Twi
 [![Flask 3.0.3](https://img.shields.io/badge/Flask-3.0.3-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-1.4.2-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org)
 [![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://hub.docker.com/r/yolandalim/125970-mindtrace)
-[![Accuracy](https://img.shields.io/badge/Best_Accuracy-93.9%25-22c55e?style=for-the-badge)](http://192.41.170.112:5970/)
+[![Accuracy](https://img.shields.io/badge/Best_Accuracy-94.70%25-22c55e?style=for-the-badge)](http://192.41.170.112:5970/)
 
 **Aye Khin Khin Hpone (Yolanda Lim)** · ST125970  
 Computer Science · Asian Institute of Technology
@@ -68,7 +68,7 @@ Computer Science · Asian Institute of Technology
 
 | Feature | Detail |
 |---|---|
-| **93.9% accuracy** | BiLSTM achieves best test accuracy across all 4 models |
+| **94.70% accuracy** | BiLSTM achieves best test accuracy across all 4 models |
 | **Unified benchmark** | Same preprocessing, stratified splits, and macro-F1 evaluation |
 | **Error taxonomy** | Confusion matrix analysis reveals Joy↔Love and Fear↔Surprise patterns |
 | **Production deployed** | SVM + TF-IDF in Flask with Docker & CI/CD at sub-ms inference |
@@ -83,10 +83,10 @@ All models trained on the **same preprocessing pipeline** and **stratified datas
 
 | Model | Train Acc. | Val Acc. | Test Acc. | Precision | Recall | F1-Score |
 |:---|:---:|:---:|:---:|:---:|:---:|:---:|
-| 🥇 **BiLSTM** | 94.7% | 94.2% | **93.9%** | 94.1% | 93.9% | 93.9% |
-| 🥈 **CNN** | 93.2% | 92.8% | 92.5% | 92.7% | 92.5% | 92.5% |
-| 🥉 **SVM** | 94.4% | 92.1% | 91.8% | 92.0% | 91.8% | 91.8% |
-| 4th **XGBoost** | 93.3% | 91.1% | 90.8% | 91.0% | 90.8% | 90.7% |
+| 🥇 **BiLSTM** | 94.7% | 94.2% | **94.70%** | 94.97% | 94.70% | 94.64% |
+| 🥈 **CNN** | 93.2% | 92.8% | 93.13% | 93.47% | 93.13% | 93.05% |
+| 🥉 **SVM** | 94.4% | 92.1% | 91.80% | 92.00% | 91.80% | 91.75% |
+| 4th **XGBoost** | 93.3% | 91.1% | 80.93% | 85.48% | 80.93% | 81.50% |
 
 > **Deployed model:** SVM + TF-IDF sklearn Pipeline — chosen for sub-millisecond CPU inference, no GPU needed.
 
@@ -315,14 +315,14 @@ Returns all model performance metrics and class distribution for the dashboard.
 ```json
 {
   "model_stats": {
-    "BiLSTM":  { "train": 94.7, "val": 94.2, "test": 93.9, "precision": 94.1, "recall": 93.9, "f1": 93.9 },
-    "CNN":     { "train": 93.2, "val": 92.8, "test": 92.5, "..." : "..." },
-    "SVM":     { "train": 94.4, "val": 92.1, "test": 91.8, "..." : "..." },
-    "XGBoost": { "train": 93.3, "val": 91.1, "test": 90.8, "..." : "..." }
+    "BiLSTM":  { "train": 94.7, "val": 94.2, "test": 94.70, "precision": 94.97, "recall": 94.70, "f1": 94.64 },
+    "CNN":     { "train": 93.2, "val": 92.8, "test": 93.13, "..." : "..." },
+    "SVM":     { "train": 94.4, "val": 92.1, "test": 91.80, "..." : "..." },
+    "XGBoost": { "train": 93.3, "val": 91.1, "test": 80.93, "..." : "..." }
   },
   "class_distribution": { "...": "..." },
   "dataset_size":    416809,
-  "best_model":      "BiLSTM (93.9% test accuracy)",
+  "best_model":      "BiLSTM (94.70% test accuracy)",
   "imbalance_ratio": "9.5:1 (Joy:Surprise)",
   "hard_pairs":      ["Fear / Surprise", "Joy / Love"]
 }
@@ -389,7 +389,7 @@ The app ships a single-page, self-contained UI with four tabs.
 
 `train_pipeline.py` trains the **SVM** model deployed in this app and should achieve approximately **91.8% test accuracy**.
 
-To reproduce the **BiLSTM (93.9%)** or **CNN (92.5%)** results, use the full `Emotion_prediction_source_code.ipynb` notebook in a TensorFlow environment (Google Colab with NVIDIA T4 GPU recommended).
+To reproduce the **BiLSTM (94.70%)** or **CNN (93.13%)** results, use the full `Emotion_prediction_source_code.ipynb` notebook in a TensorFlow environment (Google Colab with NVIDIA T4 GPU recommended).
 
 ---
 

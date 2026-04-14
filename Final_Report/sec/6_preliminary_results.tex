@@ -1,12 +1,12 @@
 \section{Experimental Results and Discussion}
 \label{sec:results}
 
-All four models were trained and evaluated on the class-balanced dataset (89,832 samples; $\approx$14,972 per class) using an 80/20 stratified train-test split with a 20\% validation holdout. The test set comprised 17,967 samples. The subsections below address each research question: overall model comparison (\textbf{RQ1}, \S\ref{sec:perf}--\ref{sec:hyper}), error patterns and biases (\textbf{RQ2}, \S\ref{sec:confusion}), and computational trade-offs for deployment (\textbf{RQ3}, \S\ref{sec:compute}--\ref{sec:deploy}).
+All four models were trained and evaluated on the class-balanced dataset (89,832 samples; $\approx$14,972 per class) using an 80/20 stratified train-test split with a 20\% validation holdout. The test set comprised 17,967 samples.
 
 \subsection{Overall Performance Comparison}
 \label{sec:perf}
 
-Table~\ref{tab:results} summarises the test-set performance. BiLSTM outperformed all models ($+1.39$\,pp over CNN, $+2.13$\,pp over SVM, $+3.14$\,pp over XGBoost in accuracy). The ranking BiLSTM $>$ CNN $>$ SVM $>$ XGBoost indicates that sequential context modelling provides a measurable advantage over local feature extraction and bag-of-words approaches. However, no statistical significance testing was conducted, so these differences should be interpreted cautiously.
+Table~\ref{tab:results} summarises the test-set performance. BiLSTM achieved the highest observed accuracy ($+1.57$\,pp over CNN, $+2.90$\,pp over SVM, $+13.77$\,pp over XGBoost). The ranking BiLSTM $>$ CNN $>$ SVM $>$ XGBoost indicates that sequential context modelling provides a measurable advantage over local feature extraction and bag-of-words approaches, with XGBoost exhibiting a substantially larger performance gap attributable to its difficulty capturing sequential dependencies in text. However, no statistical significance testing was conducted, so these differences should be interpreted cautiously.
 
 \begin{table}[!htb]
 \centering
@@ -17,10 +17,10 @@ Table~\ref{tab:results} summarises the test-set performance. BiLSTM outperformed
 \toprule
 \textbf{Model} & \textbf{Acc.\,(\%)} & \textbf{Prec.\,(\%)} & \textbf{Rec.\,(\%)} & \textbf{F1\,(\%)} \\
 \midrule
-BiLSTM   & \textbf{93.93} & \textbf{94.08} & \textbf{93.93} & \textbf{93.91} \\
-CNN      & 92.54 & 92.67 & 92.54 & 92.48 \\
+BiLSTM   & \textbf{94.70} & \textbf{94.97} & \textbf{94.70} & \textbf{94.64} \\
+CNN      & 93.13 & 93.47 & 93.13 & 93.05 \\
 SVM      & 91.80 & 92.00 & 91.80 & 91.75 \\
-XGBoost  & 90.79 & 90.98 & 90.79 & 90.73 \\
+XGBoost  & 80.93 & 85.48 & 80.93 & 81.50 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -53,7 +53,7 @@ BiLSTM & EarlyStopping (pat.\,=\,3) & \begin{tabular}[t]{@{}l@{}}2$\times$BiLSTM
 }
 \end{table*}
 
-The hyperparameter search was intentionally constrained to a focused grid to ensure controlled comparison across model families rather than exhaustive optimisation; this may limit each model's true performance ceiling, particularly for non-linear models such as XGBoost. For ML models, the grid was designed to test the most impactful parameters (regularisation strength and kernel type for SVM; learning rate, tree depth, and ensemble size for XGBoost). For DL models, architecture choices were guided by prior work on emotion classification and validated through the architecture ablation study (Section~\ref{sec:ablation}).
+The hyperparameter search was intentionally constrained to ensure controlled comparison rather than exhaustive optimisation, which may limit each model's true ceiling. For ML models, the grid targeted the most impactful parameters; for DL models, architecture choices were guided by prior work and validated through the ablation study (Section~\ref{sec:ablation}).
 
 \subsection{Confusion Matrix and Error Analysis}
 \label{sec:confusion}
@@ -97,7 +97,7 @@ Per-class word clouds (Figure~\ref{fig:wordclouds} in the Appendix) corroborate 
 
 Figure~\ref{fig:train_bilstm} shows BiLSTM converged by epoch~3 (94.17\% validation accuracy) with a small train-val gap (${\approx}0.5$\,pp), confirming good generalisation. Figure~\ref{fig:train_cnn} shows CNN reaching 92.77\% validation accuracy at epoch~3 with early signs of overfitting.
 
-Table~\ref{tab:compute} reports computational cost. SVM required the least training time while delivering the second-highest accuracy, making it the most efficient on a performance-per-compute basis. BiLSTM demanded $12\times$ the training time of SVM for a 2.13\,pp accuracy gain and ${\sim}23\times$ higher inference latency, motivating SVM's selection for deployment.
+Table~\ref{tab:compute} reports computational cost. SVM required the least training time while delivering the second-highest accuracy, making it the most efficient on a performance-per-compute basis. BiLSTM demanded $12\times$ the training time of SVM for a 2.90\,pp accuracy gain and ${\sim}23\times$ higher inference latency, motivating SVM's selection for deployment.
 
 \begin{table}[!htb]
 \centering
@@ -119,12 +119,12 @@ BiLSTM   & $\sim$24\,min (6 ep.) & $\sim$23\,ms/sample & 5.6\,MB \\
 \subsection{Discussion}
 \label{sec:discussion}
 
-The consistently high performance across all four models (90.79--93.93\% accuracy) can be attributed to three factors:
-(1)~\textbf{effective class balancing} --- downsampling to 14,972 samples per class eliminated the 9.5:1 imbalance ratio, with macro-F1 closely tracking accuracy ($\leq$0.07\,pp gap);
+The high performance of the three best models (91.80--94.70\% accuracy) can be attributed to three factors:
+(1)~\textbf{effective class balancing} --- downsampling to 14,972 samples per class eliminated the 9.5:1 imbalance ratio, with macro-F1 closely tracking accuracy for SVM, CNN, and BiLSTM ($\leq$0.08\,pp gap);
 (2)~\textbf{the preprocessing pipeline} --- the ablation study (Section~\ref{sec:ablation}) showed the full eight-step pipeline contributes $1.42$\,pp over raw text, notably by retaining negation words that preserve discriminative signals (``not happy'' vs.\ ``happy''); and
-(3)~\textbf{dataset characteristics} --- the corpus comprises short, emotionally explicit tweets (median 86 characters) with direct lexical cues, favouring both TF-IDF and embedding-based models. The 2.13\,pp gap between SVM and BiLSTM reflects the added value of sequential context modelling for order-dependent cases (\eg, ``I am not afraid'' vs.\ ``I am afraid'').
+(3)~\textbf{dataset characteristics} --- the corpus comprises short, emotionally explicit tweets (median 86 characters) with direct lexical cues, favouring both TF-IDF and embedding-based models. The 2.90\,pp gap between SVM and BiLSTM reflects the added value of sequential context modelling for order-dependent cases (\eg, ``I am not afraid'' vs.\ ``I am afraid''). XGBoost's substantially lower accuracy (80.93\%) suggests that gradient-boosted trees over TF-IDF features struggle to capture the sequential and compositional patterns critical for fine-grained emotion discrimination.
 
-The performance ceiling is bounded by \textbf{inherent label ambiguity}: the architecture-independent Joy$\leftrightarrow$Love and Fear$\rightarrow$Surprise confusion patterns (Section~\ref{sec:confusion}) persist regardless of model complexity, indicating that the remaining ${\sim}6\%$ error rate reflects genuine semantic overlap rather than model inadequacy~\citep{demszky2020goemotions}. Further gains may require richer representations (\eg, transformer-based contextual embeddings) rather than architectural scaling within the current feature space.
+The performance ceiling appears to be bounded by \textbf{inherent label ambiguity}: the architecture-independent Joy$\leftrightarrow$Love and Fear$\rightarrow$Surprise confusion patterns (Section~\ref{sec:confusion}) persist regardless of model complexity, indicating that the remaining ${\sim}5\%$ error rate (for the best model) reflects genuine semantic overlap rather than model inadequacy~\citep{demszky2020goemotions}. Further gains may require richer representations (\eg, transformer-based contextual embeddings) rather than architectural scaling within the current feature space.
 
 \subsection{Interpretability and Deployment Feasibility}
 \label{sec:deploy}
@@ -144,7 +144,7 @@ SVM offered the highest interpretability through its linear weight vector~$w$; X
 Inference latency  & \cmark & \cmark & $\sim$ & \xmark \\
 Memory footprint   & $\sim$ & \cmark & \cmark & \cmark \\
 Interpretability   & \cmark & $\sim$ & \xmark & \xmark \\
-Accuracy           & $\sim$ & $\sim$ & $\sim$ & \cmark \\
+Accuracy           & $\sim$ & \xmark & $\sim$ & \cmark \\
 \bottomrule
 \end{tabular}
 \end{table}

@@ -592,7 +592,7 @@ footer a{color:var(--g3);text-decoration:none;}
 
   <!-- KPIs -->
   <div class="kpi-grid">
-    <div class="kpi"><span class="kpi-em">🏆</span><div class="kpi-val">93.9%</div><div class="kpi-lbl">BiLSTM test accuracy</div></div>
+    <div class="kpi"><span class="kpi-em">🏆</span><div class="kpi-val">94.70%</div><div class="kpi-lbl">BiLSTM test accuracy</div></div>
     <div class="kpi"><span class="kpi-em">🚀</span><div class="kpi-val">91.8%</div><div class="kpi-lbl">SVM deployed model</div></div>
     <div class="kpi"><span class="kpi-em">📦</span><div class="kpi-val">416K</div><div class="kpi-lbl">Dataset samples</div></div>
     <div class="kpi"><span class="kpi-em">🎭</span><div class="kpi-val">6</div><div class="kpi-lbl">Emotion classes</div></div>
@@ -726,10 +726,10 @@ footer a{color:var(--g3);text-decoration:none;}
     <div class="about-card">
       <div class="ab-title">Four Models</div>
       <div class="model-chips">
-        <div class="mc"><span class="mc-name">BiLSTM</span><span class="mc-desc">Captures long-range bidirectional contextual dependencies; highest test accuracy 93.9%</span></div>
-        <div class="mc"><span class="mc-name">CNN</span><span class="mc-desc">Extracts local n-gram features via convolution and pooling; test accuracy 92.5%</span></div>
-        <div class="mc"><span class="mc-name">SVM</span><span class="mc-desc">Margin-based classifier on TF-IDF sparse features; strong classical baseline 91.8%</span></div>
-        <div class="mc"><span class="mc-name">XGBoost</span><span class="mc-desc">Regularised gradient-boosted ensemble on TF-IDF; non-linear baseline 90.8%</span></div>
+        <div class="mc"><span class="mc-name">BiLSTM</span><span class="mc-desc">Captures long-range bidirectional contextual dependencies; highest test accuracy 94.70%</span></div>
+        <div class="mc"><span class="mc-name">CNN</span><span class="mc-desc">Extracts local n-gram features via convolution and pooling; test accuracy 93.13%</span></div>
+        <div class="mc"><span class="mc-name">SVM</span><span class="mc-desc">Margin-based classifier on TF-IDF sparse features; strong classical baseline 91.80%</span></div>
+        <div class="mc"><span class="mc-name">XGBoost</span><span class="mc-desc">Regularised gradient-boosted ensemble on TF-IDF; non-linear baseline 80.93%</span></div>
       </div>
     </div>
   </div>
@@ -779,10 +779,10 @@ const EMOTION_META = {
 };
 
 const MODEL_DATA = {
-  BiLSTM:  {train:94.7,val:94.2,test:93.9,precision:94.1,recall:93.9,f1:93.9},
-  CNN:     {train:93.2,val:92.8,test:92.5,precision:92.7,recall:92.5,f1:92.5},
-  SVM:     {train:94.4,val:92.1,test:91.8,precision:92.0,recall:91.8,f1:91.8},
-  XGBoost: {train:93.3,val:91.1,test:90.8,precision:91.0,recall:90.8,f1:90.7},
+  BiLSTM:  {train:94.7,val:94.2,test:94.70,precision:94.97,recall:94.70,f1:94.64},
+  CNN:     {train:93.2,val:92.8,test:93.13,precision:93.47,recall:93.13,f1:93.05},
+  SVM:     {train:94.4,val:92.1,test:91.80,precision:92.00,recall:91.80,f1:91.75},
+  XGBoost: {train:93.3,val:91.1,test:80.93,precision:85.48,recall:80.93,f1:81.50},
 };
 
 const CLASS_DATA = [
@@ -1116,7 +1116,7 @@ function initCharts(){
       plugins:{legend:{display:true,labels:{color:TXT,font:{size:10},boxWidth:10}}},
       scales:{
         x:{grid:{color:GRID},ticks:{color:TXT,font:{size:10}}},
-        y:{min:88,max:96,grid:{color:GRID},ticks:{color:TXT,callback:v=>v+'%',font:{size:10}}}
+        y:{min:78,max:96,grid:{color:GRID},ticks:{color:TXT,callback:v=>v+'%',font:{size:10}}}
       }}
   });
 
@@ -1126,15 +1126,15 @@ function initCharts(){
     data:{
       labels:['Accuracy','Precision','Recall','F1','Generalisation'],
       datasets:[
-        {label:'BiLSTM', data:[93.9,94.1,93.9,93.9,94.2],borderColor:G,backgroundColor:G+'18',pointBackgroundColor:G,borderWidth:2.5},
-        {label:'CNN',    data:[92.5,92.7,92.5,92.5,92.8],borderColor:Y,backgroundColor:Y+'18',pointBackgroundColor:Y,borderWidth:2.5},
-        {label:'SVM',    data:[91.8,92.0,91.8,91.8,92.1],borderColor:P,backgroundColor:P+'18',pointBackgroundColor:P,borderWidth:2.5},
-        {label:'XGBoost',data:[90.8,91.0,90.8,90.7,91.1],borderColor:A,backgroundColor:A+'18',pointBackgroundColor:A,borderWidth:2.5},
+        {label:'BiLSTM', data:[94.70,94.97,94.70,94.64,94.2],borderColor:G,backgroundColor:G+'18',pointBackgroundColor:G,borderWidth:2.5},
+        {label:'CNN',    data:[93.13,93.47,93.13,93.05,92.8],borderColor:Y,backgroundColor:Y+'18',pointBackgroundColor:Y,borderWidth:2.5},
+        {label:'SVM',    data:[91.80,92.00,91.80,91.75,92.1],borderColor:P,backgroundColor:P+'18',pointBackgroundColor:P,borderWidth:2.5},
+        {label:'XGBoost',data:[80.93,85.48,80.93,81.50,91.1],borderColor:A,backgroundColor:A+'18',pointBackgroundColor:A,borderWidth:2.5},
       ]
     },
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:true,labels:{color:'#dff2ec',font:{size:10},boxWidth:10}}},
-      scales:{r:{min:89,max:95,ticks:{display:false},grid:{color:GRID},
+      scales:{r:{min:78,max:96,ticks:{display:false},grid:{color:GRID},
         pointLabels:{color:'#dff2ec',font:{size:10}}}}}
   });
 
@@ -1243,8 +1243,8 @@ function buildPerfTable(){
   const maxT = Math.max(...entries.map(([,d])=>d.test));
   tbody.innerHTML = entries.map(([name,d])=>{
     const isBest = d.test===maxT;
-    // bar width as percentage of (range 78-97=19%)
-    const barPct = Math.max(0,Math.round((d.test-89)/6*100));
+    // bar width as percentage of (range 78-96=18)
+    const barPct = Math.max(0,Math.round((d.test-78)/18*100));
     return `<tr${isBest?' class="best-row"':''}>
       <td>${name}${isBest?'<span class="best-p">best</span>':''}</td>
       <td style="color:var(--muted2)">${d.train}%</td>
