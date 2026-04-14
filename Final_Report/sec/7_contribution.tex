@@ -6,7 +6,7 @@ To quantify the contribution of individual pipeline components, two complementar
 
 \subsection{Part A --- SVM Preprocessing Ablation}
 
-The SVM baseline (linear kernel, $C = 1$, TF-IDF with 5,000 features) was retrained ten times, each time disabling exactly one of the eight preprocessing steps while keeping all others active.\footnote{The ablation SVM baseline (91.97\%) differs from the main-evaluation SVM (91.80\%, Table~\ref{tab:results}) by 0.17\,pp because the ablation notebook was executed in a separate session on the university-provided Puffer GPU server with a fresh train/validation split, causing minor data-partition variance.} Table~\ref{tab:ablation_configs_a} lists the configurations; Table~\ref{tab:ablation_results_a} reports test-set performance.
+The SVM baseline (linear kernel, $C = 1$, TF-IDF with 5,000 features) was retrained ten times, each time disabling exactly one of the eight preprocessing steps while keeping all others active. Table~\ref{tab:ablation_configs_a} lists the configurations; Table~\ref{tab:ablation_results_a} reports test-set performance.
 
 \begin{table}[!htb]
 \centering
@@ -67,7 +67,7 @@ Removing \textbf{stopword removal} caused the largest single-step accuracy drop 
 \FloatBarrier
 \subsection{Part B --- BiLSTM Architecture Ablation}
 
-The BiLSTM baseline (2$\times$BiLSTM 256$\rightarrow$128, embedding~dim\,=\,100, dropout\,=\,0.5) was retrained with seven architectural variants spanning depth, capacity, regularisation, and embedding dimensionality.\footnote{The ablation BiLSTM baseline (94.38\%) differs from the main-evaluation BiLSTM (94.70\%, Table~\ref{tab:results}) by 0.32\,pp because the ablation notebook was executed in a separate session on the university-provided Puffer GPU server, causing minor data-partition variance.} Table~\ref{tab:ablation_configs_b} lists the configurations; Table~\ref{tab:ablation_results_b} reports test-set performance.
+The BiLSTM baseline (2$\times$BiLSTM 256$\rightarrow$128, embedding~dim\,=\,100, dropout\,=\,0.5) was retrained with seven architectural variants spanning depth, capacity, regularisation, and embedding dimensionality. Table~\ref{tab:ablation_configs_b} lists the configurations; Table~\ref{tab:ablation_results_b} reports test-set performance.
 
 \begin{table}[!htb]
 \centering
