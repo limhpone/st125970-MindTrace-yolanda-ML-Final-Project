@@ -134,7 +134,7 @@ All models trained on the **same preprocessing pipeline** and **stratified datas
 
 <p align="center">
   <img src="Final_Report/img/overview.png" alt="MindTrace — Predict tab" width="47%">
-  <img src="Final_Report/img/about.png" alt="About section" width="47%">
+  <img src="Final_Report/img/Aboutsection_whole.png" alt="About section" width="47%">
 </p>
 
 <p align="center">
@@ -154,7 +154,7 @@ All models trained on the **same preprocessing pipeline** and **stratified datas
 ## Methodology
 
 <p align="center">
-  <img src="Final_Report/img/processflow.png" alt="End-to-end methodology pipeline" width="85%">
+  <img src="Final_Report/img/processflow.png" alt="End-to-end methodology pipeline" width="50%">
 </p>
 
 The pipeline follows a controlled experimental design:
