@@ -177,6 +177,12 @@ def predict():
     if not cleaned:
         return jsonify({"error": "Text becomes empty after preprocessing. Try a longer or different input."}), 400
 
+    token_count = len(nlp["tokens"])
+    short_text_warning = (
+        "Short input detected — TF-IDF models work best with longer sentences. "
+        "Try adding more context for improved accuracy."
+    ) if token_count < 5 else None
+
     probs   = pipeline_model.predict_proba([cleaned])[0]
     pred_id = int(np.argmax(probs))
     label   = LABEL_MAP[pred_id]
@@ -214,6 +220,7 @@ def predict():
         "tokens":       nlp["tokens"][:40],
         "nlp_steps":    nlp["steps"],
         "negations_kept": nlp["steps"].get("negations_preserved", []),
+        "short_text_warning": short_text_warning,
         "history":      prediction_history[:8],
     })
 
