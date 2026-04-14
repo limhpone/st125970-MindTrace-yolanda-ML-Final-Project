@@ -100,7 +100,7 @@ The deployed MindTrace web application provides four main views: a Predict tab f
 \needspace{8\baselineskip}
 \subsubsection{Predict Tab}
 
-Figure~\ref{fig:ui_overview} shows the default Predict tab and an Anger prediction at 98.0\% confidence. The preprocessing trace demonstrates retention of the negation word ``never'' during stopword removal. Figure~\ref{fig:ui_love}(a,\,b) shows Love (83.3\%) and Sadness (98.9\%) predictions; the Love example illustrates the Joy$\leftrightarrow$Love overlap, with Joy as runner-up at 16.4\%.
+Figure~\ref{fig:ui_overview} shows the default Predict tab and an Anger prediction at 98.0\% confidence. The preprocessing trace demonstrates retention of the negation word ``never'' during stopword removal. Figure~\ref{fig:ui_love}(a,\,b) shows Love (98.8\%) and Sadness (99.8\%) predictions; the Love example confirms the known Joy$\leftrightarrow$Love overlap pattern, with Joy as the nearest competitor at 1.2\%.
 
 \begin{figure}[H]
 \centering
@@ -116,8 +116,8 @@ Figure~\ref{fig:ui_overview} shows the default Predict tab and an Anger predicti
 \centering
 \includegraphics[width=0.48\linewidth]{img/love.png}\hfill
 \includegraphics[width=0.48\linewidth]{img/sadness.png}\\[4pt]
-\makebox[0.48\linewidth]{\small (a) Love --- 83.3\% confidence}\hfill\makebox[0.48\linewidth]{\small (b) Sadness --- 98.9\% confidence}
-\caption{Predict tab --- (a)~Love detected at 83.3\% confidence (Joy runner-up at 16.4\%); (b)~Sadness detected at 98.9\% confidence.}
+\makebox[0.48\linewidth]{\small (a) Love --- 98.8\% confidence}\hfill\makebox[0.48\linewidth]{\small (b) Sadness --- 99.8\% confidence}
+\caption{Predict tab --- (a)~Love detected at 98.8\% confidence (Joy runner-up at 1.2\%); (b)~Sadness detected at 99.8\% confidence.}
 \label{fig:ui_love}
 \label{fig:ui_sadness}
 \end{figure}
@@ -137,7 +137,7 @@ Figure~\ref{fig:ui_dashboard} presents the model performance dashboard with accu
 \label{fig:ui_dashboard2}
 \end{figure}
 
-\needspace{8\baselineskip}
+\clearpage
 \subsubsection{About Tab}
 
 Figure~\ref{fig:ui_about} presents the About page summarising the research question, dataset, NLP pipeline, model architectures, EDA findings, and contributions.

@@ -19,7 +19,7 @@ Computer Science · Asian Institute of Technology
 
 <br>
 
-[Live Demo](http://192.41.170.112:5970/) · [YouTube](https://youtu.be/UbVhXhSZs_0) · [Docker Hub](https://hub.docker.com/r/yolandalim/125970-mindtrace) · [Source Code](https://github.com/limhpone/st125970-MindTrace-yolanda-ML-Final-Project)
+[Live Demo](http://192.41.170.112:5970/) · [YouTube](https://youtu.be/9etx8PFHcxQ) · [Docker Hub](https://hub.docker.com/r/yolandalim/125970-mindtrace) · [Source Code](https://github.com/limhpone/st125970-MindTrace-yolanda-ML-Final-Project)
 
 <br>
 

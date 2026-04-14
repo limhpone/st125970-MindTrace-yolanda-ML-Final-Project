@@ -129,7 +129,7 @@ The performance ceiling appears to be bounded by \textbf{inherent label ambiguit
 \subsection{Interpretability and Deployment Feasibility}
 \label{sec:deploy}
 
-SVM offered the highest interpretability through its linear weight vector~$w$; XGBoost provided moderate interpretability via feature importance scores; CNN and BiLSTM remained black-box models. Figure~\ref{fig:joy_demo} shows a sample prediction classified as Joy with 94.4\% confidence alongside the full preprocessing trace (additional screenshots in Appendix~\ref{sec:app_ui}). Table~\ref{tab:feasibility} summarises the deployment assessment: SVM achieved the best balance of latency, interpretability, and accuracy.
+SVM offered the highest interpretability through its linear weight vector~$w$; XGBoost provided moderate interpretability via feature importance scores; CNN and BiLSTM remained black-box models. Figure~\ref{fig:joy_demo} shows a sample prediction classified as Joy with 95.9\% confidence alongside the full preprocessing trace (additional screenshots in Appendix~\ref{sec:app_ui}). Table~\ref{tab:feasibility} summarises the deployment assessment: SVM achieved the best balance of latency, interpretability, and accuracy.
 
 \begin{table}[H]
 \centering
@@ -152,6 +152,6 @@ Accuracy           & $\sim$ & \xmark & $\sim$ & \cmark \\
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.85\linewidth]{img/joy.png}
-\caption{MindTrace web application --- sample prediction for the Joy emotion class (94.4\% confidence). The interface displays per-class probability scores and the complete NLP preprocessing pipeline trace.}
+\caption{MindTrace web application --- sample prediction for the Joy emotion class (95.9\% confidence). The interface displays per-class probability scores and the complete NLP preprocessing pipeline trace.}
 \label{fig:joy_demo}
 \end{figure}
