@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: mindtrace
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: "5000"
+      - key: MODEL_PATH
+        value: model.pkl
