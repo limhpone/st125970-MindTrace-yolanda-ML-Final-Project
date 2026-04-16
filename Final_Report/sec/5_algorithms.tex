@@ -82,7 +82,7 @@ where $f_t$, $i_t$, $o_t$ are the forget, input, and output gates respectively, 
 
 \subsection{Deployment Architecture}
 
-The best-performing classical model (SVM with TF-IDF vectoriser) was packaged as a Flask REST API, containerised with Docker, and automated via a GitHub Actions CI/CD pipeline for reproducible deployment. The inference endpoint accepts raw text, applies the same preprocessing pipeline used during training, and returns a predicted emotion label with class probability scores. Figure~\ref{fig:deployed_app} shows the deployed web interface.
+The most deployment-efficient classical model (SVM with TF-IDF vectoriser) was packaged as a Flask REST API, containerised with Docker, and automated via a GitHub Actions CI/CD pipeline for reproducible deployment. The inference endpoint accepts raw text, applies the same preprocessing pipeline used during training, and returns a predicted emotion label with class probability scores. Figure~\ref{fig:deployed_app} shows the deployed web interface.
 
 \begin{figure}[H]
 \centering
